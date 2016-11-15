@@ -1,0 +1,159 @@
+<STYLE TYPE="text/css">
+
+body {
+background-color:#b3f97f;
+}
+
+.bgcframe body
+{
+background-color:#b3f97f;
+}
+
+a.Submenu:link, a.Submenu:visited {
+text-decoration: none;
+font-family:Verdana;
+font-size:10pt;
+}
+
+a.Submenu:hover {
+text-decoration: underline;
+color: red;
+background-color:#8DE25A;
+font-family:Verdana;
+font-style:italic;
+font-weight:bold;
+font-size:10pt;
+}
+
+a.Submenu:active {
+text-decoration: none;
+font-family:Verdana;
+font-size:10pt;
+}
+
+<!--- -->
+
+a.Menu:link, a.Menu:visited {
+text-decoration: underline overline
+}
+
+a.Menu:hover {
+text-decoration: underline;
+color: #0f0;
+}
+
+a.Menu:active {
+text-decoration: underline overline
+}
+
+.HeaderPagina TH
+{
+font-family:Verdana;
+font-size:18pt;
+color:Green;
+background-color:#b3f97f;
+}
+
+.CabecalhoTabela TH
+{
+font-family:Verdana;
+font-size:10pt;
+color:green;
+background-color:#33CC66;
+}
+
+a.LinhasDados TR
+tr:nth-child(even) {background: #FFF}
+tr:nth-child(odd) {background: #EEE}
+
+.bgc background-color:#CCFFFF;
+
+
+.ph1 h1
+{
+color:orange;
+text-align:center;
+}
+.pp p
+{
+font-family:"Verdana";
+font-size:20px;
+}
+
+a.linkInserirNovo:link , a.linkInserirNovo:visited
+{
+text-decoration: none;
+font-family:Verdana;
+font-size:10pt;
+color:White;
+background-color:#8DE25A;
+border-style:solid;
+border-width:2px;
+}
+
+a.linkInserirNovo:hover{
+color:black;
+ }
+
+a.linkVoltar:link , a.linkVoltar:visited {
+text-decoration: none;
+font-family:Verdana;
+font-size:10pt;
+color:white;
+background-color:#94B18B;
+border-style:solid;
+border-width:2px;
+}
+
+a.linkVoltar:hover{
+color:black;
+}
+
+input[type=text].Entrada:hover, textarea.Entrada:hover{
+         background: #ffffff; border:1px solid #990000;
+}
+
+input[type=submit].Envia{
+        background:green;
+        color:#ffffff;
+}
+
+input[type=submit].Envia:hover{
+        background:green;
+        color:#000000;
+}
+
+a.MsgErro {
+text-decoration: none;
+font-family:Verdana;
+font-weigth:bold;
+font-size:11pt;
+color:Red;
+background-color:yellow;
+}
+
+a.MsgSucesso {
+text-decoration: none;
+font-family:Verdana;
+font-weigth:bold;
+font-size:11pt;
+color:White;
+background-color:#00FF00;
+}
+
+a.MsgObs {
+text-decoration: none;
+font-family:Verdana;
+font-weigth:bold;
+font-size:11pt;
+color:blue;
+background-color:yellow;
+}
+
+fieldset legend {
+background: #b3f97f;
+padding: 4px;
+font-weight: bold;
+}
+
+</STYLE>
