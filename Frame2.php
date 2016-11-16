@@ -17,9 +17,9 @@
         echo '<a class="Submenu" target=dados href="AgendaAbre.php">Abre Agenda</a>';
         die();
     } elseif ($_REQUEST[Origem] == 'Contatos') {
-        echo '<a class="Submenu" target=dados href="ContatoPaciente.php">Pacientes<br></a>';
-        echo '<a class="Submenu" target=dados href="ContatoProfissional.php">Profissionais<br></a>';
-        echo '<a class="Submenu" target=dados href="ContatoOutros.php">Outros<br></a>';
+        echo '<a class="Submenu" target=dados href="Contato.php?Tipo=Paciente">Pacientes<br></a>';
+        echo '<a class="Submenu" target=dados href="Contato.php?Tipo=Profissional">Profissionais<br></a>';
+        echo '<a class="Submenu" target=dados href="ContatoOutros.php?Tipo=Outros">Outros<br></a>';
         die();
     } elseif ($_REQUEST[Origem] == 'Tabelas') {
         echo '<a class="Submenu" target=dados href="UF.php">Unidades da Federacão<br></a>';
@@ -38,8 +38,8 @@
         echo '<a class="Submenu" target=dados href="TipoSituacaoConsulta.php">Situação da Consulta<br></a>';
         echo '<a class="Submenu" target=dados href="Valor.php">Valores<br></a>';
         echo '<br>';
-        echo '<a class="Submenu" target=dados href="Sala.php">Sala de Atendimento<br></a>';
-        echo '<a class="Submenu" target=dados href="HorarioTrabalho.php">Horário de Trabalho Profissional<BR></a>';
+        echo '<a class="Submenu" target=dados href="Sala.php">Salas de Atendimento<br></a>';
+        echo '<a class="Submenu" target=dados href="HorarioTrabalho.php">Horário Trabalho Prof<BR></a>';
         die();
     } elseif ($_REQUEST[Origem] == 'Administracao') {
         echo 'Em construcao';

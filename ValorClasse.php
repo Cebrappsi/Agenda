@@ -1,21 +1,22 @@
 <?php
-class Especialidade {
+class Valor {
   
 	public $Regs;
+	public $SQ_Valor;
 	public $SQ_Especialidade;
 	public $SQ_Plano;
 	public $SQ_Convenio;
-	public $NM_Especialidade;
-	public $NR_Consultas_Semana;
+	public $VL_Consulta;
 	public $DT_Ativacao;
 	public $DT_Desativacao;
 
 	public function GetReg($MsgErro){
 		 
-		//echo  "<br>Recuperando Especialidade ";
+		//echo  "<br>Recuperando Valor ";
 	
-		//echo 'Sq_Especialidade:' . $this->SQ_Especialidade;
-		$query = 'Select * FROM Especialidade WHERE SQ_Especialidade = ' . $this->SQ_Especialidade;
+		//echo 'Sq_Valor:' . $this->SQ_Valor;
+		$query = 'Select * FROM Valor WHERE SQ_Valor = ' . $this->SQ_Valor;
+		                             
 		//echo 'Query: ' . $query;
 		$this->Regs = mysql_query($query);
 		if (!$this->Regs){
@@ -25,7 +26,7 @@ class Especialidade {
 	
 		//echo 'Achei: ' . mysql_result($this->Regs,0,1);
 		if (mysql_num_rows($this->Regs) == 0){
-			$this->MsgErro = 'Sequencial do Registro não encontrado';
+			$this->MsgErro = 'Registro de valor não encontrado';
 			return FALSE;
 		}
 	
@@ -33,13 +34,18 @@ class Especialidade {
 	}
 		
 	private function Valida_Dados($MsgErro){ 
-	  //  echo  '<br/>Validando dados Especialidade: ' . 'Nome: ' . $this->NM_Especialidade .
+	  //  echo  '<br/>Validando dados Valor: ' . 'Nome: ' . $this->Valor .
 	  //            'Ativ:' . $this->DT_Ativacao .  'Desat:' . $this->DT_Desativacao;  
-		if ($this->NM_Especialidade == null){
-			$this->MsgErro = 'Nome Especialidade inválido';
+		if ($this->VL_Consulta == null){
+			$this->MsgErro = 'Valor da Consulta inválido';
 			return FALSE;
 		}
 
+		if ($this->SQ_Especialidade < 1){
+			$this->MsgErro = 'Sequencial da Especialidade do Valor';
+			return FALSE;
+		}
+		
 		if ($this->SQ_Plano < 1){
 			$this->MsgErro = 'Sequencial do Plano inválido';
 			return FALSE;
@@ -50,18 +56,18 @@ class Especialidade {
 			return FALSE;
 		}
 		
-		if ($this->NR_Consultas_Semana < 0){
-			$this->MsgErro = 'Número de consultas semanais inválido';
+		if ($this->VL_Consulta < 0){
+			$this->MsgErro = 'Valor da consulta inválido';
 			return FALSE;
 		}
 		if ($this->DT_Ativacao == '' || !checkdate(date('m',$this->DT_Ativacao), date('d',$this->DT_Ativacao), date('Y',$this->DT_Ativacao))){
-		   $this->MsgErro = 'Data de Ativação do Especialidade inválida';
+		   $this->MsgErro = 'Data de Ativação do Valor inválida';
 		   return FALSE;
 		}
 		
 		if ($this->DT_Desativacao <> '')
 			if (!checkdate(date('m',$this->DT_Desativacao), date('d',$this->DT_Desativacao), date('Y',$this->DT_Desativacao))){
-				$this->MsgErro = 'Data de Desativação do Especialidade inválida';
+				$this->MsgErro = 'Data de Desativação do Valor inválida';
 				return FALSE;
 			}
 			elseif ($this->DT_Desativacao <= $this->DT_Ativacao){
@@ -77,36 +83,38 @@ class Especialidade {
 	* Testar se deu erro de banco em MsgErro quando receber Falso
 	*/
 	private function Valida_Cruzada($MsgErro){
-	
-		//echo  "<br/>/Validando Consistencia contra a tabela pai(Plano)";
-		$query = 'Select * FROM Plano WHERE SQ_Plano = ' . $this->SQ_Plano;
-		$resultPlano = mysql_query($query);
-		if (!$resultPlano){
+		//Validando Consistencia contra a tabela pai(Especialidade)
+		//echo  "<br/>/Validando Consistencia contra a tabela pai(Especialiade)";
+		$query = 'Select * FROM Especialidade
+		WHERE SQ_Especialidade = ' . $this->SQ_Especialidade;
+		$resultEspecialidade = mysql_query($query);
+		if (!$resultEspecialidade){
 			$this->MsgErro = 'Erro bd: ' . mysql_error() . '<br>Query: ' . $query;
 			return FALSE;
 		}
 		//echo 'Achei: ' .mysql_result($resultConvenio,0,0);
-		if (mysql_num_rows($resultPlano) == 0){
-			$this->MsgErro = 'Plano não localizado';
+		if (mysql_num_rows($resultEspecialidade) == 0){
+			$this->MsgErro = 'Especialidade não localizada';
 			return FALSE;
 		}
-		
-		$dadosPlano = mysql_fetch_array($resultPlano);
-		if ($dadosPlano[DT_Desativacao] > 0){
-			$this->MsgErro = 'Plano desativado';
+	
+		$dadosEspecialidade = mysql_fetch_array($resultEspecialidade);
+		if ($dadosEspecialidade[DT_Desativacao] > 0){
+			$this->MsgErro = 'Especialidade desativada';
 			return FALSE;
 		}
-		//echo $dadosConvenio[SQ_Convenio] . '.' . $dadosConvenio[NM_Convenio] . '.' . $dadosConvenio[DT_Ativacao] . '.' . $dadosConvenio[DT_Desativacao];
-		//echo '<br>';
-		//echo $this->SQ_Convenio . '.' . $this->NM_Especialidade . '.' . $this->DT_Ativacao . '.' . $this->DT_Desativacao;
-		if ($this->DT_Ativacao < $dadosPlano[DT_Ativacao]){
-			$this->MsgErro = 'Data ativacao da Especialidade não pode ser menor que ativaçao do Plano';
+		echo $dadosEspecialidade[SQ_Convenio] . '.' . $dadosEspecialidade[NM_Convenio] . '.' . $dadosEspecialidade[DT_Ativacao] . '.' . $dadosEspecialidade[DT_Desativacao];
+		echo '<br>';
+		echo $this->SQ_Convenio . '.' . $this->NM_Especialidade . '.' . $this->DT_Ativacao . '.' . $this->DT_Desativacao;
+		if ($this->DT_Ativacao < $dadosEspecialidade[DT_Ativacao]){
+			$this->MsgErro = 'Data ativacao do Valor não pode ser menor que ativaçao da Especialidade';
 			return FALSE;
 		}
-		if ($dadosPlano[DT_Desativacao] <> '0000-00-00' && $this->DT_Desativacao > $dadosPlano[DT_Desativacao]){
-			$this->MsgErro = 'Data Desativacao da Especialidade não pode ser maior que desativaçao do Plano';
+		if ($dadosEspecialidade[DT_Desativacao] <> '0000-00-00' && $this->DT_Desativacao > $dadosEspecialidade[DT_Desativacao]){
+			$this->MsgErro = 'Data Desativacao do Valor não pode ser maior que desativaçao da Especialidade';
 			return FALSE;
 		}
+
 		return TRUE;
 	}
 	
@@ -117,15 +125,19 @@ class Especialidade {
 	private function Existe_Registro($MsgErro){
 		//Valida se registro já existe
 		//echo  "<br/>/Validando Consistencia do Registro";
-		$queryEspecialidade = 'Select SQ_Especialidade, SQ_Plano, SQ_Convenio FROM Especialidade 
-		          WHERE SQ_Convenio = ' . $this->SQ_Convenio . ' and SQ_Plano = ' . $this->SQ_Plano . ' and NM_Especialidade = "' . $this->NM_Especialidade . '"';
-		$resultEspecialidade = mysql_query($queryEspecialidade);
-		if (!$resultEspecialidade){
+		$queryValor = 'Select SQ_Especialidade, SQ_Plano, SQ_Convenio, DT_Ativacao ' .
+		              'FROM Valor ' . 
+   		              'WHERE SQ_Convenio = ' . $this->SQ_Convenio . 
+		               ' and SQ_Plano = ' . $this->SQ_Plano . 
+		               ' and SQ_Especialidade = ' . $this->SQ_Especialidade .
+		               ' and DT_Ativacao >= "' . $this->DT_Ativacao . '"';
+		$resultValor = mysql_query($queryValor);
+		if (!$resultValor){
 			$this->MsgErro = 'Erro bd: ' . mysql_error() . '<br>Query: ' . $queryEspecialidade;
 			return FALSE;
 		}
 		//echo 'Achei: ' .mysql_result($resultEspecialidade,0,0);
-		if (mysql_num_rows($resultEspecialidade) == 0){
+		if (mysql_num_rows($resultValor) == 0){
 			$this->MsgErro = null;
 			return FALSE;
 		}
@@ -141,7 +153,7 @@ class Especialidade {
 		
 		//echo '<br>Validando Consistencia Tabela Local';
     	if ($this->Existe_Registro($MsgErro)){
-			$this->MsgErro = 'Especialidade já existe';
+			$this->MsgErro = 'Já existe Valor cadastrado para a data';
 			return FALSE;
 		}
 		elseif ($this->MsgErro <> null)
@@ -155,11 +167,11 @@ class Especialidade {
 				
 		//echo '<br>Inserindo Registro';
 		
-		$query = 'INSERT INTO Especialidade (SQ_Convenio,SQ_Plano,NM_Especialidade,NR_Consultas_Semana,DT_Ativacao,DT_Desativacao)
+		$query = 'INSERT INTO Valor (SQ_Convenio,SQ_Plano,SQ_Especialidade,VL_Consulta,DT_Ativacao,DT_Desativacao)
 								values ("' . $this->SQ_Convenio . '" , "'
 										   . $this->SQ_Plano . '" , "'	
-								           . $this->NM_Especialidade . '" , "'
-								           . $this->NR_Consultas_Semana . '" , "' 
+								           . $this->SQ_Especialidade . '" , "'
+								           . $this->VL_Consulta . '" , "' 
 								           . $this->DT_Ativacao . '" , "'  
 								           . $this->DT_Desativacao . '")';
 		//echo $query;
@@ -172,12 +184,13 @@ class Especialidade {
 
 		return TRUE;
 	}
-
+	
 	public function Delete($MsgErro){
 		   
-		//echo  "<br>Excluindo Especialidade>";
+		//echo  "<br>Excluindo Valor>";
 						
-		$query = 'DELETE FROM Especialidade WHERE SQ_Especialidade = ' . $this->SQ_Especialidade;
+		$query = 'DELETE FROM Valor '. 
+		         'WHERE SQ_Valor = ' . $this->SQ_Valor;
 		//echo $query;
 	
 		$result = mysql_query($query);
@@ -195,44 +208,39 @@ class Especialidade {
 	
 	public function Edit($MsgErro){
 	   
-		//echo  "<br>Alterando Especialidade ";
+		//echo  "<br>Alterando Valor ";
 				
 		//echo '<br>Validando Dados';
+		//print_r($this);
 		if (!$this->Valida_Dados($MsgErro))
 	        return FALSE;
-			
-		if (!(is_numeric($this->SQ_Especialidade) ||(int)$this->SQ_Especialidade < 1)){
-			$this->MsgErro = 'Sequencial Especialidade inválido';
-			return FALSE;
-		}
 		
 		//echo '<br>Validando Consistencia Tabela Local';
-		if ($this->Existe_Registro($MsgErro)){
-			$this->MsgErro = 'Especialidade já existe';
-			return FALSE;
-		}
-		elseif ($this->MsgErro <> null)
-			return FALSE;
-		
+		if (!$this->Existe_Registro($MsgErro))
+			if ($this->MsgErro <> null)
+     		  return FALSE;
+					
 		//echo '<br>Validação cruzada';
 		if (!$this->Valida_Cruzada($MsgErro))
 			return false;
 		elseif ($this->MsgErro <> null)
 			return FALSE;
+		//die ('atuaizando');
 		
-		$query = 'UPDATE Especialidade set SQ_Convenio = ' . $this->SQ_Convenio . ',' .
-								   'SQ_Plano = "'  . $this->SQ_Plano            . '",' .
-								   'NM_Especialidade = "'  . $this->NM_Especialidade    . '",' .
-								   'NR_Consultas_Semana = "'  . $this->NR_Consultas_Semana   . '",' .
-								   'DT_Ativacao = "' . $this->DT_Ativacao . '",' .
+		$query = 'UPDATE valor set  SQ_Convenio = ' . $this->SQ_Convenio . ' , ' .
+								   'SQ_Plano = '  . $this->SQ_Plano            . ' , ' .
+								   'SQ_Especialidade = '  . $this->SQ_Especialidade    . ' , ' .
+								   'VL_Consulta = "'  . $this->VL_Consulta   . '" , ' .
+								   'DT_Ativacao = "' . $this->DT_Ativacao . '" , ' .
 								   'DT_Desativacao = "' . $this->DT_Desativacao . '"' .
-				'where SQ_Especialidade =' . $this->SQ_Especialidade ;
+				'where SQ_Valor = ' . $this->SQ_Valor; 
 		
 		$result = mysql_query($query);
 	//	echo $query . mysql_affected_rows() . mysql_error() . gettype($result) . '<br>Query: ' . $query;
 		
 		if (!$result || mysql_affected_rows() == 0){
 			$this->MsgErro = 'Registro não alterado: ' . mysql_error() . '<br>Query: ' . $query;
+			echo $query . mysql_affected_rows() . mysql_error() . gettype($result) . '<br>Query: ' . $query;
 			return FALSE;
 		}
 		return TRUE;
