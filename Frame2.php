@@ -17,9 +17,13 @@
         echo '<a class="Submenu" target=dados href="AgendaAbre.php">Abre Agenda</a>';
         die();
     } elseif ($_REQUEST[Origem] == 'Contatos') {
-        echo '<a class="Submenu" target=dados href="Contato.php?Tipo=Paciente">Pacientes<br></a>';
-        echo '<a class="Submenu" target=dados href="Contato.php?Tipo=Profissional">Profissionais<br></a>';
-        echo '<a class="Submenu" target=dados href="ContatoOutros.php?Tipo=Outros">Outros<br></a>';
+    	echo '<a class="Submenu" target=dados href="Contato.php?Tipo=Todos">Todos<br></a>';
+        echo '<a class="Submenu" target=dados href="Contato.php?Tipo=Pacientes">Pacientes<br></a>';
+        echo '<a class="Submenu" target=dados href="Contato.php?Tipo=Profissionais">Profissionais<br></a>';
+        echo '<a class="Submenu" target=dados href="Contato.php?Tipo=Convenios">Convênios<br></a>';
+        echo '<a class="Submenu" target=dados href="Contato.php?Tipo=Serviços">Serviços<br></a>';
+        echo '<a class="Submenu" target=dados href="Contato.php?Tipo=Outros">Outros<br></a>';
+        echo '<a class="Submenu" target=dados href="Contato.php?Tipo=Pesquisa">PesquisaContatos<br></a>';
         die();
     } elseif ($_REQUEST[Origem] == 'Tabelas') {
         echo '<a class="Submenu" target=dados href="UF.php">Unidades da Federacão<br></a>';

@@ -4,18 +4,24 @@ class Contato {
 	public $Regs;
 	public $SQ_Contato;
 	public $NM_Contato;
-	public $TP_Contato;
+	public $TP_Relacao;
 	public $DT_Nascimento;
 	public $Identificacao;
 	public $Observacoes;
     
 	private function Valida_Dados($MsgErro){ 
-	    //echo  "<br/>Validando dados Contato: " . $this->NM_Contato . 'Nome: ' . $this->TP_Contato;
+	    //echo  "<br/>Validando dados Contato: " . $this->NM_Contato . 'Nome: ' . $this->TP_Relacao;
 	   
 	    if ($this->NM_Contato == null){
 		   $this->MsgErro = 'Nome Contato inválido';
 		   return FALSE;
 		}
+		
+		if ($this->TP_Relacao == null){
+			$this->MsgErro = 'Informe pelo menos um dos tipos do contato';
+			return FALSE;
+		}
+		
 		
 		if ($this->DT_Nascimento <> '')
 			if (!checkdate(date('m',$this->DT_Nascimento), date('d',$this->DT_Nascimento), date('Y',$this->DT_Nascimento))){
@@ -38,7 +44,7 @@ class Contato {
 		//Valida se registro já existe
 		//echo  "<br>Validando Consistencia do Registro";
 		
-		$query = 'Select NM_Contato FROM Contato WHERE NM_Contato = ' . $this->NM_Contato;
+		$query = 'Select SQ_Contato FROM Contato WHERE SQ_Contato = ' . $this->SQ_Contato;
 		$result = mysql_query($query);
 		if (!$result){
 			$this->MsgErro = 'Erro bd: ' . mysql_error();
@@ -49,7 +55,7 @@ class Contato {
 			$this->MsgErro = null;
 			return FALSE;
 		}
-		die('true');
+		
 		return TRUE;
 	}
 	
@@ -72,13 +78,11 @@ class Contato {
 		*/		
 		//echo '<br>Inserindo Registro';
 		
-		$query = 'INSERT INTO Contato (NM_Contato,TP_Contato,DT_Nascimento,Identificacao,Observacoes) ' .
+		$query = 'INSERT INTO Contato (NM_Contato,DT_Nascimento,Identificacao,Observacoes) ' .
 								' values ("' . $this->NM_Contato . '" , "'  
-									        . $this->TP_Contato  . '" , "' 
-										    . $this->DT_Nascimento . '" , "' 
+									        . $this->DT_Nascimento . '" , "' 
 										    . $this->Identificacao . '" , "' 
 										    . $this->Observacoes . '")';
-	
 		//die($query);
 		$result = mysql_query($query);
         
@@ -86,7 +90,14 @@ class Contato {
 			$this->MsgErro = 'Não foi possivel incluir o registro: ' . mysql_error();
 			return FALSE;
 		}
-
+		$this->SQ_Contato = mysql_insert_id();
+		
+		if (!$this->SQ_Contato || $this->SQ_Contato == 0){
+			$this->MsgErro = 'Erro na recuperacao do último contato inserido: ' . mysql_error();
+			return FALSE;
+		}
+		
+		//echo $this->SQ_Contato;
 		return TRUE;
 	}
 
@@ -145,28 +156,72 @@ public function GetReg($MsgErro){
 			return FALSE;
 		}
 
-		//echo '<br>Validando Consistencia BD';
-		if ($this->Existe_Registro($MsgErro)){
-			$this->MsgErro = 'Contato já existe';
-			return FALSE;
-		}
-		elseif ($this->MsgErro <> null)
-			return FALSE;
+		//  echo '<br>Validando Consistencia BD';
+		if (!$this->Existe_Registro($MsgErro))
+			if ($this->MsgErro <> null)
+				return FALSE;
 		
-		$query = 'UPDATE Contato set NM_Contato    = "' . $this->NM_Contato . '" , ' .
-									'TP_Contato    = "' . $this->TP_Contato . '",' .
-								    'DT_Nascimento = "' . $this->DT_Nascimento . '", ' .
-									'Identificacao = "' . $this->Identificacao . '",' .
-				            		'Observacoes   = "' . $this->Observacoes . '"'; 
+		$query = 'UPDATE Contato set NM_Contato    = "' . $this->NM_Contato    . '" , ' .
+								    'DT_Nascimento = "' . $this->DT_Nascimento . '" , ' .
+									'Identificacao = "' . $this->Identificacao . '" , ' .
+				            		'Observacoes   = "' . $this->Observacoes   . '" ' .
+				            	'where SQ_Contato = ' . $this->SQ_Contato; 
 		
-		$result = mysql_query($query);
 		//echo $query . mysql_affected_rows() . mysql_error() . gettype($result);
-		
+		$result = mysql_query($query);
+				
 		if (!$result || mysql_affected_rows() == 0){
 			$this->MsgErro = 'Registro não alterado: ' . mysql_error();
 			return FALSE;
 		}
 		return TRUE;
 	}
+
+	public function InsertPapel($Con,$MsgErro){
+		//echo  '<br>Inserindo Papeis co Contato ';
+	
+		//  echo '<br>Contato deve existir BD';
+		
+		if (!$this->Existe_Registro($MsgErro))
+			if ($this->MsgErro <> null)
+			return FALSE;
+		
+		$query = 'INSERT INTO Relacionamento (SQ_Contato,TP_Relacao) ' .
+				' values (' . $this->SQ_Contato . ' , "'
+			             	. $this->TP_Relacao  . '")';
+		//die($query);
+		$result = mysql_query($query);
+	
+		if (!($result && (mysql_affected_rows() > 0))) {
+			$this->MsgErro = 'Não foi possivel incluir o Tipo de Contato(papel): ' . mysql_error();
+			return FALSE;
+		}
+	
+		return TRUE;
+	}
+	
+	public function InsertEndereço($Con,$MsgErro){
+		//echo  '<br>Inserindo Papeis co Contato ';
+	
+		//  echo '<br>Contato deve existir BD';
+		if (!$this->Existe_Registro($MsgErro))
+			if ($this->MsgErro <> null)
+			return FALSE;
+	
+		$query = 'INSERT INTO Relacionamento (SQ_Contato,TP_Relacao) ' .
+				' values (' . $this->SQ_Contato . ' , "'
+				. $this->TP_Relacao  . '")';
+		//die($query);
+		$result = mysql_query($query);
+	
+		if (!($result && (mysql_affected_rows() > 0))) {
+			$this->MsgErro = 'Não foi possivel incluir o Tipo de Contato(papel): ' . mysql_error();
+			return FALSE;
+		}
+	
+		return TRUE;
+	}
+	
+	
 }
 ?>
