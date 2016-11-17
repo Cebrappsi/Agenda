@@ -93,7 +93,7 @@
     	echo '</fieldset>';
     	   
     	echo '<a class="linkVoltar" href="Escala.php">Voltar</a>';
-    	echo '<input class="Envia" type="submit" name="submit" value="Alterar"/>';
+    	echo '<input class="Envia" type="submit" name="submit" value="Alterar">';
     echo '</form>';
     echo '<br>';
     //print_r($_REQUEST); //debug var recebidas

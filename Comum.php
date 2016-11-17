@@ -9,20 +9,21 @@ function Conecta_BD(&$MsgErro)
     }
     //print_r("<br/>" . $this->MsgErro);
     if (!mysql_select_db('db_clinica', $Con)) {
-        $MsgErro = 'Não foi possivel abrir o banco de dados: ' . mysql_error();
+        $MsgErro = 'Não foi possível abrir o banco de dados: ' . mysql_error();
         return false;
     }
-
     return $Con;
 }
 //echo '<meta http-equiv="Content-Type" content="text/html; charset="ISO-8859-1" />';
 //echo '<meta http-equiv="Content-Type" content="text/html; charset="utf-8" />';
 
-function MsgPopup(&$MsgErro)
+function MsgPopup($MsgErro)
 {
-    echo '<script language="Javascript">';
-    echo 'alert(' . $MsgErro . ')';
-    //echo '//history.back();'
+    //echo '<script language="Javascript">';
+    echo '<script type="text/javascript">';
+    echo 'alert(' . '"teste"' . ')';
+    //echo 'location.href="Convenio.php"';
+   // echo '//history.back()';
     echo '</script>';
 }
 

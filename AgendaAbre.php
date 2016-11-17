@@ -13,7 +13,8 @@
 			padding-top:0.2em;
 			text-align:right;
 		}
-        </style>
+		
+    </style>
   </HEAD>
   <BODY>    
     <?php
@@ -40,27 +41,30 @@
     }
 
     //echo mysql_num_rows($consulta);	
-    ?>
-    <form method="post" action="AgendaInsert.php">
-	    <fieldset>
-		    <legend>Inserindo Escala</legend>
-		    <?php
+    
+    print_r($_REQUEST); //debug var recebidas
+    echo '<form method="post" action="AgendaAbreInsert.php?DT_Ini_Agenda="' . DT_Ini_Agenda .
+                                                         '&DT_Fim_Agenda='  . DT_Fim_Agenda .
+                                                         '&Selecionado  ='  . Selecionado . '>';
+	    echo '<fieldset>';
+		    echo '<legend>Abrindo Agenda</legend>';
 		    echo '<label class="labelNormal">Dt Inicio Agenda:</label>';
 		    echo '<input class="Entrada" type="date" name="DT_Ini_Agenda" size="10" value=' .
 		    		$_POST[DT_Ini_Agenda] . '>';
 		    echo '<br>';
+		    echo '<input class="Envia" type="submit" name="submit" value="Criar Agenda" style = "position: absolute; left: 35%;top: 10%">';
 		    echo '<label class="labelNormal">Dt Fim Agenda:</label>';
 		    echo '<input class="Entrada" type="date" name="DT_Fim_Agenda" size="10" value=' .
 		    		$_POST[DT_Fim_Agenda] . '>';
 		    echo '<br><br>';
-		    echo 'Selecione os profissionais para abrir agenda no período definido: 	`	';
+		    echo 'Selecione os profissionais para abrir agenda no período definido:';
 		    echo('<br><br>');
 		    echo '<table class="CabecalhoTabela" border="1">';
 			    echo '<tr>';
 			        echo '<th>Seleção</th>';
 				    echo '<th>Profissional</th>';
-				    echo '<th>Dt Inicio</th>';
-				    echo '<th>Dt Fim</th>';
+				    echo '<th>Data Ini Escala</th>';
+				    echo '<th>Data Fim Escala</th>';
 				    echo '<th>Dia Semana</th>';
 				    echo '<th>Interv Atend</th>';
 				    echo '<th>Hora Ini-1Turno</th>';
@@ -72,7 +76,8 @@
 			    {
 			   	    echo "<tr>";
 			   	        echo '<td size="5" align="center">';
-				   	    echo '<input type="checkbox" class="Entrada" checked name="Selecionado[' . $RegEscala[SQ_Contato] . ']">';
+				   	    echo '<input type="checkbox" class="Entrada" checked name="Selecionado[' 
+				   	                     . ($RegEscala[SQ_Contato] * 1000000 + $RegEscala[Dia_Semana]) . ']">';
 				   	    echo '</td>';
 				    	echo '<td size="50">'      . $RegEscala[NM_Contato] . '</td>';
 				    	echo '<td align="center">' . $RegEscala[DT_Ini_Escala] . '</td>';
@@ -87,7 +92,10 @@
 			            	 
 			    }
 	    echo '</table>';
-	    
+	  
+	    if(empty($_POST['submit']))
+	    	die('vazio');//// S� apresenta os dados
+	    	  
     mysql_close($con);
   ?>
   		</fieldset>

@@ -6,15 +6,15 @@ class Operadora {
 	public $CD_Operadora;
 	public $NM_Operadora;
     
-	private function Valida_Dados($MsgErro){ 
+	private function Valida_Dados(&$MsgErro){ 
 	    //echo  "<br/>Validando dados Operadora: " . $this->CD_Operadora . 'Nome: ' . $this->NM_Operadora;
 		if (!is_numeric($this->CD_Operadora) || (int)$this->CD_Operadora < 1){
-		   $this->MsgErro = 'Código Operadora inválido';
+		   $MsgErro = 'Código Operadora inválido';
 		   return FALSE;
 		}
 	   
 	    if ($this->NM_Operadora == null){
-		   $this->MsgErro = 'Nome Operadora inválido';
+		   $MsgErro = 'Nome Operadora inválido';
 		   return FALSE;
 		}
 		return TRUE;
@@ -24,24 +24,24 @@ class Operadora {
 	 * Retorna True se existe
 	 * Testar se deu erro de banco em MsgErro quando receber Falso
 	*/
-	private function Existe_Registro($MsgErro){
+	private function Existe_Registro(&$MsgErro){
 		//Valida se registro já existe
 		//echo  "<br/>/Validando Consistencia do Registro";
 		$query = "Select CD_Operadora FROM operadora WHERE CD_Operadora = " . $this->CD_Operadora;
 		$result = mysql_query($query);
 		if (!$result){
-			$this->MsgErro = 'Erro bd: ' . mysql_error();
+			$MsgErro = 'Erro bd: ' . mysql_error();
 			return FALSE;
 		}
 		//echo 'Achei: ' .mysql_result($result,0,0);
 		if (mysql_num_rows($result) == 0){
-			$this->MsgErro = null;
+			$MsgErro = null;
 			return FALSE;
 		}
 		return TRUE;
 	}
 	
-	public function Insert($MsgErro){
+	public function Insert(&$MsgErro){
 		//echo  "<br/>Inserindo Operadora ";
 				
 		//echo '<br>Validando Dados';
@@ -50,10 +50,10 @@ class Operadora {
 		
 		//echo '<br>Validando Consistencia BD';
     	if ($this->Existe_Registro($MsgErro)){
-			$this->MsgErro = 'Operadora já existe';
+			$MsgErro = 'Operadora já existe';
 			return FALSE;
 		}
-		elseif ($this->MsgErro <> null)
+		elseif ($MsgErro <> null)
 			 	return FALSE;
 				
 		//echo '<br>Inserindo Registro';
@@ -64,14 +64,14 @@ class Operadora {
 		$result = mysql_query($query);
         
 		if (!($result && (mysql_affected_rows() > 0))) {
-			$this->MsgErro = 'Não foi possivel incluir o registro: ' . mysql_error();
+			$MsgErro = 'Não foi possivel incluir o registro: ' . mysql_error();
 			return FALSE;
 		}
 
 		return TRUE;
 	}
 
-public function Delete($MsgErro){
+public function Delete(&$MsgErro){
 	   
 	//echo  "<br/>Excluindo Operadora ";
 					
@@ -81,17 +81,17 @@ public function Delete($MsgErro){
 	$result = mysql_query($query);
 	if (!($result && (mysql_affected_rows() > 0)))
 	{
-		$this->MsgErro = 'Não foi possivel excluir o registro: ' . mysql_error();
+		$MsgErro = 'Não foi possivel excluir o registro: ' . mysql_error();
 		return FALSE;
 	}
 //	else
-//		$this->MsgErro = mysql_affected_rows() . ' registro(s) excluido(s) com sucesso';
+//		$MsgErro = mysql_affected_rows() . ' registro(s) excluido(s) com sucesso';
 	
 	return TRUE;
 	  
 	}
 
-public function GetReg($MsgErro){
+public function GetReg(&$MsgErro){
 	   
 	//echo  "<br/>Recuperando Operadora ";
 					
@@ -100,39 +100,39 @@ public function GetReg($MsgErro){
 	//echo 'Query: ' . $query;
 	$this->Regs = mysql_query($query);
 	if (!$this->Regs){
-		$this->MsgErro = 'Erro no Banco de Dados: ' . mysql_error();
+		$MsgErro = 'Erro no Banco de Dados: ' . mysql_error();
 		return FALSE;
 	}
 	
 	//echo 'Achei: ' . mysql_result($this->Regs,0,1);
 	if (mysql_num_rows($this->Regs) == 0){
-		$this->MsgErro = 'Sequencial do Registro não encontrado';
+		$MsgErro = 'Sequencial do Registro não encontrado';
 		return FALSE;
 	}
 	
 	return TRUE;
 	}	
 	
-	public function Edit($MsgErro){
+	public function Edit(&$MsgErro){
 	   
 		//echo  "<br/>Alterando Operadora ";
 				
 		//echo '<br>Validando Dados';
-		if (!$this->Valida_Dados(MsgErro))
+		if (!$this->Valida_Dados($MsgErro))
 	        return FALSE;
 			
 		if (!(is_numeric($this->SQ_Operadora) ||(int)$this->SQ_Operadora < 1)){
-			$this->MsgErro = 'Sequencial Operadora inválido';
+			$MsgErro = 'Sequencial Operadora inválido';
 			return FALSE;
 		}
 
 		//echo '<br>Validando Consistencia BD';
-		if ($this->Existe_Registro($MsgErro)){
-			$this->MsgErro = 'Operadora já existe';
-			return FALSE;
-		}
-		elseif ($this->MsgErro <> null)
-			return FALSE;
+		//if ($this->Existe_Registro($MsgErro)){
+		//	$MsgErro = 'Operadora já existe';
+		//	return FALSE;
+		//}
+		//elseif ($MsgErro <> null)
+		//	return FALSE;
 		
 		$query = "UPDATE operadora set CD_Operadora = $this->CD_Operadora ,NM_Operadora = '"
 			 . $this->NM_Operadora . "' where SQ_Operadora = " . $this->SQ_Operadora ;
@@ -141,7 +141,7 @@ public function GetReg($MsgErro){
 		//echo $query . mysql_affected_rows() . mysql_error() . gettype($result);
 		
 		if (!$result || mysql_affected_rows() == 0){
-			$this->MsgErro = 'Registro não alterado: ' . mysql_error();
+			$MsgErro = 'Registro não alterado: ' . mysql_error();
 			return FALSE;
 		}
 		return TRUE;

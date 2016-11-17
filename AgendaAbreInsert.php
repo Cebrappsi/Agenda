@@ -20,6 +20,7 @@
   <?php 
         //session_start();
         //prepara consulta para montar a lista de Profissionais
+  		print_r($_REQUEST); //debug var recebidas
 	 	require "comum.php";
 	    		
 	    if (!conecta_BD($con,$MsgErro)){

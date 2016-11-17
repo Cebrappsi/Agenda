@@ -17,26 +17,34 @@
   </HEAD>
   <BODY>
     <?php
-    //print_r($_REQUEST); //debug var recebidas
+   // print_r('Var recebidas:' . $_REQUEST); //debug var recebidas
     
     require "comum.php";
     require "ConvenioClasse.php";
-    $ObjConvenio = new Convenio();
+   
     $con = conecta_BD($MsgErro);
     if (!$con) {
 	   echo '<a class="MsgErro">' . 'Erro: ' . MsgErro .'</a>';
 	   die();
 	}
     
-    $ObjConvenio->SQ_Convenio = $_REQUEST[SQ_Convenio];
+	$ObjConvenio = new Convenio(); 
+	$ObjConvenio->SQ_Convenio = $_REQUEST[SQ_Convenio];
     
-    //Acesso o registro para preencher os campos
-    if (!$ObjConvenio->GetReg($MsgErro)) {
-       echo '<a class="MsgErro">' . 'Erro na alteraçao : ' . MsgErro .'</a>';
-	   die();
+	if(empty($_POST['submit'])){
+		//Primeira apresentacao da tela
+		//Acesso o registro para preencher os campos
+		if (!$ObjConvenio->GetReg($MsgErro)) {
+			echo '<a class="MsgErro">' . 'Erro na alteraçao : ' . MsgErro .'</a>';
+			die();
+		}
+		// echo 'achei registro...' .  mysql_result($ObjConvenio->Regs,0,NM_Convenio) . '...' . $ObjConvenio->MsgErro ;
+		// echo 'NM_Convenio: ' . mysql_result($ObjConvenio->Regs,0,NM_Convenio);
+		// echo 'DT_Desat: ' . mysql_result($ObjConvenio->Regs,0,DT_Desativacao);
+		$_REQUEST[NM_Convenio] =  mysql_result($ObjConvenio->Regs,0,NM_Convenio) . '"';
+		$_REQUEST[DT_Ativacao] = implode('/',array_reverse(explode('-',mysql_result($ObjConvenio->Regs,0,DT_Ativacao))));
+		$_REQUEST[DT_Desativacao] = implode('/',array_reverse(explode('-',mysql_result($ObjConvenio->Regs,0,DT_Desativacao))));
 	}
-   // echo 'achei registro...' .  mysql_result($ObjConvenio->Regs,0,SQ_Convenio) . '...' . $ObjConvenio->MsgErro ;
-   // echo 'NM_Convenio: ' . mysql_result($ObjConvenio->Regs,0,NM_Convenio);
     ?>
 	<form method="post" action="ConvenioEdit.php">
     	<fieldset>
@@ -45,44 +53,37 @@
     	   		  <?php echo mysql_result($ObjConvenio->Regs,0,SQ_Convenio) ?> >
     	   <label class="labelNormal">Nome:</label>
     	   <input class="Entrada" type="text" name="NM_Convenio" size="30" value=
-    	   		  <?php echo '"'. mysql_result($ObjConvenio->Regs,0,NM_Convenio) . '"' ?>  ><br><br>
+    	   		  <?php echo '"' . $_REQUEST[NM_Convenio] . '"'?>  ><br><br>
     	   	<label class="labelNormal">Data Ativação:</label>
    	       	<input class="Entrada" type="date" name="DT_Ativacao" size="10" value=
-    	    	  <?php echo mysql_result($ObjConvenio->Regs,0,DT_Ativacao) ?> ><br><br>
+    	    	  <?php echo $_REQUEST[DT_Ativacao] ?> ><br><br>
     	    <label class="labelNormal">Data Desativação:</label>
     	    <input class="Entrada" type="date" name="DT_Desativacao" size="10" value=
-    	    	   <?php echo mysql_result($ObjConvenio->Regs,0,DT_Desativacao) ?> ><br><br>
+                  <?php echo $_REQUEST[DT_Desativacao] ?> ><br><br>
     	</fieldset>
     	<a class="linkVoltar" href="Convenio.php">Voltar</a>
     	<input class="Envia" type="submit" name="submit" value="Alterar">
     </form>
     <br>
     <?php 
-    //print_r($_REQUEST); //debug var recebidas
-    Mysql_free_result($ObjConvenio->Regs);
-
-    if(empty($_POST['submit']))
-        //Primeira apresentacao da tela
-    	die();//// Só apresenta os dados
     
-    //Houve alteração - proceder alteração
-    //echo ('Alterando');
+    if(!empty($_POST['submit'])){
+    	//Houve alteração - proceder alteração
+    	//echo ('Alterando');
     
-    $ObjConvenio->SQ_Convenio = $_REQUEST[SQ_Convenio];
-    $ObjConvenio->NM_Convenio = $_REQUEST[NM_Convenio];
-    $ObjConvenio->DT_Ativacao = $_REQUEST[DT_Ativacao];
-    $ObjConvenio->DT_Desativacao = $_REQUEST[DT_Desativacao];
+    	$ObjConvenio->SQ_Convenio = $_REQUEST[SQ_Convenio];
+    	$ObjConvenio->NM_Convenio = $_REQUEST[NM_Convenio];
+    	$ObjConvenio->DT_Ativacao = $_REQUEST[DT_Ativacao];
+    	$ObjConvenio->DT_Desativacao = $_REQUEST[DT_Desativacao];
     
-    if (!$ObjConvenio->Edit($MsgErro))
-        echo '<a class="MsgErro">' . 'Erro na alteração : ' . $ObjConvenio->MsgErro .'</a>';
-    else {
-       //mysql_query("commit");
-       echo '<a class="MsgSucesso">Alteração com sucesso!</a>';
+    	if (!$ObjConvenio->Edit($MsgErro))
+    		echo '<a class="MsgErro">' . 'Erro na alteração : ' . $ObjConvenio->MsgErro .'</a>';
+    	else
+    		echo '<a class="MsgSucesso">Alteração com sucesso!</a>';
     }
-    //header("Location: Convenio.php
-    
+    //header("Location: Convenio.php");
+    //die();    
     mysql_close($con);
-    //echo 'SQ_Convenio = ' . mysql_result($ObjConvenio->Regs,0,SQ_Convenio);
     ?>
   </BODY>
 </HTML>
