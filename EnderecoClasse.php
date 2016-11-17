@@ -16,12 +16,12 @@ class Endereco {
 	    //echo  "<br/>Validando dados Endereco: " . $this->TP_Endereco;
 	   
 	    if ($this->TP_Endereco == null){
-		   $MsgErro = 'Tipo de endere√ßo inv√°lido';
+		   $MsgErro = 'Tipo de endereÁo inv·lido';
 		   return FALSE;
 		}
 		
 		if ($this->CEP == 0){
-			$MsgErro = 'CEP inv√°lido';
+			$MsgErro = 'CEP inv·lido';
 			return FALSE;
 		}
 		
@@ -30,7 +30,7 @@ class Endereco {
 			return FALSE;
 		}
 		if ($this->Bairro == null){
-			$MsgErro = 'Bairro inv√°lido';
+			$MsgErro = 'Bairro inv·lido';
 			return FALSE;
 		}
 		
@@ -48,12 +48,12 @@ class Endereco {
 	}
 
 	
-	/* Retorna Falso se deu erro no Banco ou n√£o existe
+	/* Retorna Falso se deu erro no Banco ou n„o existe
 	 * Retorna True se existe
 	 * Testar se deu erro de banco em MsgErro quando receber Falso
 	*/
 	private function Existe_Registro(&$MsgErro){
-		//Valida se registro j√° existe
+		//Valida se registro j· existe
 		//echo  "<br>Validando Consistencia do Registro";
 		
 		$query = 'Select SQ_Contato FROM Endereco WHERE SQ_Contato = '   . $this->SQ_Contato .
@@ -83,7 +83,7 @@ class Endereco {
 		/*
 		echo '<br>Validando Consistencia BD';
     	if ($this->Existe_Registro($MsgErro)){
-			$MsgErro = 'Endereco j√° existe';
+			$MsgErro = 'Endereco j· existe';
 			return FALSE;
 		}
 		elseif ($MsgErro <> null)
@@ -105,7 +105,7 @@ class Endereco {
 		$result = mysql_query($query);
         
 		if (!($result && (mysql_affected_rows() > 0))) {
-			$MsgErro = 'N√£o foi possivel incluir o registro: ' . mysql_error();
+			$MsgErro = 'N„o foi possivel incluir o registro: ' . mysql_error();
 			return FALSE;
 		}
 		
@@ -123,7 +123,7 @@ public function Delete(&$MsgErro){
 	$result = mysql_query($query);
 	if (!($result && (mysql_affected_rows() > 0)))
 	{
-		$MsgErro = 'N√£o foi possivel excluir o registro: ' . mysql_error();
+		$MsgErro = 'N„o foi possivel excluir o registro: ' . mysql_error();
 		return FALSE;
 	}
 	
@@ -147,7 +147,7 @@ public function GetReg(&$MsgErro){
 	
 	//echo 'Achei: ' . mysql_result($this->Regs,0,1);
 	if (mysql_num_rows($this->Regs) == 0){
-		$MsgErro = 'Endere√ßo n√£o encontrado';
+		$MsgErro = 'EndereÁo n„o encontrado';
 		return FALSE;
 	}
 	
@@ -159,11 +159,11 @@ public function GetReg(&$MsgErro){
 		//echo  "<br/>Alterando Endereco ";
 				
 		//echo '<br>Validando Dados';
-		if (!$this->Valida_Dados(MsgErro))
+		if (!$this->Valida_Dados($MsgErro))
 	        return FALSE;
 			
 		if (!(is_numeric($this->SQ_Contato) ||(int)$this->SQ_Contato < 1)){
-			$MsgErro = 'Sequencial Endereco inv√°lido';
+			$MsgErro = 'Sequencial Endereco inv·lido';
 			return FALSE;
 		}
 
@@ -186,7 +186,7 @@ public function GetReg(&$MsgErro){
 		$result = mysql_query($query);
 				
 		if (!$result || mysql_affected_rows() == 0){
-			$MsgErro = 'Registro n√£o alterado: ' . mysql_error();
+			$MsgErro = 'Registro n„o alterado: ' . mysql_error();
 			return FALSE;
 		}
 		return TRUE;
