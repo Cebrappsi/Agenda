@@ -29,7 +29,7 @@
         echo '<a class="Submenu" target=dados href="UF.php">Unidades da Federacão<br></a>';
         echo '<a class="Submenu" target=dados href="Operadora.php">Operadoras de Telefonia<br></a>';
         echo '<br>';
-        echo '<a class="Submenu" target=dados href="TipoContato.php">Tipo de Contato<br></a>';
+        echo '<a class="Submenu" target=dados href="TipoRelacao.php">Tipo de Relação<br></a>';
         echo '<a class="Submenu" target=dados href="TipoEmail.php">Tipo de Email<BR></a>';
         echo '<a class="Submenu" target=dados href="TipoEndereco.php">Tipo de endereço<br></a>';
         echo '<a class="Submenu" target=dados href="TipoMobilidade.php">Tipo Mobilidade Telefone<br></a>';
@@ -43,7 +43,7 @@
         echo '<a class="Submenu" target=dados href="Valor.php">Valores<br></a>';
         echo '<br>';
         echo '<a class="Submenu" target=dados href="Sala.php">Salas de Atendimento<br></a>';
-        echo '<a class="Submenu" target=dados href="HorarioTrabalho.php">Horário Trabalho Prof<BR></a>';
+        echo '<a class="Submenu" target=dados href="Escala.php">Escala de Trabalho<BR></a>';
         die();
     } elseif ($_REQUEST[Origem] == 'Administracao') {
         echo 'Em construcao';

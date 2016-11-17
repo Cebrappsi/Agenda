@@ -4,12 +4,18 @@ class Especialidade_Clinica {
 	public $Regs;
 	public $SQ_Especialidade_Clinica;
 	public $NM_Especialidade_Clinica;
+	public $Tempo_Atendimento;
 
 	private function Valida_Dados($MsgErro){ 
 	  //  echo  '<br/>Validando dados Especialidade_Clinica: ' . 'Nome: ' . $this->NM_Especialidade_Clinica .
 	  //             
 		if ($this->NM_Especialidade_Clinica == null){
 			$this->MsgErro = 'Nome Especialidade Clinica inválido';
+			return FALSE;
+		}
+
+		if (!(is_numeric($this->Tempo_Atendimento) ||(int)$this->Tempo_Atendimento < 10)){
+			$this->MsgErro = 'Tempo de atendimento inválido';
 			return FALSE;
 		}
 						
@@ -54,8 +60,10 @@ class Especialidade_Clinica {
 				
 		//echo '<br>Inserindo Registro';
 		
-		$query = 'INSERT INTO Especialidade_Clinica (NM_Especialidade_Clinica)
-								values ("' . $this->NM_Especialidade_Clinica . '")';
+		$query = 'INSERT INTO Especialidade_Clinica (NM_Especialidade_Clinica,Tempo_Atendimento)
+								values ("' . $this->NM_Especialidade_Clinica . 
+								      '",' . $this->Tempo_Atendimento .
+		                               ')';
 		//echo $query;
 		$result = mysql_query($query);
         
@@ -117,6 +125,12 @@ class Especialidade_Clinica {
 		if (!$this->Valida_Dados($MsgErro))
 	        return FALSE;
 
+		if (!(is_numeric($this->SQ_Especialidade_Clinica) ||(int)$this->SQ_Especialidade_Clinica < 1)){
+			$this->MsgErro = 'Sequencial Especialidade_Clinica inválido';
+			return FALSE;
+		}
+		
+		/*
 		//echo '<br>Validando Consistencia BD';
 		if ($this->Existe_Registro($MsgErro)){
 			$this->MsgErro = 'Especialidade Clinica já existe';
@@ -124,14 +138,12 @@ class Especialidade_Clinica {
 		}
 		elseif ($this->MsgErro <> null)
 			return FALSE;
+		*/
 		
-		if (!(is_numeric($this->SQ_Especialidade_Clinica) ||(int)$this->SQ_Especialidade_Clinica < 1)){
-			$this->MsgErro = 'Sequencial Especialidade_Clinica inválido';
-			return FALSE;
-		}
-		
-		$query = 'UPDATE Especialidade_Clinica set NM_Especialidade_Clinica = "' . $this->NM_Especialidade_Clinica . 
-				'" where SQ_Especialidade_Clinica = ' . $this->SQ_Especialidade_Clinica ;
+		$query = 'UPDATE Especialidade_Clinica 
+		          set NM_Especialidade_Clinica = "' . $this->NM_Especialidade_Clinica . 
+			    	 '", Tempo_Atendimento       = '  . $this->Tempo_Atendimento .
+				     ' where SQ_Especialidade_Clinica = ' . $this->SQ_Especialidade_Clinica ;
 		
 		$result = mysql_query($query);
 	//	echo $query . mysql_affected_rows() . mysql_error() . gettype($result) . '<br>Query: ' . $query;

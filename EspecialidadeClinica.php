@@ -12,6 +12,7 @@
     <table class="CabecalhoTabela" border="1">
     <tr>
     	<th>Especialidade da Clinica</th>
+    	<th>Tempo Atendimento</th>
     	<th>Alterar?</th>
     	<th>Excluir?</th>
     </tr>
@@ -37,6 +38,7 @@
     {
     	echo "<tr>";
     		echo '<td>' . $dados[NM_Especialidade_Clinica] . '</td>';
+    		echo '<td>' . $dados[Tempo_Atendimento] . '</td>';
     		echo '<td><a href=EspecialidadeClinicaEdit.php?SQ_Especialidade_Clinica=' . $dados[SQ_Especialidade_Clinica] . '>Alterar</a></td>';
     		echo '<td><a href=EspecialidadeClinicaDelete.php?SQ_Especialidade_Clinica=' . $dados[SQ_Especialidade_Clinica] .
     		                                     '&Confirma=' . '>Excluir</a></td>';

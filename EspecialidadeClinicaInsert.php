@@ -22,6 +22,9 @@
     		<label class="labelNormal">Nome Especialidade: </label>
     		<input class="Entrada" type="text" name="NM_Especialidade_Clinica" size="30" value= 
     		       <?php echo '"' . $_REQUEST[NM_Especialidade_Clinica] . '"'?>  ><br><br>
+    		<label class="labelNormal">Tempo Atendimento: </label>
+    		<input class="Entrada" type="text" name="Tempo_Atendimento" size="3" value= 
+    		       <?php echo '"' . $_REQUEST[Tempo_Atendimento] . '"'?>  ><br><br>
     	</fieldset>
     	<a class="linkVoltar" href="EspecialidadeClinica.php">Voltar</a>
     	<input class="Envia" type="submit" value="Inserir">
@@ -43,6 +46,7 @@
     //ok - vamos incluir	
     $ObjEspecialidade_Clinica = new Especialidade_Clinica();
     $ObjEspecialidade_Clinica->NM_Especialidade_Clinica = $_REQUEST[NM_Especialidade_Clinica];
+    $ObjEspecialidade_Clinica->Tempo_Atendimento = $_REQUEST[Tempo_Atendimento];
     if (!$ObjEspecialidade_Clinica->insert($Con,$MsgErro))
         echo '<a class="MsgErro">Erro na inserção: ' . $ObjEspecialidade_Clinica->MsgErro .'<br></a>';
     else 

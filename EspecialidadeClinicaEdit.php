@@ -29,6 +29,7 @@
 	}
     
     $ObjEspecialidade_Clinica->SQ_Especialidade_Clinica = $_REQUEST[SQ_Especialidade_Clinica];
+    $ObjEspecialidade_Clinica->Tempo_Atendimento = $_REQUEST[Tempo_Atendimento];
     
     //Acesso o registro para preencher os campos
     if (!$ObjEspecialidade_Clinica->GetReg($MsgErro)) {
@@ -46,6 +47,9 @@
     	   <label class="labelNormal">Nome Especialidade:</label>
     	   <input class="Entrada" type="text" name="NM_Especialidade_Clinica" size="30" value=
     	   		  <?php echo '"'. mysql_result($ObjEspecialidade_Clinica->Regs,0,NM_Especialidade_Clinica) . '"' ?>  ><br><br>
+           <label class="labelNormal">Tempo Atendimetno:</label>
+    	   <input class="Entrada" type="text" name="Tempo_Atendimento" size="3" value=
+    	   		  <?php echo '"'. mysql_result($ObjEspecialidade_Clinica->Regs,0,Tempo_Atendimento) . '"' ?>  ><br><br>    	   		  
     	</fieldset>
     	<a class="linkVoltar" href="EspecialidadeClinica.php">Voltar</a>
     	<input class="Envia" type="submit" name="submit" value="Alterar">
@@ -64,7 +68,7 @@
     
     $ObjEspecialidade_Clinica->SQ_Especialidade_Clinica = $_REQUEST[SQ_Especialidade_Clinica];
     $ObjEspecialidade_Clinica->NM_Especialidade_Clinica = $_REQUEST[NM_Especialidade_Clinica];
-        
+    $ObjEspecialidade_Clinica->Tempo_Atendimento        = $_REQUEST[Tempo_Atendimento];
     if (!$ObjEspecialidade_Clinica->Edit($MsgErro))
         echo '<a class="MsgErro">' . 'Erro na alteração : ' . $ObjEspecialidade_Clinica->MsgErro .'</a>';
     else {

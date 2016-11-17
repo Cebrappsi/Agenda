@@ -25,4 +25,12 @@ function MsgPopup(&$MsgErro)
     //echo '//history.back();'
     echo '</script>';
 }
+
+function isTime($time,$is24Hours=true,$seconds=false) {
+	$pattern = "/^".($is24Hours ? "([1-2][0-3]|[01]?[1-9])" : "(1[0-2]|0?[1-9])").":([0-5]?[0-9])".($seconds ? ":([0-5]?[0-9])" : "")."$/";
+	if (preg_match($pattern, $time)) {
+		return true;
+	}
+	return false;
+}
 ?>

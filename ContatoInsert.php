@@ -189,8 +189,8 @@
 	   die();
 	}
     //ok - vamos incluir	
-    print_r($_REQUEST);
-    print_r('<BR>SESSAO RECUPERADA' . $_SESSION[SQ_Contato]);
+    //print_r($_REQUEST);
+    //print_r('<BR>SESSAO RECUPERADA' . $_SESSION[SQ_Contato]);
     //die();
     //Inserir Contato
     if ($_REQUEST[Contato] == 'Inserir Contato'){  
@@ -205,7 +205,7 @@
 	    else {
 	       echo '<a class="MsgSucesso">Contato Incluido com sucesso!</a>';
 	       $_SESSION[SQ_Contato] = $ObjContato->SQ_Contato;
-	       print_r('<BR>SESSAO GUARDADA' . $_SESSION[SQ_Contato]);
+	       //print_r('<BR>SESSAO GUARDADA' . $_SESSION[SQ_Contato]);
 	    }
 	    
 	    //inserindo Relacoes do contato
