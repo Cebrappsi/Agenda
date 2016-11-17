@@ -28,8 +28,8 @@
 	   die();
 	}
 	
-	if (!$SetTipos = mysql_query('SELECT * from Tipo_Relacionamento order by NM_Tipo_Relacao')){
-		echo '<a class="MsgErro">Não foi possível efetuar consulta Tipo Contato: ' . mysql_error() .'<br></a>';
+	if (!$SetTiposRel = mysql_query('SELECT * from Tipo_Relacionamento order by NM_Tipo_Relacao')){
+		echo '<a class="MsgErro">Não foi possível efetuar consulta Relacionamento: ' . mysql_error() .'<br></a>';
 		die();
 	}
         
@@ -41,14 +41,14 @@
 	}
 	//echo mysql_result($ObjContato->Regs,0,SQ_Contato);
 	//Conjunto das Relacoes do contato com a clinica
-	if (!$SetPapel = mysql_query('SELECT * ' . 
+	if (!$SetRelacoes = mysql_query('SELECT * ' . 
 			' from Relacionamento ' .
 			' where SQ_Contato = ' . mysql_result($ObjContato->Regs,0,SQ_Contato) )){
-			echo '<a class="MsgErro">Não foi possível efetuar consulta Tipo Contato: ' .
+			echo '<a class="MsgErro">Não foi possível efetuar consulta Tipo Relacionamento: ' .
 					mysql_error() .'<br></a>';
 			die();
 	}
-    //echo 'achei registro...' .  mysql_num_rows($SetPapel);
+    //echo 'achei registro...' .  mysql_num_rows($SetRelacoes);
     //echo 'SQ_Contato1: ' . mysql_result($ObjContato->Regs,0,NM_Contato);
     echo '<form method="post" action="ContatoEdit.php">';
     	echo '<fieldset>';
@@ -56,19 +56,19 @@
     	   echo '<input type="hidden" name="SQ_Contato" value=' . mysql_result($ObjContato->Regs,0,SQ_Contato) . ' size="10" >';
     	   echo '<label class="labelNormal">Nome:</label>';
     	   echo '<input class="Entrada" type="text" name="NM_Contato" size="50" autofocus value = "' . mysql_result($ObjContato->Regs,0,NM_Contato) . '">';
-    	   echo '<label> Tipo Contato: </label>';
+    	   echo '<label> Relacionamento: </label>';
     	   //echo mysql_result($ObjContato->Regs,0,TP_Relacao);
-    	   while ($RegTipos = mysql_fetch_array($SetTipos)){ //Apresenta todos os tipos
-    	   	  //print_r ($RegTipos[TP_Relacao] . $RegTipos[NM_Tipo_Relacao] );
-    	   	  echo '<input type="checkbox" class="Entrada" name="TP_Relacao[' . $RegTipos[TP_Relacao] . ']"';
-    	   	  mysql_data_seek($SetPapel, 0); //Volta ponteiro dos papeis
-    	   	  while ($RegPapel = mysql_fetch_array($SetPapel)){ 
-    	   	  	if ($RegTipos[TP_Relacao] == $RegPapel[TP_Relacao]){
+    	   while ($RegTiposRel = mysql_fetch_array($SetTiposRel)){ //Apresenta todos os TiposRel
+    	   	  //print_r ($RegTiposRel[TP_Relacao] . $RegTiposRel[NM_Tipo_Relacao] );
+    	   	  echo '<input type="checkbox" class="Entrada" name="TP_Relacao[' . $RegTiposRel[TP_Relacao] . ']"';
+    	   	  mysql_data_seek($SetRelacoes, 0); //Volta ponteiro das Relacoes
+    	   	  while ($RegRelacoes = mysql_fetch_array($SetRelacoes)){ 
+    	   	  	if ($RegTiposRel[TP_Relacao] == $RegRelacoes[TP_Relacao]){
     	            echo 'checked';
     	   	  	    break;    	   	 	
     	   	  	}
     	   	  }
-    	   	  echo  '>' . $RegTipos[NM_Tipo_Relacao] . '&nbsp&nbsp';
+    	   	  echo  '>' . $RegTiposRel[NM_Tipo_Relacao] . '&nbsp&nbsp';
     	   	  
     	   }
     	   echo '<br>';
@@ -94,12 +94,12 @@
     //echo ('Alterando');
     /*
      $artipo = $_REQUEST[TP_Relacao];
-    mysql_data_seek($SetTipos, 0);
-    while ($RegTipos = mysql_fetch_array($SetTipos)){
-    //echo 'tipo='. $RegTipos[TP_Relacao] . '-'. $artipo[$RegTipos[TP_Relacao]] .'/';
-    if  ($artipo[$RegTipos[TP_Relacao]] == "on"){
-    $ObjContato->TP_Relacao = $RegTipos[TP_Relacao];
-    //echo $RegTipos[TP_Relacao];
+    mysql_data_seek($SetTiposRel, 0);
+    while ($RegTiposRel = mysql_fetch_array($SetTiposRel)){
+    //echo 'tipo='. $RegTiposRel[TP_Relacao] . '-'. $artipo[$RegTiposRel[TP_Relacao]] .'/';
+    if  ($artipo[$RegTiposRel[TP_Relacao]] == "on"){
+    $ObjContato->TP_Relacao = $RegTiposRel[TP_Relacao];
+    //echo $RegTiposRel[TP_Relacao];
     }
     }
     */
@@ -110,30 +110,32 @@
     $ObjContato->Observacoes = $_REQUEST[Observacoes];
         
     if (!$ObjContato->Edit($MsgErro))
-        echo '<a class="MsgErro">' . 'Erro na alteração : ' . $ObjContato->MsgErro .'</a>';
+        echo '<a class="MsgErro">' . 'Erro na alteração Contato: ' . $ObjContato->MsgErro .'</a>';
     else {
        //mysql_query("commit");
-       echo '<a class="MsgSucesso">Alteração com sucesso!</a>';
+       echo '<a class="MsgSucesso">Alteração Contato com sucesso!</a>';
     }
     
-    //Alterando Papeis do contato
+    //Alterando Relacionamentos
     $artipo = $_REQUEST[TP_Relacao];
-    mysql_data_seek($SetTipos, 0);
-    while ($tipos = mysql_fetch_array($SetTipos)){
-    	//echo 'tipo='. $tipos[TP_Relacao] . '-'. $artipo[$tipos[TP_Relacao]] .'/';
-    	$ObjContato->TP_Relacao = $tipos[TP_Relacao];
-    	//echo $tipos[TP_Relacao];
-    	if  ($artipo[$tipos[TP_Relacao]] == "on"){
-    		if (!$ObjContato->insertPapel($Con,$MsgErro))
-    			echo '<a class="MsgErro">Erro na inserção de Papel: ' . $ObjContato->MsgErro .'<br></a>';
+    mysql_data_seek($SetTiposRel, 0);
+    while ($TiposRel = mysql_fetch_array($SetTiposRel)){
+    	//echo 'tipo='. $TiposRel[TP_Relacao] . '-'. $artipo[$TiposRel[TP_Relacao]] .'/';
+    	$ObjContato->TP_Relacao = $TiposRel[TP_Relacao];
+    	//echo $TiposRel[TP_Relacao];
+    	if  ($artipo[$TiposRel[TP_Relacao]] == "on"){
+    		if (!$ObjContato->insertRelacoes($Con,$MsgErro))
+    			echo '<a class="MsgErro">Erro na inserção de Relacionamento: ' . $ObjContato->MsgErro .'<br></a>';
     		else
-    			echo '<a class="MsgSucesso">Papel Incluido com sucesso!</a>';
+    			echo '<a class="MsgSucesso">Relacao Incluida com sucesso!<br></a>';
+    		//echo 'i-' . $TiposRel[TP_Relacao];
     	}
     	else{
-    		if (!$ObjContato->DeletePapel($Con,$MsgErro))
-    			echo '<a class="MsgErro">Erro na exclusão de Papel: ' . $ObjContato->MsgErro .'<br></a>';
+    		if (!$ObjContato->DeleteRelacoes($Con,$MsgErro))
+    			echo '<a class="MsgErro">Erro na exclusão de relacionamento: ' . $ObjContato->MsgErro .'<br></a>';
     		else
-    			echo '<a class="MsgSucesso">Papel Incluido com sucesso!</a>';
+    			echo '<a class="MsgSucesso">Relacao Excluida com sucesso!<br></a>';
+    		//echo 'd-' . $TiposRel[TP_Relacao];
     	}
     }
     

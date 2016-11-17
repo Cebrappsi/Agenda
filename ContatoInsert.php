@@ -18,7 +18,8 @@
   </HEAD>
   <BODY>
   <?php 
-		//prepara consulta convenio para montar a lista
+        session_start();
+        //prepara consulta para montar a lista de relacoes
 	 	require "comum.php";
 	    		
 	    if (!conecta_BD($con,$MsgErro)){
@@ -26,11 +27,11 @@
 	    	die();
 	    }
 	    		
-	    if (!$SetTipoContado = mysql_query('SELECT * from Tipo_Relacionamento order by NM_Tipo_Relacao')){
-	    	echo '<a class="MsgErro">Não foi possível efetuar consulta Tipo Contato: ' . mysql_error() .'<br></a>';
+	    if (!$SetTipoRelacao = mysql_query('SELECT * from Tipo_Relacionamento order by NM_Tipo_Relacao')){
+	    	echo '<a class="MsgErro">Não foi possível efetuar consulta Relacionamento: ' . mysql_error() .'<br></a>';
 	    	die();
 	    }
-	    //echo mysql_num_rows($SetTipoContado);
+	    //echo mysql_num_rows($SetTipoRelacao);
 	?>
 
     <form method="post" action="ContatoInsert.php">
@@ -39,9 +40,9 @@
     		<label class="labelNormal">Nome: </label>
     		<?php
     		echo '<input class="Entrada" type="text" name="NM_Contato" size="50" autofocus value = ' .
-    								 $_POST[NM_Contato] . '>';
-    		echo '<label>Tipo Contato: </label>';
-    		while ($dados = mysql_fetch_array($SetTipoContado))
+    								 $_POST[NM_Contato] . '>&nbsp';
+    		echo '<label>Relacão: </label>';
+    		while ($dados = mysql_fetch_array($SetTipoRelacao))
     			echo '<input type="checkbox" class="Entrada" name="TP_Relacao[' . $dados[TP_Relacao] .  "]" .'">' . 
     								$dados[NM_Tipo_Relacao] .'&nbsp&nbsp';
      		echo '<br>';
@@ -53,19 +54,17 @@
     		echo '<input class="Entrada" type="text" name="Identificacao" size="50" value = ' . 
     								$_POST[Identificacao] . '><BR>';
     		echo '<label class="labelNormal">Observacoes: </label>';
-    		echo '<textarea rows="3" cols="100" class="Entrada" name="Observacoes" size="100" >' . 
-    								$_POST[Observacoes] . '</textarea>';    		
+    		echo '<textarea rows="2" cols="100" class="Entrada" name="Observacoes" size="100" >' . 
+    								$_POST[Observacoes] . '</textarea><BR>';    		
     		?>
+    		<a class="linkVoltar" href="Contato.php">Voltar</a>
+    	    <input class="Envia" type="submit" value="Inserir Contato" name="Contato">
+    	    --- *Insira primeiramente o Contato. Depois insira endereços, telefones e emails * ---
     	</fieldset>
-    	<a class="linkVoltar" href="Contato.php">Voltar</a>
-    	<input class="Envia" type="submit" value="Inserir">
-    	<?php
-    	if (!$SetEndereco = mysql_query('SELECT * from Tipo_Endereco order by NM_Tipo_Endereco')){
-    		echo '<a class="MsgErro">Não foi possível efetuar consulta Tipo Endereço: ' . mysql_error() .'<br></a>';
-    		die();
-    	}
     	
+    	<?php
     	// Preparacao para Área para Endereço
+    	
     	if (!$SetTipoEndereco = mysql_query('SELECT * from Tipo_Endereco order by NM_Tipo_Endereco')){
 	    	echo '<a class="MsgErro">Não foi possível efetuar consulta Tipo Endereço: ' . mysql_error() .'<br></a>';
 	    	die();
@@ -79,13 +78,13 @@
     		<legend>Inserindo Endereço</legend>
     		<?php 
     		echo '<label class="labelNormal">Tipo Endereço: </label>';
-    		while ($dados = mysql_fetch_array($SetTipoEndereco))
-    			echo '<input type="checkbox" class="Entrada" name="TP_Endereco[' . $dados[TP_Endereco] .  "]" . '">' . 
-    								$dados[NM_Tipo_Endereco] .'&nbsp&nbsp';
-    		
+    		echo '<select name="TP_Endereco">';
+    		while ($RegEndereco = mysql_fetch_array($SetTipoEndereco))
+    			echo '<option value="' , $RegEndereco[TP_Endereco] . '">' . $RegEndereco[NM_Tipo_Endereco] . '</option>';
+    		echo '</select>';
     		echo '<br>';
     		echo '<label class="labelNormal">Rua: </label>';
-    		echo '<input class="Entrada" type="text" name="Rua" size="50" autofocus value = "' . $_POST[Rua] . '">';
+    		echo '<input class="Entrada" type="text" name="Rua" size="50" autofocus value = "' . $_POST[Rua] . '">&nbsp';
      		echo '<label class="LabelNormal">Numero: </label>';
     		echo '<input class="Entrada" type="text" name="Numero" size="10" value ="' . $_POST[Numero] . '"><br>';
     		echo '<label class="labelNormal">Complemento: </label>';
@@ -93,16 +92,20 @@
     		echo '<label class="labelNormal">Bairro: </label>';
     		echo '<input class="Entrada" name="Bairro" size="50" value ="' . $_POST[Bairro] . '"><br>';
     		echo '<label class="labelNormal">Cidade: </label>';
-    		echo '<input class="Entrada" name="Cidade" size="50" value = "' . $_POST[Cidade] . '"><br>';
-    		echo '<label class="labelNormal">UF: </label>';
-    		echo '<select class="Entrada" name="CD_UF">';
+    		echo '<input class="Entrada" name="Cidade" size="50" value = "' . $_POST[Cidade] . '">&nbsp';
+    		echo '<label>UF: </label>';
+    		echo '<select name="CD_UF">';
     		while ($RegUF = mysql_fetch_array($SetUF))
     			echo '<option value="' , $RegUF[CD_UF] . '">' . $RegUF[NM_UF] . '</option>';
     		echo '</select>';
-    		echo '<label>CEP: </label>';
-    		echo '<input class="Entrada" name="CEP" size="10" value = ' . $_POST[CEP] . '><br>';
+    		echo '<label>&nbspCEP: </label>';
+    		echo '<input name="CEP" size="10" pattern="\d{5}-?\d{3}" value = ' . $_POST[CEP] . '><br>';
     		?>
+    		<a class="linkVoltar" href="Contato.php">Voltar</a>
+    	    <input class="Envia" type="submit" value="Inserir Endereço" name="Endereco">
+    	
     	</fieldset>
+    	
     	<?php 
     	// Preparacao para Área para Telefone/tipo uso, Operadora
     	if (!$SetTipoMobilidade = mysql_query('SELECT * from Tipo_Mobilidade order by NM_Tipo_Mobilidade')){
@@ -142,12 +145,15 @@
     		echo '<label class="labelNormal">DDD: </label>';
     		echo '<input class="Entrada" type="text" name="DDD" size="02" autofocus value = "' . $_POST[DDD] . '">';
      		echo '<label>Numero: </label>';
-    		echo '<input class="Entrada" type="text" name="Numero" size="10" value ="' . $_POST[Numero] . '"><br>';
+    		echo '<input class="Entrada" type="text" name="NumeroFone" size="10" value ="' . $_POST[NumeroFone] . '"><br>';
     		?>
+    		<a class="linkVoltar" href="Contato.php">Voltar</a>
+    	    <input class="Envia" type="submit" value="Inserir Telefone" name="Telefone">
+    	
     	</fieldset>
     	
     	<?php 
-    	// Preparacao para Área para Emaila
+    	// Preparacao para Emails
     	if (!$SetTipoEmail = mysql_query('SELECT * from Tipo_Email order by NM_Tipo_Email')){
 	    	echo '<a class="MsgErro">Não foi possível efetuar consulta Tipo Email: ' . mysql_error() .'<br></a>';
 	    	die();
@@ -165,6 +171,8 @@
     		echo '<label>Email: </label>';
     		echo '<input type="text" name="Email" size="50" autofocus value = "' . $_POST[Email] . '"><br>';
     		?>
+    		<a class="linkVoltar" href="Contato.php">Voltar</a>
+    	   <input class="Envia" type="submit" value="Inserir Email" name="Email">
     	</fieldset>
     
     </form>
@@ -174,52 +182,79 @@
         die();
     
     require "ContatoClasse.php";
-    
+    $ObjContato = new Contato();
     $con = conecta_BD($MsgErro);
     if (!$con){
        echo '<a class="MsgErro">Erro: ' . $ObjContato->MsgErro .'<br></a>';
 	   die();
 	}
     //ok - vamos incluir	
-    $ObjContato = new Contato();
-    /*
-    //print_r($_REQUEST);
-    $artipo = $_REQUEST[TP_Relacao];
-    mysql_data_seek($SetTipoContato, 0);
-    while ($tipos = mysql_fetch_array($SetTipoContato)){
-    	//echo 'tipo='. $tipos[TP_Relacao] . '-'. $artipo[$tipos[TP_Relacao]] .'/';
-    	if  ($artipo[$tipos[TP_Relacao]] == "on"){
-    		$ObjContato->TP_Relacao = $tipos[TP_Relacao];
-    		//echo $tipos[TP_Relacao];
-    	}
-    } 
-    */  
-    $ObjContato->NM_Contato = $_REQUEST[NM_Contato];
-    $ObjContato->DT_Nascimento = $_REQUEST[DT_Nascimento];
-    $ObjContato->Identificacao = $_REQUEST[Identificacao];
-    $ObjContato->Observacoes = $_REQUEST[Observacoes];
-    if (!$ObjContato->insert($Con,$MsgErro))
-        echo '<a class="MsgErro">Erro na inserção: ' . $ObjContato->MsgErro .'<br></a>';
-    else 
-       echo '<a class="MsgSucesso">Contato Incluido com sucesso!</a>';
-    
-    //inserindo Papeis do contato
-    $artipo = $_REQUEST[TP_Relacao];
-    mysql_data_seek($SetTipoContado, 0);
-    while ($tipos = mysql_fetch_array($SetTipoContado)){
-    	//echo 'tipo='. $tipos[TP_Relacao] . '-'. $artipo[$tipos[TP_Relacao]] .'/';
-    	if  ($artipo[$tipos[TP_Relacao]] == "on"){
-    		$ObjContato->TP_Relacao = $tipos[TP_Relacao];
-    		//echo $tipos[TP_Relacao];
-    		if (!$ObjContato->insertPapel($Con,$MsgErro))
-    			echo '<a class="MsgErro">Erro na inserção: ' . $ObjContato->MsgErro .'<br></a>';
-    		else
-    			echo '<a class="MsgSucesso">Contato Incluido com sucesso!</a>';
-    	}
+    print_r($_REQUEST);
+    print_r('<BR>SESSAO RECUPERADA' . $_SESSION[SQ_Contato]);
+    //die();
+    //Inserir Contato
+    if ($_REQUEST[Contato] == 'Inserir Contato'){  
+	    $ObjContato->NM_Contato = $_REQUEST[NM_Contato];
+	    $ObjContato->DT_Nascimento = $_REQUEST[DT_Nascimento];
+	    $ObjContato->Identificacao = $_REQUEST[Identificacao];
+	    $ObjContato->Observacoes = $_REQUEST[Observacoes];
+	    if (!$ObjContato->insert($Con,$MsgErro)){
+	        echo '<a class="MsgErro">Erro na inserção: ' . $ObjContato->MsgErro .'<br></a>';
+	        die();
+	    }
+	    else {
+	       echo '<a class="MsgSucesso">Contato Incluido com sucesso!</a>';
+	       $_SESSION[SQ_Contato] = $ObjContato->SQ_Contato;
+	       print_r('<BR>SESSAO GUARDADA' . $_SESSION[SQ_Contato]);
+	    }
+	    
+	    //inserindo Relacoes do contato
+	    if ($_SESSION[SQ_Contato] > 0){
+		    $artipo = $_REQUEST[TP_Relacao];
+		    mysql_data_seek($SetTipoRelacao, 0);
+		    while ($tipos = mysql_fetch_array($SetTipoRelacao)){
+		    	//echo 'tipo='. $tipos[TP_Relacao] . '-'. $artipo[$tipos[TP_Relacao]] .'/';
+		    	if  ($artipo[$tipos[TP_Relacao]] == "on"){
+		    		$ObjContato->TP_Relacao = $tipos[TP_Relacao];
+		    		//echo $tipos[TP_Relacao];
+		    		if (!$ObjContato->insertRelacoes($Con,$MsgErro))
+		    			echo '<a class="MsgErro">Erro na inserção: ' . $ObjContato->MsgErro .'<br></a>';
+		    		else
+		    			echo '<a class="MsgSucesso">Relação ' . $ObjContato->TP_Relacao . ' incluida com sucesso!</a>';
+		    	}
+		    }
+	    }
+    }
+
+    //inserindo Endereço            Inserir Endereço 
+    elseif ($_REQUEST[Endereco] == 'Inserir Endereço' && $_SESSION[SQ_Contato] > 0){
+    	echo 'alterando endereço';
+    	require "EnderecoClasse.php";
+    	$ObjEndereco = new Endereco();
+    	$ObjEndereco->SQ_Contato = $_SESSION[SQ_Contato];
+    	$ObjEndereco->TP_Endereco = $_REQUEST[TP_Endereco];
+    	$ObjEndereco->Rua = $_REQUEST[Rua];
+    	$ObjEndereco->Numero = $_REQUEST[Numero];
+    	$ObjEndereco->Complemento = $_REQUEST[Complemento];
+    	$ObjEndereco->Bairro = $_REQUEST[Bairro];
+    	$ObjEndereco->Cidade = $_REQUEST[Cidade];
+    	$ObjEndereco->CD_UF = $_REQUEST[CD_UF];
+    	$ObjEndereco->CEP = $_REQUEST[CEP];
+    	if (!$ObjEndereco->insert($Con,$MsgErro))
+    		echo '<a class="MsgErro">Erro na inserção: ' . $ObjEndereco->MsgErro .'<br></a>';
+    	else
+    		echo '<a class="MsgSucesso">Endereço Incluido com sucesso!</a>';
+    	 
+    }
+    elseif ($_REQUEST[Telefone] == 'Inserir Telefone' && $_SESSION[SQ_Contato] > 0){
+    	 
+    }
+    elseif ($_REQUEST[Email] == 'Inserir Email' && $_SESSION[SQ_Contato] > 0){
+    	 
     }
     
-    
     mysql_close($con);
+    
     ?>
   </BODY>
 </HTML>

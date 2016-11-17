@@ -27,19 +27,19 @@
     		$Query = 'Select * from Contato order by NM_Contato';
     		break;
     	case 'Pacientes':
-    		 $Query = $Query . 'Where Relacionamento.TP_Relacao = "P"';
+    		 $Query = $Query . 'Where Relacionamento.TP_Relacao = "P" order by NM_Contato';
     		break;
     	case 'Profissionais':
-    		$Query = $Query . 'Where Relacionamento.TP_Relacao = "R"';
+    		$Query = $Query . 'Where Relacionamento.TP_Relacao = "R" order by NM_Contato';
     		break;
     	case 'Convenios':
-    		$Query = $Query . 'Where Relacionamento.TP_Relacao = "C"';
+    		$Query = $Query . 'Where Relacionamento.TP_Relacao = "C" order by NM_Contato';
     		break;
     	case 'Serviços':
-    		$Query = $Query . 'Where Relacionamento.TP_Relacao = "S"';
+    		$Query = $Query . 'Where Relacionamento.TP_Relacao = "S" order by NM_Contato';
     		break;
     	case 'Outros':
-    		$Query = $Query . 'Where Relacionamento.TP_Relacao = "O"';
+    		$Query = $Query . 'Where Relacionamento.TP_Relacao = "O" order by NM_Contato';
     		break;
     	case 'PesquisaContatos':
     		echo "Nao implementado";
@@ -57,12 +57,12 @@
     while ($dados = mysql_fetch_array($consulta))
     {
     	//pegando relações com a Clinica
-    	if (!$SetPapel = mysql_query('SELECT Relacionamento.*, Tipo_Relacionamento.NM_Tipo_Relacao ' .
+    	if (!$SetRelacoes = mysql_query('SELECT Relacionamento.*, Tipo_Relacionamento.NM_Tipo_Relacao ' .
     			' from Relacionamento ' .
     			' inner join Tipo_Relacionamento on Relacionamento.TP_Relacao = Tipo_Relacionamento.TP_Relacao ' .
     			' where SQ_Contato = ' . $dados[SQ_Contato] .
     			' order by Tipo_Relacionamento.NM_Tipo_Relacao')){
-    		echo '<a class="MsgErro">Não foi possível efetuar consulta Tipo Contato: ' .
+    		echo '<a class="MsgErro">Não foi possível efetuar consulta Relacionamento: ' .
     					mysql_error() .'<br></a>';
     		die();
     	}
@@ -79,8 +79,8 @@
     		//echo '<td size="30">' . $dados[NM_Contato] . '</td>';
     		echo '<td size="50"><a href=ContatoDetalhesEdit.php?SQ_Contato=' . $dados[SQ_Contato] . '>' . $dados[NM_Contato] . '</a></td>';
     		echo '<td align="center">'; 
-    		while ($RegPapel = mysql_fetch_array($SetPapel))
-	    	      echo  $RegPapel[NM_Tipo_Relacao] . '<br>'; 
+    		while ($RegRelacoes = mysql_fetch_array($SetRelacoes))
+	    	      echo  $RegRelacoes[NM_Tipo_Relacao] . '<br>'; 
     		echo  '</td>';
     		echo '<td>' . $dados[DT_Nascimento] . '</td>';
     		echo '<td size="14">' . $dados[Identificacao] . '</td>';
@@ -109,7 +109,7 @@
         			 ' - Complemento: ' . $RegEndereco[Complemento] . 
         		     ' - Bairro: ' . $RegEndereco[Bairro] . 
         		     ' - Cidade: ' . $RegEndereco[Cidade] . 
-        	         ' - UF: ' . $RegEndereco[UF] . 
+        	         ' - UF: ' . $RegEndereco[CD_UF] . 
         		     ' - CEP: ' .  $RegEndereco[CEP] . '</td>';
         		echo '<td><a href=EnderecoEdit.php?SQ_Contato=' . $RegEndereco[SQ_Contato] . 
         										'&TP_Endereco=' . $RegEndereco[TP_Endereco] . '>Alterar</a></td>';
@@ -158,8 +158,7 @@
     	{
     		echo "<tr>";
     		echo '<td align="left" colspan="5">Email ' . $RegEmail[NM_Tipo_Email] .
-    		' - Email: ' . $RegEmail[Email] .
-    		 '</td>';
+    		' - Email: ' . $RegEmail[Email] . '</td>';
     		echo '<td><a href=EmailEdit.php?SQ_Contato=' . $RegEmail[SQ_Contato] .
     		'&TP_Email=' . $RegEmail[TP_Email] . '>Alterar</a></td>';
     		echo '<td><a href=EmailDelete.php?SQ_Contato=' . $RegEmail[SQ_Contato] .
