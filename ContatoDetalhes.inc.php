@@ -42,6 +42,38 @@
     		echo '<td><a href=ContatoDelete.php?SQ_Contato=' . $dados[SQ_Contato] . '&NM_Contato=' . urlencode($dados[NM_Contato]) . '>Excluir</a></td>';
         echo '</tr>';
         
+        //Planos do Contato
+        if (!$SetContatoPlano = mysql_query('SELECT Contato_Plano.* , Convenio.NM_Convenio, Plano.NM_Plano '. 
+        		' from Contato_Plano ' .
+        		' inner join Convenio on Contato_Plano.SQ_Convenio = Convenio.SQ_Convenio ' .
+        		' inner join Plano    on Contato_Plano.SQ_Plano    = Plano.SQ_Plano ' .
+        		' where SQ_Contato = ' . $dados[SQ_Contato] .
+        		' order by NM_Convenio')){
+        		echo '<a class="MsgErro">Não foi possível efetuar consulta Endereço: ' .
+        				mysql_error() .'<br></a>';
+        		die();
+        }
+        while ($RegContatoPlano = mysql_fetch_array($SetContatoPlano))
+        {
+        	echo "<tr>";
+        	echo '<td align="left" colspan="5">Convenio: ' . $RegContatoPlano[NM_Convenio] .
+        	' - Plano: ' . $RegContatoPlano[NM_Plano] .
+        	' - Nr.Carteira: ' . $RegContatoPlano[NR_Inscricao] .
+        	' - Validade: ' . implode('/',array_reverse(explode('-',$RegContatoPlano[DT_Validade]))) . '</td>';
+        	echo '<td><a href=ContatoPlanoForm.php?SQ_Contato=' . $RegContatoPlano[SQ_Contato] .
+        	'&NM_Contato=' . urlencode($dados[NM_Contato]) .
+        	'&SQ_Convenio=' . $RegContatoPlano[SQ_Convenio] .
+        	'&SQ_Plano=' . $RegContatoPlano[SQ_Plano] .
+        	'&Operacao=' . urlencode("Mostrar") .
+        	'>Alterar</a></td>';
+        	echo '<td><a href=ContatoPlanoDelete.php?SQ_Contato=' . $RegContatoPlano[SQ_Contato] .
+        	'&NM_Contato=' . urlencode($dados[NM_Contato]) .
+        	'&SQ_Convenio=' . $RegContatoPlano[SQ_Convenio] . '&NM_Convenio=' . urlencode($RegContatoPlano[NM_Convenio]) .
+        	'&SQ_Plano=' . $RegContatoPlano[SQ_Plano] . '&NM_Plano=' . urlencode($RegContatoPlano[NM_Plano]) .
+        	 '>Excluir</a></td>';
+        	echo '</tr>';
+        }
+         
         //Endereço
         if (!$SetEndereco = mysql_query('SELECT endereco.* , tipo_Endereco.NM_Tipo_Endereco ' .
         								' from Endereco ' . 

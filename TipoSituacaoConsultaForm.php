@@ -9,7 +9,7 @@
 	
     $ObjTipo_Situacao_Consulta = new TipoSituacaoConsulta();
     $REQ_TP_Situacao_Consulta = $_REQUEST[TP_Situacao_Consulta];
-    echo ('ins' . $REQ_TP_Situacao_Consulta);	
+    //echo ('ins' . $REQ_TP_Situacao_Consulta);	
 	if ((!$_REQUEST['Operacao']) and ($REQ_TP_Situacao_Consulta)) { // Nenhuma operacao informada e Chave informada - Mostrar dados da tabela'
 		$ObjTipo_Situacao_Consulta->TP_Situacao_Consulta = $REQ_TP_Situacao_Consulta;
 		if (!$ObjTipo_Situacao_Consulta->GetReg($MsgErro)){ 

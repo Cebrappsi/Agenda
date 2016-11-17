@@ -3,15 +3,15 @@ class Profissional {
   
 	public $Regs;
 	public $SQ_Profissional;
-	public $SQ_Especialidade_Clinica;
+	public $SQ_Especialidade;
 	public $DT_Ativacao;
 	public $DT_Desativacao;
 	//echo date('Y-m-d', strtotime(date('Y/m/d')));
 	private function Valida_Dados(&$MsgErro){ 
 	  //	  echo  '<br/>Validando dados Profissional: ' . 'Nome: ' . $this->SQ_Especialidade_Clinica .
 	  //            'Ativ:' . $this->DT_Ativacao .  'Desat:' . $this->DT_Desativacao;  
-		if (!(is_numeric($this->SQ_Especialidade_Clinica) && (int)$this->SQ_Especialidade_Clinica > 0)){
-			$MsgErro = 'Sequencial Escpecialidade inválido';
+		if (!(is_numeric($this->SQ_Especialidade) && (int)$this->SQ_Especialidade > 0)){
+			$MsgErro = 'Sequencial Especialidade inválido';
 			return FALSE;
 		}
 		
@@ -46,7 +46,7 @@ class Profissional {
 		//Valida se registro já existe
 		//echo  "<br/>/Validando Consistencia do Registro";
 		$query = 'Select SQ_Profissional FROM Profissional WHERE SQ_Profissional = "' . $this->SQ_Profissional . '"' . 
-												'and SQ_Especialidade_Clinica    = "' . $this->SQ_Especialidade_Clinica . '"';
+												'and SQ_Especialidade    = "' . $this->SQ_Especialidade . '"';
 		$result = mysql_query($query);
 		if (!$result){
 			$MsgErro = 'Erro bd: ' . mysql_error() . '<br>Query: ' . $query;
@@ -82,9 +82,9 @@ class Profissional {
 		if ($this->DT_Desativacao <> '' && $this->DT_Desativacao <> '00/00/0000')
 			$this->DT_Desativacao = implode('-',  array_reverse(explode('/',$this->DT_Desativacao)));
 		
-		$query = 'INSERT INTO Profissional (SQ_Profissional, SQ_Especialidade_Clinica,DT_Ativacao,DT_Desativacao)' .
+		$query = 'INSERT INTO Profissional (SQ_Profissional, SQ_Especialidade,DT_Ativacao,DT_Desativacao)' .
 								'values (' . $this->SQ_Profissional . ' , '
-										   . $this->SQ_Especialidade_Clinica . ',"' 
+										   . $this->SQ_Especialidade . ',"' 
 								           . $this->DT_Ativacao . '" , "'  
 								           . $this->DT_Desativacao . '")';
 		//echo $query;
@@ -103,7 +103,7 @@ class Profissional {
 		//echo  "<br>Excluindo Profissional>";
 						
 		$query = 'DELETE FROM Profissional WHERE SQ_Profissional = ' . $this->SQ_Profissional  . 
-											'and SQ_Especialidade_Clinica    = "' . $this->SQ_Especialidade_Clinica . '"';
+											'and SQ_Especialidade= "' . $this->SQ_Especialidade . '"';
 		//echo $query;
 	
 		$result = mysql_query($query);
@@ -125,7 +125,7 @@ class Profissional {
 						
 		//echo 'Sq_Profissional:' . $this->SQ_Profissional;
 		$query = 'Select * FROM Profissional WHERE SQ_Profissional = ' . $this->SQ_Profissional . 
-											 ' and SQ_Especialidade_Clinica = ' . $this->SQ_Especialidade_Clinica;
+											 ' and SQ_Especialidade = ' . $this->SQ_Especialidade;
 		//echo 'Query: ' . $query;
 		$this->Regs = mysql_query($query);
 		if (!$this->Regs){
@@ -163,8 +163,8 @@ class Profissional {
 			return FALSE;
 		}
 		
-		if (!(is_numeric($this->SQ_Especialidade_Clinica) && (int)$this->SQ_Especialidade_Clinica > 0)){
-			$MsgErro = 'Sequencial Especialidade Clinica inválido';
+		if (!(is_numeric($this->SQ_Especialidade) && (int)$this->SQ_Especialidade > 0)){
+			$MsgErro = 'Sequencial Especialidade inválido';
 			return FALSE;
 		}
 		//Converte datas para formato mysql
@@ -176,7 +176,7 @@ class Profissional {
 		$query = 'UPDATE Profissional set DT_Ativacao    = "' . $this->DT_Ativacao . '",' .
 									     'DT_Desativacao = "' . $this->DT_Desativacao . '"' .
 				' where SQ_Profissional = ' . $this->SQ_Profissional . 
-				 ' and  SQ_Especialidade_Clinica = ' . $this->SQ_Especialidade_Clinica;
+				 ' and  SQ_Especialidade = ' . $this->SQ_Especialidade;
 		
 		$result = mysql_query($query);
 	//	echo $query . mysql_affected_rows() . mysql_error() . gettype($result) . '<br>Query: ' . $query;

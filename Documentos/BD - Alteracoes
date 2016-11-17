@@ -1,0 +1,7 @@
+RENAME TABLE `db_clinica`.`especialidade_clinica` TO `db_clinica`.`zz-especialidade_clinica`;
+ALTER TABLE `profissional` DROP FOREIGN KEY `profissional_ibfk_2`;
+ALTER TABLE `profissional` ADD CONSTRAINT `profissional_ibfk_3` FOREIGN KEY (`SQ_Profissional`) REFERENCES `contato` (`SQ_Contato`);
+ALTER TABLE `profissional` CHANGE `SQ_Especialidade_Clinica` `SQ_Especialidade` INT(11) NOT NULL COMMENT 'Sequencial da Especialidade';
+ALTER TABLE `consulta` ADD `SQ_Plano` INT(11) NOT NULL COMMENT 'Plano do Paciente' AFTER `SQ_Contato_Paciente`;
+ALTER TABLE `consulta` ADD  CONSTRAINT `Consulta_plano` FOREIGN KEY (`SQ_Plano`) REFERENCES `db_clinica`.`contato_plano`(`SQ_Plano`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE `consulta` ADD FOREIGN KEY (`SQ_Plano`) REFERENCES `db_clinica`.`plano`(`SQ_Plano`) ON DELETE RESTRICT ON UPDATE RESTRICT;

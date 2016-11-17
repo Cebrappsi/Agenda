@@ -25,7 +25,7 @@
                             <td><a class="Menu" target=submenu href="Frame2.php?Origem=Agenda" >AGENDA</a></td>
                             <td><a class="Menu" target=submenu href="Frame2.php?Origem=Contatos">CONTATOS</a></td>
                             <td><a class="Menu" target=submenu href="Frame2.php?Origem=Tabelas">TABELAS </a></td>
-                            <td><a class="Menu" target=submenu href="Frame2.php?Origem=Administracao">ADMINISTRA√á√ÉO</a></td>
+                            <td><a class="Menu" target=submenu href="Frame2.php?Origem=Administracao">ADMINISTRA«√O</a></td>
                             <td><a class="Menu" target=submenu href="Frame2.php?Origem=Sair">SAIR</a></td>
 	                    </tr>
 		          </table>

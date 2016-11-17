@@ -15,17 +15,19 @@
    
 <?php
     if ($_REQUEST[Origem] == 'Agenda') {
-        echo '<a class="Submenu" " target=dados href="AgendaAtendimento.php">Agenda Atendimento <br></a>';
-        echo '<a class="Submenu" target=dados href="AgendaConsulta.php">Consulta Agenda<br></a>';
-        echo '<a class="Submenu" target=dados href="AgendaDesmarca.php">Desmarca Consulta<br></a>';
-        echo '<a class="Submenu" target=dados href="Agenda.php">Agenda</a>';
+        //echo '<a class="Submenu" " target=dados href="AgendaAtendimento.php">Agenda Atendimento <br></a>';
+        echo '<a class="Submenu" target=dados href="AgendaLista.php">Agenda</a>';
+        echo '<br><br>';
+        echo '<a class="Submenu" target=dados href="ProfissionalLista.php">Profissionais<br></a>';
+        echo '<a class="Submenu" target=dados href="EscalaLista.php">Escala de Trabalho<BR></a>';
+        
         die();
     } elseif ($_REQUEST[Origem] == 'Contatos') {
     	echo '<a class="Submenu" target=dados href="ContatoLista.php?Tipo=Todos">Todos<br></a>';
         echo '<a class="Submenu" target=dados href="ContatoLista.php?Tipo=Pacientes">Pacientes<br></a>';
         echo '<a class="Submenu" target=dados href="ContatoLista.php?Tipo=Profissionais">Profissionais<br></a>';
         echo '<a class="Submenu" target=dados href="ContatoLista.php?Tipo=Convenios">Convênios<br></a>';
-        echo '<a class="Submenu" target=dados href="ContatoLista.php?Tipo=Servi�os">Serviços<br></a>';
+        echo '<a class="Submenu" target=dados href="ContatoLista.php?Tipo=Servicos">Serviços<br></a>';
         echo '<a class="Submenu" target=dados href="ContatoLista.php?Tipo=Outros">Outros<br></a>';
         echo '<a class="Submenu" target=dados href="ContatoLista.php?Tipo=Pesquisa">PesquisaContatos<br></a>';
         die();
@@ -42,14 +44,12 @@
         echo '<a class="Submenu" target=dados href="ConvenioLista.php">Convênios<br></a>';
         echo '<a class="Submenu" target=dados href="PlanoLista.php">Planos<br></a>';
         echo '<a class="Submenu" target=dados href="EspecialidadeLista.php">Especialidades<br></a>';
-        echo '<a class="Submenu" target=dados href="EspecialidadeClinicaLista.php">Especialidades da Clínica<br></a>';
+        //echo '<a class="Submenu" target=dados href="EspecialidadeClinicaLista.php">Especialidades da Clínica<br></a>';
         echo '<a class="Submenu" target=dados href="TipoSituacaoConsultaLista.php">Situação da Consulta<br></a>';
         echo '<a class="Submenu" target=dados href="ValorLista.php">Valores<br></a>';
         echo '<br>';
         echo '<a class="Submenu" target=dados href="SalaLista.php">Salas de Atendimento<br></a>';
-		echo '<a class="Submenu" target=dados href="ProfissionalLista.php">Profissionais<br></a>';
-        echo '<a class="Submenu" target=dados href="EscalaLista.php">Escala de Trabalho<BR></a>';
-        die();
+       die();
     } elseif ($_REQUEST[Origem] == 'Administracao') {
         echo 'Em construcao';
         die();

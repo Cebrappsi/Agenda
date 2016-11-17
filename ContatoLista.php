@@ -34,7 +34,7 @@
     	case 'Convenios':
     		$Query = $Query . 'Where Relacionamento.TP_Relacao = "C" order by NM_Contato';
     		break;
-    	case 'Serviços':
+    	case 'Servicos':
     		$Query = $Query . 'Where Relacionamento.TP_Relacao = "S" order by NM_Contato';
     		break;
     	case 'Outros':

@@ -77,7 +77,7 @@
 			echo '<a class="MsgErro">Não foi possível efetuar consulta Convenio: ' . mysql_error() .'<br></a>';
 			die();
 		}
-		echo 'Rows=' .mysql_num_rows($ListaConvs);
+		//echo 'Rows=' .mysql_num_rows($ListaConvs);
 	    mysql_close($con);
     ?>
 <!DOCTYPE html>

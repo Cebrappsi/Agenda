@@ -10,7 +10,7 @@
    
 	$ObjProfissional = new Profissional();
     $ObjProfissional->SQ_Profissional = $_REQUEST[SQ_Profissional];
-	$ObjProfissional->SQ_Especialidade_Clinica = $_REQUEST[SQ_Especialidade_Clinica];
+	$ObjProfissional->SQ_Especialidade = $_REQUEST[SQ_Especialidade];
     if (!$ObjProfissional->Delete($MsgErro))
        //MsgPopup('Erro na Exclus?o do Registro : ' . $MsgErro);
         echo '<br><a class="MsgErro">Erro na Exclusão do Registro : ' . $MsgErro .'</a>';
@@ -45,9 +45,9 @@
     	<fieldset>
     		<legend>Excluindo Profissional</legend><br>
     		<label class="labelConfirma">Confirma exclusão de Profissional - <?php echo $_REQUEST[NM_Profissional] . 
-												' - ' . $_REQUEST[NM_Especialidade_Clinica]?> ? </label><br><br>
+												' - ' . $_REQUEST[NM_Especialidade]?> ? </label><br><br>
    			<input type="hidden" name="SQ_Profissional" size="10" value="<?php echo $_REQUEST[SQ_Profissional] ?> ">
-    		<input type="hidden" name="SQ_Especialidade_Clinica" size="10" value="<?php echo $_REQUEST[SQ_Especialidade_Clinica] ?>">
+    		<input type="hidden" name="SQ_Especialidade" size="10" value="<?php echo $_REQUEST[SQ_Especialidade] ?>">
     	</fieldset>
       	<a class="linkVoltar" href="ProfissionalLista.php">Voltar</a>
     	<input class="Envia" type="submit" name="Operacao"  value="Excluir">

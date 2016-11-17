@@ -29,17 +29,17 @@
 		die();
     }
     
-    if (!$listaProfissionais = mysql_query('SELECT  profissional.*, Contato.NM_Contato, Especialidade_Clinica.* ' .
+    if (!$listaProfissionais = mysql_query('SELECT  profissional.*, Contato.NM_Contato, Especialidade.NM_Especialidade ' .
 								 'FROM Profissional ' .
 								 'INNER JOIN Contato ' .
 									'on Contato.SQ_Contato = Profissional.SQ_Profissional ' .
-                                 'INNER JOIN Especialidade_Clinica ' .
-									'on Especialidade_Clinica.SQ_Especialidade_Clinica = Profissional.SQ_Especialidade_Clinica ' .
-								 'ORDER BY Contato.NM_Contato, Especialidade_Clinica.NM_Especialidade_Clinica')){
+                                 'INNER JOIN Especialidade ' .
+									'on Especialidade.SQ_Especialidade = Profissional.SQ_Especialidade ' .
+								 'ORDER BY Contato.NM_Contato, Especialidade.NM_Especialidade')){
 	    echo '<a class="MsgErro">Não foi possível efetuar consulta Profissional: ' . mysql_error() .'<br></a>';
 		die();
     }
-
+    
     //echo mysql_num_rows($consulta);	
     echo '<a class="linkInserirNovo" href="ProfissionalForm.php">Inserir Novo Profissional</a>';
     echo('<br><br>');
@@ -47,19 +47,19 @@
     {
     	echo "<tr>";
     		echo '<td>' . $regProfissional[NM_Contato] . '</td>';
-			echo '<td>' . $regProfissional[NM_Especialidade_Clinica] . '</td>';
+			echo '<td>' . $regProfissional[NM_Especialidade] . '</td>';
     		echo '<td>' . implode('/',array_reverse(explode('-',$regProfissional[DT_Ativacao]))) . '</td>';
     		echo '<td>' . implode('/',array_reverse(explode('-',$regProfissional[DT_Desativacao]))) . '</td>';
     		echo '<td><a href=ProfissionalForm.php?SQ_Profissional=' . $regProfissional[SQ_Profissional] . 
-												 '&SQ_Especialidade_Clinica='. $regProfissional[SQ_Especialidade_Clinica] . 
+												 '&SQ_Especialidade='. $regProfissional[SQ_Especialidade] . 
  												 '&NM_Profissional=' . urlencode($regProfissional[NM_Contato]) . 
-												 '&SQ_Especialidade_Clinica='. $regProfissional[SQ_Especialidade_Clinica] .
-												 '&NM_Especialidade_Clinica='. urlencode($regProfissional[NM_Especialidade_Clinica]).
+												 '&SQ_Especialidade='. $regProfissional[SQ_Especialidade] .
+												 '&NM_Especialidade='. urlencode($regProfissional[NM_Especialidade]).
 												 '>Alterar</a></td>';
     		echo '<td><a href=ProfissionalDelete.php?SQ_Profissional=' . $regProfissional[SQ_Profissional] . 
 												   '&NM_Profissional=' . urlencode($regProfissional[NM_Contato]) . 
-												   '&SQ_Especialidade_Clinica='. $regProfissional[SQ_Especialidade_Clinica] .
-												   '&NM_Especialidade_Clinica='. urlencode($regProfissional[NM_Especialidade_Clinica]).
+												   '&SQ_Especialidade='. $regProfissional[SQ_Especialidade] .
+												   '&NM_Especialidade='. urlencode($regProfissional[NM_Especialidade]).
 													'>Excluir</a></td>';
         echo '</tr>';
     }

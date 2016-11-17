@@ -51,7 +51,7 @@
     <form method="post" action="ContatoDelete.php">
     	<fieldset>
     		<legend>Excluindo Contato</legend><br>
-    		<label class="labelConfirma">Confirma exclus�o de Contato - <?php echo $_REQUEST[NM_Contato] ?> ? </label><br><br>
+    		<label class="labelConfirma">Confirma exclusão de Contato - <?php echo $_REQUEST[NM_Contato] ?> ? </label><br><br>
     		<input type="hidden" name="SQ_Contato" size="10" value="<?php echo $_REQUEST[SQ_Contato]?>">
     	</fieldset>
     	<a class="linkVoltar" href="ContatoLista.php">Voltar</a>

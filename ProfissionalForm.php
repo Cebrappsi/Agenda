@@ -7,27 +7,28 @@
 	}
    // Preparacao para Profissionais
     if (!$SetProfissional = mysql_query('Select distinct Relacionamento.SQ_Contato, Contato.NM_Contato from Relacionamento ' .
-    		          'inner join Contato ' . 
-    		          'on Relacionamento.SQ_Contato = Contato.SQ_Contato ' .
-                      'Where Relacionamento.TP_Relacao = "R" '. 
-					  'order by NM_Contato')){
+					    		          'inner join Contato ' . 
+					    		          'on Relacionamento.SQ_Contato = Contato.SQ_Contato ' .
+					                      'Where Relacionamento.TP_Relacao = "R" '. 
+										  'order by NM_Contato')){
     	echo '<a class="MsgErro">Não foi possível efetuar consulta Relacionamento de Profissionais: ' . mysql_error() .'<br></a>';
     	die();
     }
  
    // Preparacao para Emails
-    if (!$SetEspecialidadeClinica = mysql_query('SELECT * from Especialidade_Clinica order by NM_Especialidade_Clinica')){
-    	echo '<a class="MsgErro">Não foi possível efetuar consulta Especialidades Clinica: ' . mysql_error() .'<br></a>';
+    if (!$SetEspecialidade = mysql_query('SELECT distinct NM_Especialidade, SQ_Especialidade from Especialidade ' .
+    		                             'group by NM_Especialidade order by NM_Especialidade')){
+    	echo '<a class="MsgErro">Não foi possível efetuar consulta Especialidades: ' . mysql_error() .'<br></a>';
     	die();
     }
  
 	$ObjProfissional = new Profissional();
 	$REQ_SQ_Profissional = $_REQUEST[SQ_Profissional];
-	print_r($_REQUEST);	
+	//print_r($_REQUEST);	
    
 	if ((!$_REQUEST['Operacao']) and ($REQ_SQ_Profissional)) { // Nenhuma operacao informada e Chave informada - Mostrar dados da tabela
 		$ObjProfissional->SQ_Profissional = $REQ_SQ_Profissional;
-		$ObjProfissional->SQ_Especialidade_Clinica = $_REQUEST['SQ_Especialidade_Clinica'];
+		$ObjProfissional->SQ_Especialidade = $_REQUEST['SQ_Especialidade'];
 		if (!$ObjProfissional->GetReg($MsgErro))
 			echo '<a class="MsgErro">' . 'Erro na Busca : ' . $MsgErro .'</a>';
 		else {
@@ -39,7 +40,7 @@
 	if ($_REQUEST[Operacao] == "Inserir"){  // Clicou botao inserir - insere
 		//ok - vamos incluir	
 	    $ObjProfissional->SQ_Profissional = $REQ_SQ_Profissional;
-	    $ObjProfissional->SQ_Especialidade_Clinica = $_REQUEST['SQ_Especialidade_Clinica'];
+	    $ObjProfissional->SQ_Especialidade = $_REQUEST['SQ_Especialidade'];
 		$ObjProfissional->DT_Ativacao = $_REQUEST[DT_Ativacao];
 	    $ObjProfissional->DT_Desativacao = $_REQUEST[DT_Desativacao];
 	    if (!$ObjProfissional->insert($MsgErro))
@@ -50,7 +51,7 @@
 	
 	if ($_REQUEST['Operacao'] == "Alterar"){ // Clicou botao alterar - alterar
 	    $ObjProfissional->SQ_Profissional = $_REQUEST[SQ_Profissional];
-	    $ObjProfissional->SQ_Especialidade_Clinica = $_REQUEST[SQ_Especialidade_Clinica];
+	    $ObjProfissional->SQ_Especialidade = $_REQUEST[SQ_Especialidade];
 	    $ObjProfissional->DT_Ativacao = $_REQUEST[DT_Ativacao];
 	    $ObjProfissional->DT_Desativacao = $_REQUEST[DT_Desativacao];
 	    
@@ -102,20 +103,20 @@
     		<br><br>
     		<!--- <label class="MostraDados"><?php echo $_REQUEST[NM_Profissional]?></label><br><br> -->
     		<label class="labelNormal">Especialidade: </label>
-    		<!--- <label class="MostraDados"><?php echo $_REQUEST[NM_Especialidade_Clinica]?></label><br><br>--->
+    		<!--- <label class="MostraDados"><?php echo $_REQUEST[NM_Especialidade]?></label><br><br>--->
     		<?php 
     			if (!$REQ_SQ_Profissional){ //Inserir
-    				echo '<select name="SQ_Especialidade_Clinica">';
-				 		while ($RegEspecialidadeClinica = mysql_fetch_array($SetEspecialidadeClinica))
-    	   					if ($_REQUEST[SQ_Especialidade_Clinica] == $RegEspecialidadeClinica[SQ_Especialidade_Clinica])
-    	   						echo '<option selected  value="' , $RegEspecialidadeClinica[SQ_Especialidade_Clinica] . '">'
-																 . $RegEspecialidadeClinica[NM_Especialidade_Clinica] . '</option>';
+    				echo '<select name="SQ_Especialidade">';
+				 		while ($RegEspecialidade = mysql_fetch_array($SetEspecialidade))
+    	   					if ($_REQUEST[SQ_Especialidade] == $RegEspecialidade[SQ_Especialidade])
+    	   						echo '<option selected  value="' , $RegEspecialidade[SQ_Especialidade] . '">'
+																 . $RegEspecialidade[NM_Especialidade] . '</option>';
     						else
-    							echo '<option           value="' , $RegEspecialidadeClinica[SQ_Especialidade_Clinica] . '">'
-																 . $RegEspecialidadeClinica[NM_Especialidade_Clinica] . '</option>';
+    							echo '<option           value="' , $RegEspecialidade[SQ_Especialidade] . '">'
+																 . $RegEspecialidade[NM_Especialidade] . '</option>';
     			 		echo '</select>';
      			}else // so apresentar 
-    				echo '<label class="MostraDados">'. $_REQUEST[NM_Especialidade_Clinica] . '</label>';
+    				echo '<label class="MostraDados">'. $_REQUEST[NM_Especialidade] . '</label>';
     		?>
     		<br><br>
     		<label class="labelNormal">Data Ativação:</label>

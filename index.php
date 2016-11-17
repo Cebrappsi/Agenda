@@ -8,7 +8,8 @@
         <META NAME="AUTHOR" CONTENT="Genesio">
         <META NAME="COPYRIGHT" CONTENT="GRM">
         <title>CEBRAPPSI - Sistema de Agendamento</title>
-        <link rel="icon" href="imagens/Logotipo Cebrappsi.jpg" type="image/x-icon" />
+        <!-- <link rel="icon" href="imagens/Logotipo Cebrappsi.jpg" type="image/x-icon" />-->
+         <link rel="shortcut icon" HREF="http://localhost/Cebrappsi/Agenda/favicon.ico">         
         <link rel="stylesheet" type="text/css" href="Clinicastyle.css" />
     </head>
     

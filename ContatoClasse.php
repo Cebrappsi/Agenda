@@ -13,7 +13,7 @@ class Contato {
 	    //echo  "<br/>Validando dados Contato: " . $this->NM_Contato . 'Nome: ' . $this->TP_Relacao;
 	   
 	    if ($this->NM_Contato == null){
-		   $MsgErro = 'Nome Contato inv�lido';
+		   $MsgErro = 'Nome Contato inválido';
 		   return FALSE;
 		}
 		
@@ -25,10 +25,10 @@ class Contato {
 //		
 		$data = explode('/', $this->DT_Nascimento);
 		if ($this->DT_Nascimento == '' || !checkdate($data[1], $data[0], $data[2])){
-			$MsgErro = 'Data de Nascimento inv�lida';
+			$MsgErro = 'Data de Nascimento inválida';
 			return FALSE;
-		} elseif (strtotime($data) > date('Y-m-d')){
-				$MsgErro = 'Data de Nascimento n�o pode ser maior que atual';
+		} elseif (implode('-',  array_reverse(explode('/',$this->DT_Nascimento))) > date('Y-m-d')){
+				$MsgErro = 'Data de Nascimento não pode ser maior que atual';
 				return FALSE;
 				}
 		
@@ -87,7 +87,7 @@ class Contato {
 		$result = mysql_query($query);
         
 		if (!($result && (mysql_affected_rows() > 0))) {
-			$MsgErro = 'N�o foi possivel incluir o registro: ' . mysql_error();
+			$MsgErro = 'Não foi possivel incluir o registro: ' . mysql_error();
 			return FALSE;
 		}
 		$this->SQ_Contato = mysql_insert_id();
@@ -109,7 +109,7 @@ public function Delete(&$MsgErro){
 	$result = mysql_query($query);
 	
 	if (!$result) {
-		$MsgErro = 'N�o foi possivel excluir as Relacoes do contato: ' . mysql_error();
+		$MsgErro = 'Não foi possivel excluir as Relacoes do contato: ' . mysql_error();
 		return FALSE;
 	}	//echo  "<br/>Excluindo Rela��es do Contato ";
 	
@@ -120,7 +120,7 @@ public function Delete(&$MsgErro){
 	$result = mysql_query($query);
 	if (!($result && (mysql_affected_rows() > 0)))
 	{
-		$MsgErro = 'N�o foi possivel excluir o registro: ' . mysql_error();
+		$MsgErro = 'Não foi possivel excluir o registro: ' . mysql_error();
 		return FALSE;
 	}
 //	else
@@ -130,7 +130,7 @@ public function Delete(&$MsgErro){
 	  
 	}
 
-public function GetReg(&$MsgErro){
+	public function GetReg(&$MsgErro){
 	   
 	//echo  "<br/>Recuperando Contato ";
 					
@@ -182,7 +182,7 @@ public function GetReg(&$MsgErro){
 		//echo $query . mysql_affected_rows() . mysql_error() . gettype($result);
 				
 		if (!$result || mysql_affected_rows() == 0){
-			$MsgErro = 'Contato n�o alterado: ' . mysql_error();
+			$MsgErro = 'Contato não alterado: ' . mysql_error();
 			return FALSE;
 		}
 		return TRUE;
@@ -216,7 +216,7 @@ public function GetReg(&$MsgErro){
 		$result = mysql_query($query);
 	
 		if (!($result && (mysql_affected_rows() > 0))) {
-			$MsgErro = 'N�o foi possivel incluir as Relacoes: ' . mysql_error();
+			$MsgErro = 'Não foi possivel incluir as Relacoes: ' . mysql_error();
 			return FALSE;
 		}
 	
@@ -250,7 +250,7 @@ public function GetReg(&$MsgErro){
 		$result = mysql_query($query);
 	
 		if (!($result || (mysql_affected_rows() < 1))) {
-			$MsgErro = 'N�o foi possivel excluir as Relacoes: ' . mysql_error();
+			$MsgErro = 'Não foi possivel excluir as Relacoes: ' . mysql_error();
 			return FALSE;
 		}
 	

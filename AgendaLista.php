@@ -1,6 +1,6 @@
     <?php
     require "comum.php";
-    print_r($_REQUEST); //debug var recebidas
+    //print_r($_REQUEST); //debug var recebidas
     
     if (!conecta_BD($con,$MsgErro)){
 	    echo '<a class="MsgErro">Erro: ' . $MsgErro .'<br></a>';
@@ -16,16 +16,18 @@
 	}
 
 	// Busca e imprime uma consulta marcada
-	function buscaImmprimeConsulta($hora,$dtConsulta,$Profissional,$incremento){
-		$qryConsulta = 'Select consulta.*, Contato.NM_Contato, sala.NM_Sala, tipo_situacao_Consulta.NM_Tipo_Situacao_Consulta ' .
+	function buscaImmprimeConsulta($hora,$dtConsulta,$Profissional){
+		$qryConsulta = 'Select consulta.*, Contato.NM_Contato, Plano.NM_Plano,sala.NM_Sala, tipo_situacao_Consulta.NM_Tipo_Situacao_Consulta ' .
 				' from Consulta ' .
 				' inner join Contato ' .
 				' on Consulta.SQ_Contato_Paciente = Contato.SQ_Contato ' .
+				' inner join plano ' .
+				' on Consulta.SQ_Plano = Plano.SQ_Plano ' .
 				' inner join sala ' .
 				' on Consulta.SQ_Sala = Sala.SQ_Sala ' .
 				' inner join Tipo_Situacao_Consulta ' .
 				' on Consulta.TP_Situacao_Consulta = Tipo_Situacao_Consulta.TP_Situacao_Consulta' .
-				' Where DT_Consulta = "' . date_format(date_add(new DateTime($dtConsulta),new DateInterval('P' . $incremento .'D')),"Y-m-d") . '"' .
+				' Where DT_Consulta = "' . date_format($dtConsulta,"Y-m-d") . '"' .
 				' and HR_Consulta =  "' . date('H:i',$hora) . '"' .
 				' and SQ_Contato_Profissional = ' . $Profissional;
 		//ECHO $qryConsulta;
@@ -37,12 +39,22 @@
 		echo "<tr>";
 		if (mysql_num_rows($SetConsulta) > 0){
 			$regConsulta = mysql_fetch_array($SetConsulta);
-			echo '<td align="center">' . date('H:i',$hora) . '</td>';
+			echo '<td> <a href="AgendaForm.php?Operacao=Mostrar&SQ_Contato_Profissional=' . $Profissional .
+															  '&NM_Profissional=' . urlencode($regConsulta['NM_Contato']) .
+			                                                  '&SQ_Contato_Paciente=' . $regConsulta['SQ_Contato_Paciente'] .
+			                                                  '&DT_Consulta=' . urlencode($regConsulta['DT_Consulta']) . 
+			                                                  '&HR_Consulta=' . urlencode(date('H:i',$hora)) . 
+															  '">' . date('H:i',$hora) . '</a></td>';
 			echo '<td align="center">' . $regConsulta['NM_Contato'] . '</td>';
+			echo '<td align="center">' . $regConsulta['NM_Plano'] . '</td>';
 			echo '<td align="center">' . $regConsulta['NM_Tipo_Situacao_Consulta'] . '</td>';
 			echo '<td align="center">' . $regConsulta['NM_Sala'] . '</td>';
 		} else{
-			echo '<td align="center">' . date('H:i',$hora) . '</td>';
+			echo '<td> <a href="AgendaForm.php?Operacao=Mostrar&SQ_Contato_Profissional=' . $Profissional .
+															  '&DT_Consulta=' . urlencode(date_format($dtConsulta,"Y-m-d")) .
+															  '&HR_Consulta=' . urlencode(date('H:i',$hora)) .
+															  '">' . date('H:i',$hora) . '</a></td>';
+			echo '<td align="center">' . '-------' . '</td>';
 			echo '<td align="center">' . '-------' . '</td>';
 			echo '<td align="center">' . '-------' . '</td>';
 			echo '<td align="center">' . '-------' . '</td>';
@@ -107,17 +119,24 @@
     	<form method="post" action="">
     	   <div id='superior'>
 		        <?php 
-			      echo '<input type="radio" name="DT_Ini_Agenda" value="' . 
+		          	echo '<input type="radio" name="DT_Ini_Agenda" value="' .
+		        				date_format(date_sub(new DateTime($_REQUEST[DT_Ini_Agenda]),new DateInterval('P1M')),"Y-m-d") . '"><-1Mês</a>';
+		         
+			      	echo '<input type="radio" name="DT_Ini_Agenda" value="' . 
 			      	   			date_format(date_sub(new DateTime($_REQUEST[DT_Ini_Agenda]),new DateInterval('P7D')),"Y-m-d") . '"><-1Semana </a>';
 			      
-				      for ($i = 0; $i <= 30; $i=$i+3) {
-				      	   echo '<input type="radio" name="DT_Ini_Agenda" value="' . 
-				      	   			date_format(date_add(new DateTime($_REQUEST[DT_Ini_Agenda]),new DateInterval('P' . $i .'D')),"Y-m-d") . '">' .
-				      	   			date_format(date_add(new DateTime($_REQUEST[DT_Ini_Agenda]),new DateInterval('P' . $i .'D')),"d/m") . ' </a>';
+					for ($i = 0; $i <= 30; $i=$i+3) {
+						if ($i==0)
+				      	   echo '<input type="radio" name="DT_Ini_Agenda" checked value="';
+						else
+				      	   echo '<input type="radio" name="DT_Ini_Agenda" value="';
+				      	echo date_format(date_add(new DateTime($_REQUEST[DT_Ini_Agenda]),new DateInterval('P' . $i .'D')),"Y-m-d") . '">' .
+				      	   	 date_format(date_add(new DateTime($_REQUEST[DT_Ini_Agenda]),new DateInterval('P' . $i .'D')),"d/m") . ' </a>';
 				      }
-				      echo '<input type="radio" name="DT_Ini_Agenda" value="' .   
+				    echo '<input type="radio" name="DT_Ini_Agenda" value="' .   
 				      	   			date_format(date_add(new DateTime($_REQUEST[DT_Ini_Agenda]),new DateInterval('P7D')),"Y-m-d") . '">+1Semana></a>';
-			      
+				    echo '<input type="radio" name="DT_Ini_Agenda" value="' .
+				    		date_format(date_add(new DateTime($_REQUEST[DT_Ini_Agenda]),new DateInterval('P1M')),"Y-m-d") . '">+1Mês></a>';
 				 ?> 
 			    
 			    <br><br>
@@ -132,51 +151,54 @@
 	    		?>
 	    		</select>
 	    		<br><br>
+	 		 	<label>Escolha a data inicial e o profissional para ver sua agenda </label>
+	            <br><br>
+	    		<input class="Envia" type="submit"  name="Operacao"  value= "Consultar">
             </div>
 		    <?php 
 		    echo '<div id="tabelas" style="float:left; overflow:auto;">';
 				if ($_REQUEST[SQ_Profissional]){
 					for ($i = 0; $i < 15; $i++) { // Apresento agenda para duas semanas
+						$dataAtu = date_add(new DateTime($_REQUEST[DT_Ini_Agenda]),new DateInterval('P' . $i .'D'));
 						echo '<div id="ladoalado" style="float:left;  overflow:auto;">';
 							// Primeira Linha do cabecalho
 							echo '<table class="CabecalhoTabela" border="1">';
 								echo '<tr>';
-									echo '<th colspan=4>' . date_format(date_add(new DateTime($_REQUEST[DT_Ini_Agenda]),new DateInterval('P' . $i .'D')),"d/m") 
-								     . ' - ' .                diaSemana(date_add(new DateTime($_REQUEST[DT_Ini_Agenda]),new DateInterval('P' . $i .'D'))) . '</th>';
+									echo '<th colspan=5>' . date_format($dataAtu,"d/m") 
+								                  . ' - ' . diaSemana($dataAtu) . '</th>';
 				    		
 				    			echo '</tr>';
 				    		// Segunda Linha do cabecalho
 				    			echo '<tr>';
 					    			echo '<th>Hora</th>';
 				      	   			echo '<th>Paciente</th>';
+				      	   			echo '<th>Plano</th>';
 				      	   			echo '<th>Situação</th>';
-				      	   			echo '<th>Observação</th>';
+				      	   			echo '<th>Sala</th>';
 				      	   		echo '</tr>';
 			      	   			//Monta as linhas conforme o dia da semana
 					      		$qryEscala = 'Select escala.*  ' .
 					      				' FROM ESCALA ' .
 					      				' where SQ_Profissional = ' . $_REQUEST[SQ_Profissional] .
 					      				' and DT_Ini_Escala <= "' . $_REQUEST[DT_Ini_Agenda] . '"'.
-					      				' and Dia_Semana = ' . ((int)date_format(date_add(new DateTime($_REQUEST[DT_Ini_Agenda]),new DateInterval('P' . $i . 'D')),"w") + 1) .
+					      				' and Dia_Semana = ' . ((int)date_format($dataAtu,"w") + 1) .
 					      				' and DT_Fim_Escala = "0000-00-00" ';
-					      		//echo $qryEscala;
-					      		if (!$SetEscala = mysql_query($qryEscala)){
+					      		//echo date_format($dataAtu,"Y-m-d") . '-' . $qryEscala . '<br>';
+					      		if (!$SetEscala = mysql_query($qryEscala)){ 
 					      			echo '<a class="MsgErro">Não foi possível efetuar consulta Escala de Trabalho Profissional: ' . mysql_error() .'<br></a>';
 					      			die();
 					      		}
-					      		if (mysql_num_rows($SetEscala) > 0){
-					      	    
+					      		if (mysql_num_rows($SetEscala) > 0){ //Deve haver apenas um registro por dia
 							        $RegEscala = mysql_fetch_array($SetEscala);
-							   
 							   	    //print_r('P' . $RegEscalauracao] . 'i' . '-' . strtotime($RegEscala[HR_Ini_Turno1]) . '-' . date($RegEscala[HR_Ini_Turno1]));
 							        $hora = strtotime($RegEscala[HR_Ini_Turno1]);
 							        while ($hora < strtotime($RegEscala[HR_Fim_Turno1])) {
-										buscaImmprimeConsulta($hora,$_REQUEST[DT_Ini_Agenda],$_REQUEST[SQ_Profissional],$i);	
+										buscaImmprimeConsulta($hora,$dataAtu,$_REQUEST[SQ_Profissional]);	
 							        	$hora = strtotime('+'. ($RegEscala[Duracao]+$RegEscala[Intervalo]) . ' minute', $hora);
 							   	    }
 							   	    $hora = strtotime($RegEscala[HR_Ini_Turno2]);
 							   	    while ($hora < strtotime($RegEscala[HR_Fim_Turno2])) {
-							   	    	buscaImmprimeConsulta($hora,$_REQUEST[DT_Ini_Agenda],$_REQUEST[SQ_Profissional],$i);
+							   	    	buscaImmprimeConsulta($hora,$dataAtu,$_REQUEST[SQ_Profissional]);
 							   	    	$hora = strtotime('+'. ($RegEscala[Duracao]+$RegEscala[Intervalo]) . ' minute', $hora);
 							   	    }
 					      		}
@@ -185,10 +207,7 @@
 					}//do for
 			    }//do if
 			echo '</div>';
-			 ?>
-			<a class="linkVoltar" href="Agenda.php">Voltar</a>
-    	    <input class="Envia" type="submit"  name="Operacao"  value= <?php if (!$REQ_SQ_Profissional) echo "Inserir"; else echo "Alterar";?> >
-    	
+			 ?>    	
 	    </table> 	  
    	</form>
   </BODY>
