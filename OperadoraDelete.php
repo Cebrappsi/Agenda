@@ -27,7 +27,7 @@
     <form method="post" action="OperadoraDelete.php">
     	<fieldset>
     		<legend>Excluindo Operadora de Telefonia</legend><br>
-    		<label class="labelConfirma">Confirma exclusão de Operadora de Telefonia - <?php echo $_REQUEST[NM_Operadora] ?> ? </label>
+    		<label class="labelConfirma">Confirma exclusão de Operadora de Telefonia - <?php echo $_REQUEST[NM_Operadora] ?> ? </label><br><br>
     		<input type="hidden" name="SQ_Operadora" size="10" value="<?php echo $_REQUEST[SQ_Operadora]?>">
     	</fieldset>
     	<a class="linkVoltar" href="OperadoraLista.php">Voltar</a>

@@ -19,7 +19,7 @@
   <BODY>
     <form method="post" action="UFDelete.php">
     	<fieldset>
-    		<legend>Excluindo Unidade da Federação</legend>
+    		<legend>Excluindo Unidade da Federação</legend><br>
     		<label class="Labelconfirma">Confirma Exclusão de Unidade da Federação - <?php echo $_REQUEST[CD_UF] ?> ? </label><br><br>
     	    <input type="hidden" name="CD_UF" size="10" value="<?php echo $_REQUEST[CD_UF] ?>">
     	</fieldset>

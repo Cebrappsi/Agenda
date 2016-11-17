@@ -41,7 +41,7 @@
     		echo '<td>' . $dados[CD_Operadora] . '</td>';
     		echo '<td>' . $dados[NM_Operadora] . '</td>';
     		echo '<td><a href=OperadoraForm.php?SQ_Operadora=' . $dados[SQ_Operadora] . '>Alterar</a></td>';
-    		echo '<td><a href=OperadoraDelete.php?SQ_Operadora=' . $dados[SQ_Operadora] . '&NM_Operadora=' . $dados[NM_Operadora] . '>Excluir</a></td>';
+    		echo '<td><a href=OperadoraDelete.php?SQ_Operadora=' . $dados[SQ_Operadora] . '&NM_Operadora=' . urlencode($dados[NM_Operadora]). '>Excluir</a></td>';
         echo '</tr>';
     }
     echo '</table>';

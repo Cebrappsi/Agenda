@@ -5,7 +5,7 @@
     require "OperadoraClasse.php";
     
     if (!$con = conecta_BD($MsgErro)) {
-    	echo '<a class="MsgErro">' . 'Erro: ' . MsgErro .'</a>';
+    	echo '<a class="MsgErro">' . 'Erro: ' . $MsgErro .'</a>';
     	die();
     }
     
@@ -17,10 +17,10 @@
     	//Acesso o registro para preencher os campos
     	$ObjOperadora->SQ_Operadora = $REQ_SQ_Operadora;
     	if (!$ObjOperadora->GetReg($MsgErro)) 
-    		echo '<a class="MsgErro">' . 'Erro na alteraçao : ' . MsgErro .'</a>';
+    		echo '<a class="MsgErro">' . 'Erro na Consulta : ' . $MsgErro .'</a>';
     	else {
-    		$_REQUEST[CD_Operadora] =  mysql_result($ObjOperadora->Regs,0,CD_Operadora) . '"';
-    		$_REQUEST[NM_Operadora] =  mysql_result($ObjOperadora->Regs,0,NM_Operadora) . '"';
+    		$_REQUEST[CD_Operadora] =  mysql_result($ObjOperadora->Regs,0,CD_Operadora);
+    		$_REQUEST[NM_Operadora] =  mysql_result($ObjOperadora->Regs,0,NM_Operadora);
     	}
     }
     
@@ -71,7 +71,7 @@
   <BODY>
     <form method="post" action="">
     	<fieldset>
-    		<legend>Inserindo Operadora de Telefonia</legend>
+    		<legend> <?php if (!$REQ_SQ_Operadora) echo "Inserindo "; else echo "Alterando ";?> Operadora de Telefonia</legend>
     		<label class="labelNormal">Código: </label>
     		<input class="Entrada" type="text" name="CD_Operadora" size="2" value ="<?php echo $_REQUEST[CD_Operadora]?> "><br>
     		<label class="labelNormal">Nome:</label>

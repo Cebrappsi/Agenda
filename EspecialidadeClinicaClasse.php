@@ -1,24 +1,24 @@
 <?php
-class Especialidade_Clinica {
+class EspecialidadeClinica {
   
 	public $Regs;
 	public $SQ_Especialidade_Clinica;
 	public $NM_Especialidade_Clinica;
 	public $Tempo_Atendimento;
 
-	private function Valida_Dados($MsgErro){ 
-	  //  echo  '<br/>Validando dados Especialidade_Clinica: ' . 'Nome: ' . $this->NM_Especialidade_Clinica .
+	private function Valida_Dados(&$MsgErro){ 
+	   //echo  '<br/>Validando dados Especialidade_Clinica: ' . 'Nome: ' . $this->NM_Especialidade_Clinica . $this->Tempo_Atendimento;
+	   //print_r ($this);
 	  //             
 		if ($this->NM_Especialidade_Clinica == null){
-			$this->MsgErro = 'Nome Especialidade Clinica inválido';
+			$MsgErro = 'Nome Especialidade Clinica inválido';
 			return FALSE;
 		}
 
-		if (!(is_numeric($this->Tempo_Atendimento) ||(int)$this->Tempo_Atendimento < 10)){
-			$this->MsgErro = 'Tempo de atendimento inválido';
+		if (!is_numeric($this->Tempo_Atendimento) ||(int)$this->Tempo_Atendimento < 10){
+			$MsgErro = 'Tempo de atendimento inválido';
 			return FALSE;
-		}
-						
+		}				
 		return TRUE;
 	}
 	
@@ -26,24 +26,25 @@ class Especialidade_Clinica {
 	 * Retorna True se existe
 	 * Testar se deu erro de banco em MsgErro quando receber Falso
 	*/
-	private function Existe_Registro($MsgErro){
+	private function Existe_Registro(&$MsgErro){
 		//Valida se registro já existe
 		//echo  "<br/>/Validando Consistencia do Registro";
-		$query = 'Select SQ_Especialidade_Clinica FROM Especialidade_Clinica WHERE NM_Especialidade_Clinica = "' . $this->NM_Especialidade_Clinica . '"';
+		$query = 'Select SQ_Especialidade_Clinica FROM Especialidade_Clinica WHERE NM_Especialidade_Clinica = "' . 
+				  $this->NM_Especialidade_Clinica . '"';
 		$result = mysql_query($query);
 		if (!$result){
-			$this->MsgErro = 'Erro bd: ' . mysql_error() . '<br>Query: ' . $query;
+			$MsgErro = 'Erro bd: ' . mysql_error() . '<br>Query: ' . $query;
 			return FALSE;
 		}
 		//echo 'Achei: ' .mysql_result($result,0,0);
 		if (mysql_num_rows($result) == 0){
-			$this->MsgErro = null;
+			$MsgErro = null;
 			return FALSE;
 		}
 		return TRUE;
 	}
 	
-	public function Insert($MsgErro){
+	public function Insert(&$MsgErro){
 		//echo  '<br/>Inserindo Especialidade_Clinica ';
 				
 		//echo '<br>Validando Dados';
@@ -52,10 +53,10 @@ class Especialidade_Clinica {
 		
 		//echo '<br>Validando Consistencia BD';
     	if ($this->Existe_Registro($MsgErro)){
-			$this->MsgErro = 'Especialidade Clinica já existe';
+			$MsgErro = 'Especialidade Clinica já existe';
 			return FALSE;
 		}
-		elseif ($this->MsgErro <> null)
+		elseif ($MsgErro <> null)
 			 	return FALSE;
 				
 		//echo '<br>Inserindo Registro';
@@ -68,14 +69,14 @@ class Especialidade_Clinica {
 		$result = mysql_query($query);
         
 		if (!($result && (mysql_affected_rows() > 0))) {
-			$this->MsgErro = 'Não foi possivel incluir o registro: ' . mysql_error() . '<br>Query: ' . $query;
+			$MsgErro = 'Não foi possivel incluir o registro: ' . mysql_error() . '<br>Query: ' . $query;
 			return FALSE;
 		}
 
 		return TRUE;
 	}
 
-	public function Delete($MsgErro){
+	public function Delete(&$MsgErro){
 		   
 		//echo  "<br>Excluindo Especialidades da Clinica>";
 						
@@ -85,17 +86,17 @@ class Especialidade_Clinica {
 		$result = mysql_query($query);
 		if (!($result && (mysql_affected_rows() > 0)))
 		{
-			$this->MsgErro = 'Não foi possivel excluir o registro: ' . mysql_error() . '<br>Query: ' . $query;
+			$MsgErro = 'Não foi possivel excluir o registro: ' . mysql_error() . '<br>Query: ' . $query;
 			return FALSE;
 		}
 	//	else
-	//		$this->MsgErro = mysql_affected_rows() . ' registro(s) excluido(s) com sucesso';
+	//		$MsgErro = mysql_affected_rows() . ' registro(s) excluido(s) com sucesso';
 		
 		return TRUE;
 		  
 	}
 	
-	public function GetReg($MsgErro){
+	public function GetReg(&$MsgErro){
 		   
 		//echo  "<br>Recuperando Especialidade_Clinica ";
 						
@@ -104,20 +105,20 @@ class Especialidade_Clinica {
 		//echo 'Query: ' . $query;
 		$this->Regs = mysql_query($query);
 		if (!$this->Regs){
-			$this->MsgErro = 'Erro no Banco de Dados: ' . mysql_error() . '<br>Query: ' . $query;
+			$MsgErro = 'Erro no Banco de Dados: ' . mysql_error() . '<br>Query: ' . $query;
 			return FALSE;
 		}
 		
 		//echo 'Achei: ' . mysql_result($this->Regs,0,1);
 		if (mysql_num_rows($this->Regs) == 0){
-			$this->MsgErro = 'Sequencial do Registro não encontrado';
+			$MsgErro = 'Sequencial do Registro não encontrado';
 			return FALSE;
 		}
 		
 		return TRUE;
 	}	
 	
-	public function Edit($MsgErro){
+	public function Edit(&$MsgErro){
 	   
 		//echo  "<br>Alterando Especialidade_Clinica ";
 				
@@ -126,17 +127,17 @@ class Especialidade_Clinica {
 	        return FALSE;
 
 		if (!(is_numeric($this->SQ_Especialidade_Clinica) ||(int)$this->SQ_Especialidade_Clinica < 1)){
-			$this->MsgErro = 'Sequencial Especialidade_Clinica inválido';
+			$MsgErro = 'Sequencial Especialidade_Clinica inválido';
 			return FALSE;
 		}
 		
 		/*
 		//echo '<br>Validando Consistencia BD';
 		if ($this->Existe_Registro($MsgErro)){
-			$this->MsgErro = 'Especialidade Clinica já existe';
+			$MsgErro = 'Especialidade Clinica já existe';
 			return FALSE;
 		}
-		elseif ($this->MsgErro <> null)
+		elseif ($MsgErro <> null)
 			return FALSE;
 		*/
 		
@@ -149,7 +150,7 @@ class Especialidade_Clinica {
 	//	echo $query . mysql_affected_rows() . mysql_error() . gettype($result) . '<br>Query: ' . $query;
 		
 		if (!$result || mysql_affected_rows() == 0){
-			$this->MsgErro = 'Registro não alterado: ' . mysql_error() . '<br>Query: ' . $query;
+			$MsgErro = 'Registro não alterado: ' . mysql_error() . '<br>Query: ' . $query;
 			return FALSE;
 		}
 		return TRUE;

@@ -65,7 +65,7 @@
   <BODY>
     <form method="post" action="">
     	<fieldset>
-    		<legend><?php if (!$REQ_SQ_Convenio) echo "Inserindo "; else echo "Alterando ";?> Unidade da Federação</legend>
+    		<legend><?php if (!$REQ_CD_UF) echo "Inserindo "; else echo "Alterando ";?> Unidade da Federação</legend>
     		<label class="labelNormal">Sigla:</label>
     		<input class="Entrada" type="text" name="CD_UF" size="2" value="<?php echo $_REQUEST[CD_UF] ?>"><br>
     		<label class="labelNormal">Nome:</label>

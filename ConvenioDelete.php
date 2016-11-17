@@ -20,7 +20,7 @@
   
     <form method="post" action="ConvenioDelete.php">
     	<fieldset>
-    		<legend>Excluindo Convênio</legend>
+    		<legend>Excluindo Convênio</legend><br>
     		<label class="label">Confirma exclusão do Convênio - <?php echo $_REQUEST[NM_Convenio] ?> ? </label><br><br>
     		<input type="hidden" name="SQ_Convenio" size="2" value= <?php echo $_REQUEST[SQ_Convenio] ?> >
     	</fieldset>
