@@ -1,5 +1,29 @@
+<?php    
+    if ($_REQUEST[Operacao] == "Excluir"){ 
+	    require "ContatoClasse.php";
+	    require "comum.php";
+	    $ObjContato = new Contato();
+	    
+	    $con = conecta_BD($MsgErro);
+	    if (!$con){
+		    echo '<a class="MsgErro">Erro: ' . $MsgErro .'<br></a>';
+			die();
+	    }
+	    
+	    $ObjContato->SQ_Contato = $_REQUEST[SQ_Contato];
+	    if (!$ObjContato->Delete($MsgErro))
+	       //MsgPopup('Erro na Exclus�o do Registro : ' . $ObjContato->MsgErro);
+	        echo '<br><a class="MsgErro">Erro na Exclusão do Registro : ' . $MsgErro .'</a>';
+	    else 
+	      // MsgPopup( $ObjContato->MsgErro);
+	       echo '<br><a class="MsgSucesso">Registro excluido com sucesso!</a>';
+	      //header("Location: Contato.php");
+	    mysql_close($con);
+	 }
+?>
 <!DOCTYPE html>
 <HTML>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <HEAD>
 	<TITLE> Frame 3 </TITLE>
     <link rel="stylesheet" type="text/css" href="ClinicaStyle.css" />
@@ -25,57 +49,12 @@
   <BODY>
     <form method="post" action="ContatoDelete.php">
     	<fieldset>
-    		<legend>Excluindo Contato</legend>
-    		<label class="labelConfirma">Confirma exclusão de Contato? (S/N) :</label>
-    		<?php
-    		echo '<input class="Entrada" type="text" name="Confirma" size="1" value="'.$_REQUEST[Confirma]. '">';
-    		echo '<input type="hidden" name="SQ_Contato" size="10" value="' . $_REQUEST[SQ_Contato] . '">';
-    		?>
+    		<legend>Excluindo Contato</legend><br>
+    		<label class="labelConfirma">Confirma exclusão de Contato - <?php echo $_REQUEST[NM_Contato] ?> ? </label><br><br>
+    		<input type="hidden" name="SQ_Contato" size="10" value="<?php echo $_REQUEST[SQ_Contato]?>">
     	</fieldset>
-    	<a class="linkVoltar" href="Contato.php">Voltar</a>
-    	<input class="Envia" type="submit" value="Excluir">
+    	<a class="linkVoltar" href="ContatoLista.php">Voltar</a>
+    	<input class="Envia" type="submit" name="Operacao"  value="Excluir">
     </form>
-    
-    <?php 
-    //echo 'Antes--Request:'; print_r($_REQUEST); echo '.'; var_dump( $_REQUEST); echo '<br>';
-    /*$arrpost = Array (SQ_Contato => (string)$_REQUEST[SQ_Contato] , Confirma => $_REQUEST[Confirma]);
-    echo 'Depois-Arrpost:'; print_r($arrpost); echo '.'; var_dump($arrpost);echo '<br>';	
-    */ 
-    if (!isset($_REQUEST[Confirma]) || $_REQUEST[Confirma] == "")
-        die();
-    	
-    if ((strtoupper($_REQUEST[Confirma]) <> 'S' && strtoupper($_REQUEST[Confirma]) <> 'N')){
-         echo '<a class="MsgObs">Informe S ou N<br></a>';
-		 die();
-    }
-    
-    if (strtoupper($_REQUEST[Confirma]) == 'N'){
-    	header("Location: Contato.php");
-    	die();
-    }
-    
-    //die('passou:' ) . $_REQUEST[Confirma] . '"' . $_REQUEST[SQ_Contato];
-    //return;
-    
-    require "ContatoClasse.php";
-    require "comum.php";
-    $ObjContato = new Contato();
-    
-    $con = conecta_BD($MsgErro);
-    if (!$con){
-	    echo '<a class="MsgErro">Erro: ' . $MsgErro .'<br></a>';
-		die();
-    }
-    
-    $ObjContato->SQ_Contato = $_REQUEST[SQ_Contato];
-    if (!$ObjContato->Delete($MsgErro))
-       //MsgPopup('Erro na Exclus�o do Registro : ' . $ObjContato->MsgErro);
-        echo '<br><a class="MsgErro">Erro na Exclusão do Registro : ' . $ObjContato->MsgErro .'</a>';
-    else 
-      // MsgPopup( $ObjContato->MsgErro);
-       echo '<br><a class="MsgSucesso">Registro excluido com sucesso!</a>';
-      //header("Location: Contato.php");
-    mysql_close($con);
-    ?>
-  </BODY>
+   </BODY>
 </HTML>

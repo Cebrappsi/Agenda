@@ -40,7 +40,7 @@
         echo '<a class="Submenu" target=dados href="EspecialidadeLista.php">Especialidades<br></a>';
         echo '<a class="Submenu" target=dados href="EspecialidadeClinicaLista.php">Especialidades da Clínica<br></a>';
         echo '<a class="Submenu" target=dados href="TipoSituacaoConsultaLista.php">Situação da Consulta<br></a>';
-        echo '<a class="Submenu" target=dados href="Valor.php">Valores<br></a>';
+        echo '<a class="Submenu" target=dados href="ValorLista.php">Valores<br></a>';
         echo '<br>';
         echo '<a class="Submenu" target=dados href="SalaLista.php">Salas de Atendimento<br></a>';
         echo '<a class="Submenu" target=dados href="EscalaLista.php">Escala de Trabalho<BR></a>';

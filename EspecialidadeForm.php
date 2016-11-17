@@ -100,9 +100,9 @@
     		   <?php 
 		    		while ($dados = mysql_fetch_array($consultaPlano))
 		    			if (mysql_result($ObjEspecialidade->Regs,0,SQ_Convenio) == $dados[SQ_Convenio] && mysql_result($ObjEspecialidade->Regs,0,SQ_Plano) ==  $dados[SQ_Plano])
-		    				echo '<option value="' , ($dados[SQ_Convenio] * 1000000 + $dados[SQ_Plano]) . '"  selected>' . $dados[NM_Convenio] . '->' . $dados[NM_Plano] . '</option>';
+		    				echo '<option value="' , ($dados[SQ_Convenio] * 1000000 + $dados[SQ_Plano]) . '" selected>' . $dados[NM_Convenio] . '->' . $dados[NM_Plano] . '</option>';
 		    			else
-		    				echo '<option value="' , ($dados[SQ_Convenio] * 1000000 + $dados[SQ_Plano]) . '">' . $dados[NM_Convenio] . '->' . $dados[NM_Plano] . '</option>';
+		    				echo '<option value="' , ($dados[SQ_Convenio] * 1000000 + $dados[SQ_Plano]) . '"' . $dados[NM_Convenio] . '->' . $dados[NM_Plano] . '</option>';
 				    //while ($dados = mysql_fetch_array($consultaPlano))  //guardo o Convenio na posição acima de 1000000
 		    	//	   echo '<option value="' . ($dados[SQ_Convenio] * 1000000 + $dados[SQ_Plano])  . '">' . $dados[NM_Convenio] . '->' . $dados[NM_Plano] . '</option>';
 		       ?>

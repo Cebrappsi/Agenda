@@ -124,14 +124,14 @@
     	$ObjContato->TP_Relacao = $TiposRel[TP_Relacao];
     	//echo $TiposRel[TP_Relacao];
     	if  ($artipo[$TiposRel[TP_Relacao]] == "on"){
-    		if (!$ObjContato->insertRelacoes($Con,$MsgErro))
+    		if (!$ObjContato->insertRelacoes($MsgErro))
     			echo '<a class="MsgErro">Erro na inserção de Relacionamento: ' . $ObjContato->MsgErro .'<br></a>';
     		else
     			echo '<a class="MsgSucesso">Relacao Incluida com sucesso!<br></a>';
     		//echo 'i-' . $TiposRel[TP_Relacao];
     	}
     	else{
-    		if (!$ObjContato->DeleteRelacoes($Con,$MsgErro))
+    		if (!$ObjContato->DeleteRelacoes($MsgErro))
     			echo '<a class="MsgErro">Erro na exclusão de relacionamento: ' . $ObjContato->MsgErro .'<br></a>';
     		else
     			echo '<a class="MsgSucesso">Relacao Excluida com sucesso!<br></a>';

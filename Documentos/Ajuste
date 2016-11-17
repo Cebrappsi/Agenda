@@ -1,0 +1,46 @@
+1 - Renomear Arq Insert -> Form
+2 - Renomear Arq semExt -> Lista
+
+Arquivo Classe
+--------------
+Inserir & nas funções $MsgErro                        
+Retirar $this-> da MsgErro
+Alterar nome da Classe para CamelCase
+Ajustar datas explode/implode
+
+Arquivo Lista
+-------------
+Insluir tag meta
+Ajustar $con
+href Inserir apontar para Form
+href Alterar apontar para form
+href Excluir - colocar nome e URLenconde
+Ajustar datas
+
+Arquivo Delete
+--------------
+Incluir tag meta
+Incluir <br> na tag legenda
+Copiar texto do Confirma
+Incluir ?Php em html
+Ajustar href do voltar "Lista"
+Inserir Operacao no Excluir
+Apagar comments
+Ajustar $con
+Corrigir $MsgErro
+Colocar IF no bloco de execução
+
+Arquivo Form
+-------------
+Mover HTML para o final
+Incluir tag meta
+Ajustar $con
+Copiar texto do REQUEST e Ifs (apagar conteudo dos IF)
+Alterar $MsgErro
+Mover texto do Insert para If insert
+Inserir texto do Alterar no IF alterar
+Apagar Action
+Alterar legend
+Alterar values dos inputs com PHP
+Alterar hfef do link Voltar -> Lista
+Copiar último input do HTML Operacao

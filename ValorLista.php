@@ -15,7 +15,7 @@
     	<th>Nome do Convenio</th>
     	<th>Nome do Plano</th>
     	<th>Nome da Especialidade</th>
-    	<th>Consultas/Semana</th>
+    	<th>Valor Consulta</th>
     	<th>Data Ativação</th>
     	<th>Data Desativação</th>
     	<th>Alterar?</th>
@@ -30,32 +30,34 @@
     }
     
     //prepara para carregar lista de especialidades
-    if (!$consulta = mysql_query('SELECT Especialidade.*, Plano.NM_Plano, Convenio.NM_Convenio 
-									from Especialidade
+    if (!$consulta = mysql_query('SELECT Valor.*, Especialidade.NM_Especialidade,Plano.NM_Plano, Convenio.NM_Convenio 
+									from Valor
+    								inner join Especialidade
+									on Valor.SQ_Especialidade = Especialidade.SQ_Especialidade
 									inner join plano
-									on Especialidade.SQ_Plano = plano.SQ_Plano
+									on Valor.SQ_Plano = Plano.SQ_Plano
 									inner join Convenio
-									on Plano.SQ_Convenio = Convenio.SQ_Convenio
+									on Valor.SQ_Convenio = Convenio.SQ_Convenio
 									order by NM_Convenio,NM_Plano,NM_Especialidade')){
 	    echo '<a class="MsgErro">Não foi possível efetuar consulta Especialidade: ' . mysql_error() .'<br></a>';
 		die();
     }
 
     //echo mysql_num_rows($consulta);	
-    echo '<a class="linkInserirNovo" href="EspecialidadeForm.php">Inserir Nova Especialidade</a>';
+    echo '<a class="linkInserirNovo" href="ValorForm.php">Inserir Novo Valor</a>';
     echo('<br><br>');
     while ($dados = mysql_fetch_array($consulta))
-    {
+    {   
     	echo "<tr>";
     	    echo '<td>' . $dados[NM_Convenio] . '</td>';
     	    echo '<td>' . $dados[NM_Plano] . '</td>';
     		echo '<td>' . $dados[NM_Especialidade] . '</td>';
-    		echo '<td>' . $dados[NR_Consultas_Semana] . '</td>';
-    		echo '<td>' . implode('/',array_reverse(explode('-',$dados[DT_Ativacao]))) . '</td>';
+    		echo '<td>' . $dados[VL_Consulta] . '</td>';
+			echo '<td>' . implode('/',array_reverse(explode('-',$dados[DT_Ativacao]))) . '</td>';
     		echo '<td>' . implode('/',array_reverse(explode('-',$dados[DT_Desativacao]))) . '</td>';
-    		echo '<td><a href=EspecialidadeForm.php?SQ_Especialidade=' . $dados[SQ_Especialidade] . '>Alterar</a></td>';
-    		echo '<td><a href=EspecialidadeDelete.php?SQ_Especialidade=' . $dados[SQ_Especialidade] . '&NM_Especialidade=' 
-    		                                        . urlencode($dados[NM_Especialidade]) . '>Excluir</a></td>';
+    	    echo '<td><a href=ValorForm.php?SQ_Valor=' . $dados[SQ_Valor] . '>Alterar</a></td>';
+    		echo '<td><a href=ValorDelete.php?SQ_Valor=' . $dados[SQ_Valor] .'&VL_Consulta=' . urlencode($dados[VL_Consulta]) 
+    										. '>Excluir</a></td>';
         echo '</tr>';
     }
     echo '</table>';

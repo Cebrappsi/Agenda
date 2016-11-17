@@ -57,14 +57,14 @@ class EspecialidadeClass {
 		
 		$data = explode('/', $this->DT_Ativacao);
 		if ($this->DT_Ativacao == '' || !checkdate($data[1], $data[0], $data[2])){
-		   $MsgErro = 'Data de Ativação do Especialidade inválida';
+		   $MsgErro = 'Data de Ativação da Especialidade inválida';
 		   return FALSE;
 		}
 		
 		if ($this->DT_Desativacao <> '' && $this->DT_Desativacao <> '00/00/0000'){
 				$data = explode('/', $this->DT_Desativacao);
 			if (!checkdate($data[1], $data[0], $data[2])){
-				$MsgErro = 'Data de Desativação do Especialidade inválida';
+				$MsgErro = 'Data de Desativação da Especialidade inválida';
 				return FALSE;
 			}
 			elseif ($this->DT_Desativacao <= $this->DT_Ativacao){

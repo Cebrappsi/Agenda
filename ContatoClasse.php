@@ -9,27 +9,26 @@ class Contato {
 	public $Identificacao;
 	public $Observacoes;
     
-	private function Valida_Dados($MsgErro){ 
+	private function Valida_Dados(&$MsgErro){ 
 	    //echo  "<br/>Validando dados Contato: " . $this->NM_Contato . 'Nome: ' . $this->TP_Relacao;
 	   
 	    if ($this->NM_Contato == null){
-		   $this->MsgErro = 'Nome Contato inválido';
+		   $MsgErro = 'Nome Contato inválido';
 		   return FALSE;
 		}
 		
 		//if ($this->TP_Relacao == null){
-		//	$this->MsgErro = 'Informe pelo menos um dos tipos do contato';
+		//	$MsgErro = 'Informe pelo menos um dos tipos do contato';
 		//	return FALSE;
 	//	}
 		
 //		
-		if ($this->DT_Nascimento <> '')
-			if (!checkdate(date('m',$this->DT_Nascimento), date('d',$this->DT_Nascimento), date('Y',$this->DT_Nascimento))){
-				$this->MsgErro = 'Data de Nascimento inválida';
-				return FALSE;
-			}
-			elseif ($this->DT_Nascimento > date('Y-m-d')){
-				$this->MsgErro = 'Data de Nascimento não pode ser maior que atual';
+		$data = explode('/', $this->DT_Nascimento);
+		if ($this->DT_Nascimento == '' || !checkdate($data[1], $data[0], $data[2])){
+			$MsgErro = 'Data de Nascimento inválida';
+			return FALSE;
+		} elseif (strtotime($data) > date('Y-m-d')){
+				$MsgErro = 'Data de Nascimento não pode ser maior que atual';
 				return FALSE;
 				}
 		
@@ -40,26 +39,26 @@ class Contato {
 	 * Retorna True se existe
 	 * Testar se deu erro de banco em MsgErro quando receber Falso
 	*/
-	private function Existe_Registro($MsgErro){
+	private function Existe_Registro(&$MsgErro){
 		//Valida se registro já existe
 		//echo  "<br>Validando Consistencia do Registro";
 		
 		$query = 'Select SQ_Contato FROM Contato WHERE SQ_Contato = ' . $this->SQ_Contato;
 		$result = mysql_query($query);
 		if (!$result){
-			$this->MsgErro = 'Erro bd: ' . mysql_error();
+			$MsgErro = 'Erro bd: ' . mysql_error();
 			return FALSE;
 		}
 		//echo 'Achei: ' . mysql_result($result,0,0);
 		if (mysql_num_rows($result) == 0){
-			$this->MsgErro = null;
+			$MsgErro = null;
 			return FALSE;
 		}
 		
 		return TRUE;
 	}
 	
-	public function Insert($MsgErro){
+	public function Insert(&$MsgErro){
 		//echo  '<br>Inserindo Contato ';
 				
 		//echo '<br>Validando Dados';
@@ -70,14 +69,15 @@ class Contato {
 		/*
 		echo '<br>Validando Consistencia BD';
     	if ($this->Existe_Registro($MsgErro)){
-			$this->MsgErro = 'Contato já existe';
+			$MsgErro = 'Contato já existe';
 			return FALSE;
 		}
-		elseif ($this->MsgErro <> null)
+		elseif ($MsgErro <> null)
 			 	return FALSE;
 		*/		
 		//echo '<br>Inserindo Registro';
-		
+		if ($this->DT_Nascimento <> '' && $this->DT_Nascimento <> '00/00/0000')
+			$this->DT_Nascimento = implode('-',  array_reverse(explode('/',$this->DT_Nascimento)));
 		$query = 'INSERT INTO Contato (NM_Contato,DT_Nascimento,Identificacao,Observacoes) ' .
 								' values ("' . $this->NM_Contato . '" , "'  
 									        . $this->DT_Nascimento . '" , "' 
@@ -87,13 +87,13 @@ class Contato {
 		$result = mysql_query($query);
         
 		if (!($result && (mysql_affected_rows() > 0))) {
-			$this->MsgErro = 'Não foi possivel incluir o registro: ' . mysql_error();
+			$MsgErro = 'Não foi possivel incluir o registro: ' . mysql_error();
 			return FALSE;
 		}
 		$this->SQ_Contato = mysql_insert_id();
 		
 		if (!$this->SQ_Contato || $this->SQ_Contato == 0){
-			$this->MsgErro = 'Erro na recuperacao do último contato inserido: ' . mysql_error();
+			$MsgErro = 'Erro na recuperacao do último contato inserido: ' . mysql_error();
 			return FALSE;
 		}
 		
@@ -101,27 +101,36 @@ class Contato {
 		return TRUE;
 	}
 
-public function Delete($MsgErro){
+public function Delete(&$MsgErro){
 	   
-	//echo  "<br/>Excluindo Contato ";
-					
+	// Excluir Relações
+	$query = 'Delete from Relacionamento where SQ_Contato = ' . $this->SQ_Contato;
+		//die($query);
+	$result = mysql_query($query);
+	
+	if (!$result) {
+		$MsgErro = 'Não foi possivel excluir as Relacoes do contato: ' . mysql_error();
+		return FALSE;
+	}	//echo  "<br/>Excluindo Relações do Contato ";
+	
+	// Excluir o Contato
 	$query = 'DELETE FROM Contato WHERE SQ_Contato = ' . $this->SQ_Contato;
 	//echo $query;
 
 	$result = mysql_query($query);
 	if (!($result && (mysql_affected_rows() > 0)))
 	{
-		$this->MsgErro = 'Não foi possivel excluir o registro: ' . mysql_error();
+		$MsgErro = 'Não foi possivel excluir o registro: ' . mysql_error();
 		return FALSE;
 	}
 //	else
-//		$this->MsgErro = mysql_affected_rows() . ' registro(s) excluido(s) com sucesso';
+//		$MsgErro = mysql_affected_rows() . ' registro(s) excluido(s) com sucesso';
 	
 	return TRUE;
 	  
 	}
 
-public function GetReg($MsgErro){
+public function GetReg(&$MsgErro){
 	   
 	//echo  "<br/>Recuperando Contato ";
 					
@@ -130,71 +139,73 @@ public function GetReg($MsgErro){
 	//echo 'Query: ' . $query;
 	$this->Regs = mysql_query($query);
 	if (!$this->Regs){
-		$this->MsgErro = 'Erro no Banco de Dados: ' . mysql_error();
+		$MsgErro = 'Erro no Banco de Dados: ' . mysql_error();
 		return FALSE;
 	}
 	
 	//echo 'Achei: ' . mysql_result($this->Regs,0,1);
 	if (mysql_num_rows($this->Regs) == 0){
-		$this->MsgErro = 'Sequencial do Registro não encontrado';
+		$MsgErro = 'Sequencial do Registro não encontrado';
 		return FALSE;
 	}
 	
 	return TRUE;
 	}	
 	
-	public function Edit($MsgErro){
+	public function Edit(&$MsgErro){
 	   
 		//echo  "<br/>Alterando Contato ";
 				
 		//echo '<br>Validando Dados';
-		if (!$this->Valida_Dados(MsgErro))
+		if (!$this->Valida_Dados($MsgErro))
 	        return FALSE;
 			
 		if (!(is_numeric($this->SQ_Contato) ||(int)$this->SQ_Contato < 1)){
-			$this->MsgErro = 'Sequencial Contato inválido';
+			$MsgErro = 'Sequencial Contato inválido';
 			return FALSE;
 		}
 
 		//  echo '<br>Validando Consistencia BD';
 		if (!$this->Existe_Registro($MsgErro))
-			if ($this->MsgErro <> null)
+			if ($MsgErro <> null)
 				return FALSE;
 		
+		if ($this->DT_Nascimento <> '' && $this->DT_Nascimento <> '00/00/0000')
+			$this->DT_Nascimento = implode('-',  array_reverse(explode('/',$this->DT_Nascimento)));
 		$query = 'UPDATE Contato set NM_Contato    = "' . $this->NM_Contato    . '" , ' .
 								    'DT_Nascimento = "' . $this->DT_Nascimento . '" , ' .
 									'Identificacao = "' . $this->Identificacao . '" , ' .
 				            		'Observacoes   = "' . $this->Observacoes   . '" ' .
 				            	'where SQ_Contato = ' . $this->SQ_Contato; 
 		
-		//echo $query . mysql_affected_rows() . mysql_error() . gettype($result);
+		echo $query . mysql_affected_rows() . mysql_error() . gettype($result);
 		$result = mysql_query($query);
 				
 		if (!$result || mysql_affected_rows() == 0){
-			$this->MsgErro = 'Registro não alterado: ' . mysql_error();
+			$MsgErro = 'Registro não alterado: ' . mysql_error();
 			return FALSE;
 		}
 		return TRUE;
 	}
 
-	public function InsertRelacoes($Con,$MsgErro){
+	public function InsertRelacoes(&$MsgErro){
 		//echo  '<br>Inserindo Relações co Contato ';
 	
 		//  echo '<br>Contato deve existir BD';
 		
 		if (!$this->Existe_Registro($MsgErro))
-			if ($this->MsgErro <> null)
-			return FALSE;
+			if ($MsgErro <> null)
+				return FALSE;
 		
 		$resConsRel = mysql_query('select * from Relacionamento where SQ_Contato = ' . $this->SQ_Contato .
 				                     ' and TP_Relacao = "' . $this->TP_Relacao  . '"');
 		if (!$resConsRel){
-			$this->MsgErro = 'Erro bd: ' . mysql_error();
+			$MsgErro = 'Erro bd: ' . mysql_error();
 			return FALSE;
 		}
 		//echo 'Achei: ';
-		if (mysql_num_rows($resConsRel) > 0){
-			$this->MsgErro = null;
+		if (mysql_num_rows($resConsRel) > 0){ //ja tem registro - ok
+			$MsgErro = null;
 			return TRUE;
 		}		
 		// ainda não tem registro - inserir novo
@@ -205,31 +216,31 @@ public function GetReg($MsgErro){
 		$result = mysql_query($query);
 	
 		if (!($result && (mysql_affected_rows() > 0))) {
-			$this->MsgErro = 'Não foi possivel incluir as Relacoes: ' . mysql_error();
+			$MsgErro = 'Não foi possivel incluir as Relacoes: ' . mysql_error();
 			return FALSE;
 		}
 	
 		return TRUE;
 	}
 	
-	public function DeleteRelacoes($Con,$MsgErro){
+	public function DeleteRelacoes(&$MsgErro){
 		//echo  '<br>Inserindo Relações co Contato ';
 	
 		//  echo '<br>Contato deve existir BD';
 	
 		if (!$this->Existe_Registro($MsgErro))
-			if ($this->MsgErro <> null)
+			if ($MsgErro <> null)
 			return FALSE;
 	
 		$resConsRel = mysql_query('select * from Relacionamento where SQ_Contato = ' . $this->SQ_Contato .
 				' and TP_Relacao = "' . $this->TP_Relacao  . '"');
 		if (!$resConsRel){
-			$this->MsgErro = 'Erro bd: ' . mysql_error();
+			$MsgErro = 'Erro bd: ' . mysql_error();
 			return FALSE;
 		}
 		//echo 'Achei: ';
 		if (mysql_num_rows($resConsRel) < 1){
-			$this->MsgErro = null;
+			$MsgErro = null;
 			return TRUE;
 		}
 		// Já tem registro - excluir
@@ -239,7 +250,7 @@ public function GetReg($MsgErro){
 		$result = mysql_query($query);
 	
 		if (!($result || (mysql_affected_rows() < 1))) {
-			$this->MsgErro = 'Não foi possivel excluir as Relacoes: ' . mysql_error();
+			$MsgErro = 'Não foi possivel excluir as Relacoes: ' . mysql_error();
 			return FALSE;
 		}
 	

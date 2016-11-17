@@ -29,7 +29,8 @@ class Convenio {
 				$MsgErro = 'Data de Desativação do Convênio inválida';
 				return FALSE;
 			}
-			elseif (strtotime(implode('-',  array_reverse(explode('/',$this->DT_Desativacao)))) <= strtotime(implode('-',  array_reverse(explode('/',$this->DT_Ativacao))))){
+			elseif (strtotime(implode('-',  array_reverse(explode('/',$this->DT_Desativacao)))) <= 
+					strtotime(implode('-',  array_reverse(explode('/',$this->DT_Ativacao))))){
 				$MsgErro = 'Data de Desativação deve ser maior que ativação';
 				return FALSE;
 			}	

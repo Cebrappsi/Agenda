@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <HTML>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />	
   <HEAD>
 	<TITLE> Frame 3 </TITLE>
     <link rel="stylesheet" type="text/css" href="ClinicaStyle.css" />
@@ -25,61 +26,40 @@
   <BODY>
     <form method="post" action="EscalaDelete.php">
     	<fieldset>
-    		<legend>Excluindo Escala</legend>
-    		<label class="labelConfirma">Confirma exclusão de Escala? (S/N) :</label>
-    		<?php
-    		echo '<input class="Entrada" type="text" name="Confirma" size="1" value="'.$_REQUEST[Confirma]. '">';
-    		echo '<input type="hidden" name="SQ_Contato" size="10" value="' . $_REQUEST[SQ_Contato] . '">';
-    		echo '<input type="hidden" name="DT_Ini_Escala" size="10" value="' . $_REQUEST[DT_Ini_Escala] . '">';
-    		echo '<input type="hidden" name="Dia_Semana" size="10" value="' . $_REQUEST[Dia_Semana] . '">';
-    		?>
+    		<legend>Excluindo Escala</legend><br>
+    		<label class="labelConfirma">Confirma exclusão de Escala - <?php echo $_REQUEST[NM_Contato] . ' - ' . 
+    										$_REQUEST[DT_Ini_Escala] . '- ' . $_REQUEST[Dia_Semana]?> ? </label><br><br>
+    		<input type="hidden" name="SQ_Profissional" size="10" value="<?php echo $_REQUEST[SQ_Profissional] ?> ">
+    		<input type="hidden" name="DT_Ini_Escala" size="10" value="<?php echo $_REQUEST[DT_Ini_Escala] ?>">
+    		<input type="hidden" name="Dia_Semana" size="10" value="<?php echo $_REQUEST[Dia_Semana]?>">
     	</fieldset>
-    	<a class="linkVoltar" href="Escala.php">Voltar</a>
-    	<input class="Envia" type="submit" value="Excluir">
+    	<a class="linkVoltar" href="EscalaLista.php">Voltar</a>
+    	<input class="Envia" type="submit" name="Operacao"  value="Excluir">
     </form>
     
     <?php 
-    //echo 'Antes--Request:'; print_r($_REQUEST); echo '.'; var_dump( $_REQUEST); echo '<br>';
-    /*$arrpost = Array (SQ_Contato => (string)$_REQUEST[SQ_Contato] , Confirma => $_REQUEST[Confirma]);
-    echo 'Depois-Arrpost:'; print_r($arrpost); echo '.'; var_dump($arrpost);echo '<br>';	
-    */ 
-    if (!isset($_REQUEST[Confirma]) || $_REQUEST[Confirma] == "")
-        die();
-    	
-    if ((strtoupper($_REQUEST[Confirma]) <> 'S' && strtoupper($_REQUEST[Confirma]) <> 'N')){
-         echo '<a class="MsgObs">Informe S ou N<br></a>';
-		 die();
+    if ($_REQUEST[Operacao] == "Excluir"){
+	    require "EscalaClasse.php";
+	    require "comum.php";
+	    $ObjEscala = new Escala();
+	    
+	    if (!$con = conecta_BD($MsgErro)){
+		    echo '<a class="MsgErro">Erro: ' . $MsgErro .'<br></a>';
+			die();
+	    }
+	    
+	    $ObjEscala->SQ_Profissional = $_REQUEST[SQ_Profissional];
+	    $ObjEscala->DT_Ini_Escala = $_REQUEST[DT_Ini_Escala];
+	    $ObjEscala->Dia_Semana = $_REQUEST[Dia_Semana];
+	    if (!$ObjEscala->Delete($MsgErro))
+	       //MsgPopup('Erro na Exclusão do Registro : ' . $MsgErro);
+	        echo '<br><a class="MsgErro">Erro na Exclusão da Escala : ' . $MsgErro .'</a>';
+	    else 
+	      // MsgPopup( $MsgErro);
+	       echo '<br><a class="MsgSucesso">Escala excluida com sucesso!</a>';
+	      //header("Location: Escala.php");
+	    mysql_close($con);
     }
-    
-    if (strtoupper($_REQUEST[Confirma]) == 'N'){
-    	header("Location: Escala.php");
-    	die();
-    }
-    
-    //die('passou:' ) . $_REQUEST[Confirma] . '"' . $_REQUEST[SQ_Contato];
-    //return;
-    
-    require "EscalaClasse.php";
-    require "comum.php";
-    $ObjEscala = new Escala();
-    
-    $con = conecta_BD($MsgErro);
-    if (!$con){
-	    echo '<a class="MsgErro">Erro: ' . $MsgErro .'<br></a>';
-		die();
-    }
-    
-    $ObjEscala->SQ_Contato = $_REQUEST[SQ_Contato];
-    $ObjEscala->DT_Ini_Escala = $_REQUEST[DT_Ini_Escala];
-    $ObjEscala->Dia_Semana = $_REQUEST[Dia_Semana];
-    if (!$ObjEscala->Delete($MsgErro))
-       //MsgPopup('Erro na Exclus�o do Registro : ' . $ObjContato->MsgErro);
-        echo '<br><a class="MsgErro">Erro na Exclusão da Escala : ' . $ObjEscala->MsgErro .'</a>';
-    else 
-      // MsgPopup( $ObjContato->MsgErro);
-       echo '<br><a class="MsgSucesso">Escala excluida com sucesso!</a>';
-      //header("Location: Escala.php");
-    mysql_close($con);
     ?>
   </BODY>
 </HTML>
