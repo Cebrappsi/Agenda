@@ -60,17 +60,14 @@
         </style>
   </HEAD>
   <BODY>
-    <form method="post" action="EnderecoDelete.php">
+    <form method="post" action="">
     	<fieldset>
 	    	<legend>Excluindo Endereço</legend>
 	    	<label class="labelConfirma">Confirma exclusão de Endereço - <?php echo $_REQUEST[NM_Contato] . 
 												' - ' . $_REQUEST[NM_Tipo_Endereco]?> ? </label><br><br>
-			<input type="hidden" name="SQ_Contato" size="10" value="<?php echo $_REQUEST[SQ_Contato]?>">
-			<input type="hidden" name="NM_Contato" size="10" value="<?php echo $_REQUEST[NM_Contato]?>">
-			<input type="hidden" name="TP_Endereco" size="10" value="<?php echo $_REQUEST[TP_Endereco]?>">
-			<input type="hidden" name="NM_Tipo_Endereco" size="10" value="<?php echo $_REQUEST[NM_Tipo_Endereco]?>">
 	    </fieldset>
-    	<a class="linkVoltar" href="ContatoLista.php">Voltar</a>
+    	<a class="linkVoltar" href="ContatoForm.php?SQ_Contato=<?php echo $_REQUEST[SQ_Contato]
+														. '&Operacao=' . urlencode("Mostrar Contato")?>">Voltar</a>
     	<input class="Envia" type="submit" name="Operacao"  value="Excluir">
     </form>
   </BODY>

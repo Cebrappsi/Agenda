@@ -10,7 +10,7 @@ class Email {
 	    //echo  "<br/>Validando dados Email: " . $this->TP_Email;
 	   
 	    if ($this->TP_Email == null){
-		   $MsgErro = 'Tipo de Email inválido';
+		   $MsgErro = 'Tipo de Email invÃ¡lido';
 		   return FALSE;
 		}
 		
@@ -23,12 +23,12 @@ class Email {
 	}
 
 	
-	/* Retorna Falso se deu erro no Banco ou não existe
+	/* Retorna Falso se deu erro no Banco ou nï¿½o existe
 	 * Retorna True se existe
 	 * Testar se deu erro de banco em MsgErro quando receber Falso
 	*/
 	private function Existe_Registro(&$MsgErro){
-		//Valida se registro já existe
+		//Valida se registro jÃ¡ existe
 		//echo  "<br>Validando Consistencia do Registro";
 		
 		$query = 'Select SQ_Contato FROM Email WHERE SQ_Contato = '   . $this->SQ_Contato .
@@ -64,7 +64,7 @@ class Email {
 		$result = mysql_query($query);
         
 		if (!($result && (mysql_affected_rows() > 0))) {
-			$MsgErro = 'Não foi possivel incluir o Email: ' . mysql_error();
+			$MsgErro = 'NÃ£o foi possÃ­vel incluir o Email: ' . mysql_error();
 			return FALSE;
 		}
 		
@@ -82,7 +82,7 @@ public function Delete(&$MsgErro){
 	$result = mysql_query($query);
 	if (!($result && (mysql_affected_rows() > 0)))
 	{
-		$MsgErro = 'Não foi possivel excluir o Email: ' . mysql_error();
+		$MsgErro = 'NÃ£o foi possivel excluir o Email: ' . mysql_error();
 		return FALSE;
 	}
 	
@@ -106,7 +106,7 @@ public function GetReg(&$MsgErro){
 	
 	//echo 'Achei: ' . mysql_result($this->Regs,0,1);
 	if (mysql_num_rows($this->Regs) == 0){
-		$MsgErro = 'Email não encontrado';
+		$MsgErro = 'Email nÃ£o encontrado';
 		return FALSE;
 	}
 	
@@ -122,7 +122,7 @@ public function GetReg(&$MsgErro){
 	        return FALSE;
 			
 		if (!(is_numeric($this->SQ_Contato) ||(int)$this->SQ_Contato < 1)){
-			$MsgErro = 'Sequencial Contato inválido';
+			$MsgErro = 'Sequencial Contato invÃ¡lido';
 			return FALSE;
 		}
 
@@ -139,7 +139,7 @@ public function GetReg(&$MsgErro){
 		$result = mysql_query($query);
 				
 		if (!$result || mysql_affected_rows() == 0){
-			$MsgErro = 'Email não alterado: ' . mysql_error();
+			$MsgErro = 'Email nÃ£o alterado: ' . mysql_error();
 			return FALSE;
 		}
 		return TRUE;

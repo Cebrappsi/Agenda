@@ -149,7 +149,7 @@ public function GetReg(&$MsgErro){
 		//echo  "<br/>Alterando Telefone ";
 				
 		//echo '<br>Validando Dados';
-		if (!$this->Valida_Dados(MsgErro))
+		if (!$this->Valida_Dados($MsgErro))
 	        return FALSE;
 			
 		if (!(is_numeric($this->SQ_Contato) ||(int)$this->SQ_Contato < 1)){

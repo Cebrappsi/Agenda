@@ -71,15 +71,15 @@
     	$ObjEndereco->Cidade = $_REQUEST[Cidade];
     	$ObjEndereco->CD_UF = $_REQUEST[CD_UF];
     	$ObjEndereco->CEP = $_REQUEST[CEP];
-    	if (!$ObjEndereco->insert($MsgErro)){
+    	if (!$ObjEndereco->insert($MsgErro))
     		echo '<a class="MsgErro">Erro na inserção: ' . $MsgErro .'<br></a>';
-    		unset($_REQUEST[TP_Endereco]);
-    	}
-    	else{
+    	else
     		echo '<a class="MsgSucesso">Endereço Incluido com sucesso!</a>';
-    		unset($_REQUEST[TP_Endereco]);
-    	}
+    		
+    	unset($_REQUEST[TP_Endereco]);
+
     }
+
     if ($_REQUEST[Operacao] == 'Alterar Endereco'){ //Inserir Endereço
     	$ObjEndereco->SQ_Contato  = $_REQUEST[SQ_Contato];
     	$ObjEndereco->TP_Endereco = $_REQUEST[TP_Endereco];
@@ -110,7 +110,7 @@
 	    $ObjTelefone->CD_DDD        = $_REQUEST[CD_DDD];
 	    $ObjTelefone->SQ_Operadora  = $_REQUEST[SQ_Operadora];
 
-	    echo 't' . $ObjTelefone->NR_Telefone;
+	    //echo 't' . $ObjTelefone->NR_Telefone;
 	    if (!$ObjTelefone->Insert($MsgErro))
 	        echo '<a class="MsgErro">' . 'Erro na Inserçao do Telefone: ' . $MsgErro .'</a>';
 	    else {
@@ -211,7 +211,8 @@
     		</select>
     		<label>&nbspCEP: </label>
     		<input name="CEP" size="10" pattern="\d{5}-?\d{3}" value =<?php echo $_REQUEST[CEP]?>><br>
-    		<a class="linkVoltar" href="ContatoForm.php">Voltar</a>
+    		<a class="linkVoltar" href="ContatoForm.php?SQ_Contato=<?php echo $_REQUEST[SQ_Contato]
+														. '&Operacao=' . urlencode("Mostrar Contato")?>">Voltar</a>
     	    <input class="Envia" type="submit" name="Operacao" value="<?php if (!$_REQUEST[TP_Endereco]) echo 'Inserir Endereco'; else echo 'Alterar Endereco';?>">
     	</fieldset>
     	<br>  

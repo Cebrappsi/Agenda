@@ -234,7 +234,7 @@
 		    	echo '<a class="linkInserirNovo" type="button" href="TelefoneForm.php?SQ_Contato=' . 
 								$_REQUEST[SQ_Contato] . '&NM_Contato=' . urlencode($_REQUEST[NM_Contato]) . '">Inserir Telefone</a>';
 		    	echo '<a class="linkInserirNovo" type="button" href="EmailForm.php?SQ_Contato=' . 
-								$_REQUEST[SQ_Contato] . '&NM_Contato=' . urlencode($_REQUEST[NM_Contato]) . '">Inserir E-mail</a>';
+								$_REQUEST[SQ_Contato] . '&NM_Contato=' . urlencode($_REQUEST[NM_Contato]) . '">Inserir Email</a>';
     	    }
 			?>
     	</fieldset>
