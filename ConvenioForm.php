@@ -17,9 +17,6 @@
     	if (!$ObjConvenio->GetReg($MsgErro)) 
 			echo '<a class="MsgErro">' . 'Erro na Busca : ' . $MsgErro .'</a>';
 		else {
-			// echo 'achei registro...' .  mysql_result($ObjConvenio->Regs,0,NM_Convenio) . '...' . $MsgErro ;
-			// echo 'NM_Convenio: ' . mysql_result($ObjConvenio->Regs,0,NM_Convenio);
-			// echo 'DT_Desat: ' . mysql_result($ObjConvenio->Regs,0,DT_Desativacao);
 			$_REQUEST[NM_Convenio] =  mysql_result($ObjConvenio->Regs,0,NM_Convenio);
 			$_REQUEST[DT_Ativacao] = implode('/',array_reverse(explode('-',mysql_result($ObjConvenio->Regs,0,DT_Ativacao))));
 			$_REQUEST[DT_Desativacao] = implode('/',array_reverse(explode('-',mysql_result($ObjConvenio->Regs,0,DT_Desativacao))));

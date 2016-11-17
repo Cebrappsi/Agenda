@@ -7,7 +7,7 @@
     
     while ($dados = mysql_fetch_array($ListaContatos))
     {
-    	//pegando rela��es com a Clinica
+    	//pegando relações com a Clinica
     	if (!$SetRelacoes = mysql_query('SELECT Relacionamento.*, Tipo_Relacionamento.NM_Tipo_Relacao ' .
     			' from Relacionamento ' .
     			' inner join Tipo_Relacionamento on Relacionamento.TP_Relacao = Tipo_Relacionamento.TP_Relacao ' .
@@ -19,10 +19,10 @@
     	}
     	echo '<tr>';
 	    	echo '<th width ="20%">Nome</th>';
-	    	echo '<th>Rela��o</th>';
+	    	echo '<th>Relação</th>';
 	    	echo '<th>Nascimento</th>';
 	    	echo '<th>Identificacao</th>';
-	    	echo '<th>Observa��es</th>';
+	    	echo '<th>Observações</th>';
 	    	echo '<th>Alterar?</th>';
 	    	echo '<th>Excluir?</th>';
     	echo '</tr>';
@@ -42,20 +42,20 @@
     		echo '<td><a href=ContatoDelete.php?SQ_Contato=' . $dados[SQ_Contato] . '&NM_Contato=' . urlencode($dados[NM_Contato]) . '>Excluir</a></td>';
         echo '</tr>';
         
-        //Endere�o
+        //Endereço
         if (!$SetEndereco = mysql_query('SELECT endereco.* , tipo_Endereco.NM_Tipo_Endereco ' .
         								' from Endereco ' . 
         							    ' inner join Tipo_Endereco on Endereco.Tp_Endereco = Tipo_Endereco.Tp_Endereco ' .
         								' where SQ_Contato = ' . $dados[SQ_Contato] .
         								' order by TP_Endereco')){
-        	echo '<a class="MsgErro">N�o foi poss�vel efetuar consulta Endere�o: ' . 
+        	echo '<a class="MsgErro">Não foi possível efetuar consulta Endereço: ' . 
         								mysql_error() .'<br></a>';
         	die();
         }
         while ($RegEndereco = mysql_fetch_array($SetEndereco))
         	{
         		echo "<tr>";
-        		echo '<td align="left" colspan="5">Endere�o ' . $RegEndereco[NM_Tipo_Endereco] . 
+        		echo '<td align="left" colspan="5">Endereço ' . $RegEndereco[NM_Tipo_Endereco] . 
         			 ' - Rua: ' . $RegEndereco[Rua] . 
         			 ' - Nro: ' . $RegEndereco[Numero] . 
         			 ' - Complemento: ' . $RegEndereco[Complemento] . 
@@ -84,7 +84,7 @@
     			' inner join Operadora on Telefone.SQ_Operadora = Operadora.SQ_Operadora ' .
     			' where SQ_Contato = ' . $dados[SQ_Contato] .
     			' order by NM_Operadora')){
-    			echo '<a class="MsgErro">N�o foi poss�vel efetuar consulta Telefone: ' .
+    			echo '<a class="MsgErro">Não foi possível efetuar consulta Telefone: ' .
     					mysql_error() .'<br></a>';
     			die();
     	}
@@ -95,7 +95,7 @@
     		' - Tipo Mobilidade: ' . $RegTelefone[NM_Tipo_Mobilidade] .
     		' - Operadora: ' . $RegTelefone[NM_Operadora] .
     		' - DDD: ' . $RegTelefone[CD_DDD] .
-    		' - N�mero: ' . $RegTelefone[NR_Telefone] . '</td>';
+    		' - Número: ' . $RegTelefone[NR_Telefone] . '</td>';
     		echo '<td><a href=TelefoneForm.php?SQ_Contato=' . $RegTelefone[SQ_Contato] .
     										  '&NM_Contato=' . urlencode($dados[NM_Contato]) .
 											  '&NR_Telefone=' . $RegTelefone[NR_Telefone] .
@@ -111,7 +111,7 @@
     			' inner join Tipo_Email on Email.Tp_Email = Tipo_Email.Tp_Email ' .
     			' where SQ_Contato = ' . $dados[SQ_Contato] .
     			' order by TP_Email')){
-    			echo '<a class="MsgErro">N�o foi poss�vel efetuar consulta Email: ' .
+    			echo '<a class="MsgErro">Não foi possível efetuar consulta Email: ' .
     					mysql_error() .'<br></a>';
     			die();
     	}

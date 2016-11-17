@@ -1,7 +1,8 @@
-<?php    
+<?php  
+    require "comum.php";
+  
     if ($_REQUEST[Operacao] == "Excluir"){ 
-	    require "ContatoClasse.php";
-	    require "comum.php";
+		require "ContatoClasse.php"; 
 	    $ObjContato = new Contato();
 	    
 	    $con = conecta_BD($MsgErro);
@@ -13,7 +14,7 @@
 	    $ObjContato->SQ_Contato = $_REQUEST[SQ_Contato];
 	    if (!$ObjContato->Delete($MsgErro))
 	       //MsgPopup('Erro na Exclus�o do Registro : ' . $ObjContato->MsgErro);
-	        echo '<br><a class="MsgErro">Erro na Exclusão do Registro : ' . $MsgErro .'</a>';
+	        echo '<br><a class="MsgErro">Erro na Exclus�o do Registro : ' . $MsgErro .'</a>';
 	    else 
 	      // MsgPopup( $ObjContato->MsgErro);
 	       echo '<br><a class="MsgSucesso">Registro excluido com sucesso!</a>';
@@ -50,7 +51,7 @@
     <form method="post" action="ContatoDelete.php">
     	<fieldset>
     		<legend>Excluindo Contato</legend><br>
-    		<label class="labelConfirma">Confirma exclusão de Contato - <?php echo $_REQUEST[NM_Contato] ?> ? </label><br><br>
+    		<label class="labelConfirma">Confirma exclus�o de Contato - <?php echo $_REQUEST[NM_Contato] ?> ? </label><br><br>
     		<input type="hidden" name="SQ_Contato" size="10" value="<?php echo $_REQUEST[SQ_Contato]?>">
     	</fieldset>
     	<a class="linkVoltar" href="ContatoLista.php">Voltar</a>

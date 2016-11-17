@@ -1,4 +1,8 @@
+<?php
+   error_reporting(0);
+?>
 <HTML>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <HEAD>
 	   <TITLE > Frame 1 </TITLE>
        <link rel="stylesheet" type="text/css" href="ClinicaStyle.css" />
@@ -21,7 +25,7 @@
         echo '<a class="Submenu" target=dados href="ContatoLista.php?Tipo=Pacientes">Pacientes<br></a>';
         echo '<a class="Submenu" target=dados href="ContatoLista.php?Tipo=Profissionais">Profissionais<br></a>';
         echo '<a class="Submenu" target=dados href="ContatoLista.php?Tipo=Convenios">Convênios<br></a>';
-        echo '<a class="Submenu" target=dados href="ContatoLista.php?Tipo=Serviços">Serviços<br></a>';
+        echo '<a class="Submenu" target=dados href="ContatoLista.php?Tipo=Servi�os">Serviços<br></a>';
         echo '<a class="Submenu" target=dados href="ContatoLista.php?Tipo=Outros">Outros<br></a>';
         echo '<a class="Submenu" target=dados href="ContatoLista.php?Tipo=Pesquisa">PesquisaContatos<br></a>';
         die();
@@ -43,6 +47,7 @@
         echo '<a class="Submenu" target=dados href="ValorLista.php">Valores<br></a>';
         echo '<br>';
         echo '<a class="Submenu" target=dados href="SalaLista.php">Salas de Atendimento<br></a>';
+		echo '<a class="Submenu" target=dados href="ProfissionalLista.php">Profissionais<br></a>';
         echo '<a class="Submenu" target=dados href="EscalaLista.php">Escala de Trabalho<BR></a>';
         die();
     } elseif ($_REQUEST[Origem] == 'Administracao') {

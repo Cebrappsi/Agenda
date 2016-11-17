@@ -10,10 +10,10 @@
     }
 	    		
     if (!$SetProfissionais = mysql_query(
-   		'Select distinct Relacionamento.SQ_Contato, Contato.NM_Contato from Relacionamento ' .
+   		'Select distinct Profissional.SQ_Profissional, Contato.NM_Contato from Profissional ' .
     		              'inner join Contato ' . 
-    		              'on Relacionamento.SQ_Contato = Contato.SQ_Contato ' . 
-	    		          'Where Relacionamento.TP_Relacao = "R" order by NM_Contato')){
+    		              'on Profissional.SQ_Profissional = Contato.SQ_Contato ' . 
+	    		          'Order by NM_Contato')){
     	echo '<a class="MsgErro">Não foi possível efetuar consulta Profissionais: ' . mysql_error() .'<br></a>';
     	die();
     }
@@ -53,7 +53,7 @@
     	$ObjEscala->HR_Fim_Turno1 = $_REQUEST[HR_Fim_Turno1];
     	$ObjEscala->HR_Ini_Turno2 = $_REQUEST[HR_Ini_Turno2];
     	$ObjEscala->HR_Fim_Turno2 = $_REQUEST[HR_Fim_Turno2];
-    	//print_r($ObjEscala); 
+    	print_r($ObjEscala); 
     	if (!$ObjEscala->insert($MsgErro))
     		echo '<a class="MsgErro">Erro na inserção da Escala: ' . $MsgErro .'<br></a>';
     	else {
@@ -96,7 +96,7 @@
         }
          label.labelNormal{
 			float:left;
-			width:15%;
+			width:20%;
 			margin-right:0.5em;
 			padding-top:0.2em;
 			text-align:right;
@@ -112,7 +112,10 @@
     		<select name="SQ_Profissional">
     		 <?php
     		 	while ($RegProfissional = mysql_fetch_array($SetProfissionais))
-    				echo '<option value=' . $RegProfissional[SQ_Contato] . '>' . $RegProfissional[NM_Contato] . '</option>';
+					if ($RegProfissional[SQ_Profissional] == $_REQUEST[SQ_Profissional])
+						echo '<option selected value=' . $RegProfissional[SQ_Profissional] . '>' . $RegProfissional[NM_Contato] . '</option>';
+    				else
+						echo '<option value=' . $RegProfissional[SQ_Profissional] . '>' . $RegProfissional[NM_Contato] . '</option>';
     		?>
     		</select>
     		<br>
@@ -120,10 +123,10 @@
     		<input class="Entrada" type="date" name="DT_Ini_Escala" size="10" value="<?php echo $_REQUEST[DT_Ini_Escala]?>"><br>
     		<label class="labelNormal">Dt Fim Escala:</label>
     		<input class="Entrada" type="date" name="DT_Fim_Escala" size="10" value="<?php echo $_REQUEST[DT_Fim_Escala]?>"><br>
-    		<label class="labelNormal">Dia da Semana(1 a 7):</label>
+    		<label class="labelNormal">Dia Semana(1-7 Dom-Sab):</label>
     		<input class="Entrada" type="number" name="Dia_Semana" size="1" min="1" max="7" value =<?php echo $_REQUEST[Dia_Semana]?>><br>
      		<label class="labelNormal">Interv Atend(5,10,15,20): </label>
-    		<input class="Entrada" type="number" name="Intervalo_Atendimento" min="0" max="15" step="5" value =<?php echo $_REQUEST[Intervalo_Atendimento]?>><br>
+    		<input class="Entrada" type="number" name="Intervalo_Atendimento" min="0" max="15" step="5" size="2" value =<?php echo $_REQUEST[Intervalo_Atendimento]?>><br>
      		<label class="labelNormal">Hora Ini Turno1:</label>
      		<input class="Entrada" type="time" name="HR_Ini_Turno1" size="5" value="<?php echo $_REQUEST[HR_Ini_Turno1]?>"><br>
      		<label class="labelNormal">Hora Fim Turno1:</label>

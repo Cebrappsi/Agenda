@@ -11,7 +11,7 @@
 		$ObjTelefone->SQ_Contato = $_REQUEST[SQ_Contato];
 		$ObjTelefone->NR_Telefone = $_REQUEST[NR_Telefone];
 		if (!$ObjTelefone->Delete($MsgErro))
-       		//MsgPopup('Erro na Exclus�o do Registro : ' . $MsgErro);
+       		//MsgPopup('Erro na Exclusão do Registro : ' . $MsgErro);
         	echo '<br><a class="MsgErro">Erro na Exclusão do Telefone : ' . $MsgErro .'</a>';
     	else 
       		// MsgPopup( $ObjContato->MsgErro);

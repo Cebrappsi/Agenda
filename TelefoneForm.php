@@ -6,26 +6,19 @@
     	die();
     }
 	// preparacao das listas a serem apresentadas    		
-    // Preparacao para �rea para Telefone/tipo uso, Operadora
+    // Preparacao para área para Telefone/tipo uso, Operadora
     if (!$SetTipoMobilidade = mysql_query('SELECT * from Tipo_Mobilidade order by NM_Tipo_Mobilidade')){
-    	echo '<a class="MsgErro">N�o foi poss�vel efetuar consulta Tipo Mobilidade: ' . mysql_error() .'<br></a>';
+    	echo '<a class="MsgErro">Não foi possível efetuar consulta Tipo Mobilidade: ' . mysql_error() .'<br></a>';
     	die();
     }
     if (!$SetTipoUso = mysql_query('SELECT * from Tipo_uso order by NM_Tipo_Uso')){
-    	echo '<a class="MsgErro">N�o foi poss�vel efetuar consulta Tipo Uso: ' . mysql_error() .'<br></a>';
+    	echo '<a class="MsgErro">Não foi possível efetuar consulta Tipo Uso: ' . mysql_error() .'<br></a>';
     	die();
     }
     if (!$SetOperadora = mysql_query('SELECT * from Operadora order by NM_Operadora')){
-    	echo '<a class="MsgErro">N�o foi poss�vel efetuar consulta Operadora: ' . mysql_error() .'<br></a>';
+    	echo '<a class="MsgErro">Não foi possível efetuar consulta Operadora: ' . mysql_error() .'<br></a>';
     	die();
     }
-/*
-    // Preparacao para Emails
-    if (!$SetTipoEmail = mysql_query('SELECT * from Tipo_Email order by NM_Tipo_Email')){
-    	echo '<a class="MsgErro">N�o foi poss�vel efetuar consulta Tipo Email: ' . mysql_error() .'<br></a>';
-    	die();
-    }
-    */
     
     // Mostrar Contato / Telefone
     require "TelefoneClasse.php";
@@ -49,7 +42,7 @@
     
     
     //inserindo Telefone             
-    if ($_REQUEST[Operacao] == 'Inserir Telefone'){ //Inserir Endere�o
+    if ($_REQUEST[Operacao] == 'Inserir Telefone'){ //Inserir Telefone
     	echo 'Inserindo Telefone';
    		$ObjTelefone->SQ_Contato    = $_REQUEST[SQ_Contato];
 	    $ObjTelefone->NR_Telefone   = $_REQUEST[NR_Telefone];
@@ -60,7 +53,7 @@
 
 	    echo 't' . $ObjTelefone->NR_Telefone;
 	    if (!$ObjTelefone->Insert($MsgErro))
-	        echo '<a class="MsgErro">' . 'Erro na Inser�ao do Telefone: ' . $MsgErro .'</a>';
+	        echo '<a class="MsgErro">' . 'Erro na Inserçao do Telefone: ' . $MsgErro .'</a>';
 	    else {
 	       //mysql_query("commit");
 	       echo '<a class="MsgSucesso">Telefone incluido Telefone com sucesso!</a>';
@@ -68,7 +61,7 @@
 	    unset($_REQUEST[NR_Telefone]);
     }
     
-    if ($_REQUEST[Operacao] == 'Alterar Telefone'){ //Inserir Endere�o
+    if ($_REQUEST[Operacao] == 'Alterar Telefone'){ //Inserir Telefone
     	$ObjTelefone->SQ_Contato    = $_REQUEST[SQ_Contato];
     	$ObjTelefone->NR_Telefone   = $_REQUEST[NR_Telefone];
     	$ObjTelefone->TP_Mobilidade = $_REQUEST[TP_Mobilidade];
@@ -77,31 +70,12 @@
     	$ObjTelefone->SQ_Operadora  = $_REQUEST[SQ_Operadora];
     	
     	if (!$ObjTelefone->Edit($MsgErro))
-    		echo '<a class="MsgErro">' . 'Erro na altera��o do Telefone: ' . $ObjTelefone->MsgErro .'</a>';
+    		echo '<a class="MsgErro">' . 'Erro na alteração do Telefone: ' . $ObjTelefone->MsgErro .'</a>';
     	else {
     		//mysql_query("commit");
-    		echo '<a class="MsgSucesso">Altera��o Telefone com sucesso!</a>';
+    		echo '<a class="MsgSucesso">Alteração Telefone com sucesso!</a>';
     	}
-    }
-    
-    /* 
-    if ($_REQUEST[Operacao] == 'Inserir Email' && $_SESSION[SQ_Contato] > 0){
-    	echo 'Inserindo Email';
-    	require "EmailClasse.php";
-    	$ObjEmail = new Email();
-    	$ObjEmail->SQ_Contato  = $_SESSION[SQ_Contato];
-    	$ObjEmail->TP_Email    = $_REQUEST[TP_Email];
-    	$ObjEmail->Email       = $_REQUEST[Email];
-    	
-    	if (!$ObjEmail->Insert($MsgErro))
-    		echo '<a class="MsgErro">' . 'Erro na Inser��o do Email: ' . $MsgErro .'</a>';
-    	else {
-    		//mysql_query("commit");
-    		echo '<a class="MsgSucesso">Email inserido com sucesso!</a>';
-    	}    	 
-    }
-    */
-        
+    }        
 ?>
   
 
@@ -196,8 +170,18 @@
 														. '&Operacao=' . urlencode("Mostrar Contato")?>">Voltar</a>
     	<input class="Envia" type="submit" name="Operacao" value="<?php if (!$_REQUEST[NR_Telefone]) echo 'Inserir Telefone'; else echo 'Alterar Telefone';?>">
     </form>
-  	<?php     
-    mysql_close($con);
-    ?>
+  	  <br>
+  	  <?php
+ 	  
+      // Listar Detalhes do Contato
+      $Query =  'Select * from Contato where SQ_Contato = ' . (int)$_REQUEST[SQ_Contato];
+      
+      if (!$ListaContatos = mysql_query($Query)){
+      	echo '<a class="MsgErro">Não foi possível efetuar consulta Contato: ' . mysql_error() .'<br></a>';
+      	die();
+      }
+      require "ContatoDetalhes.inc.php";
+      mysql_close($con);
+     ?>
   </BODY>
 </HTML>

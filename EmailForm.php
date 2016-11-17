@@ -49,7 +49,6 @@
     	if (!$ObjEmail->Edit($MsgErro))
         	echo '<a class="MsgErro">' . 'Erro na alteração do Email: ' . $ObjEmail->MsgErro .'</a>';
     	else 
-       	//mysql_query("commit");
     	   echo '<a class="MsgSucesso">Alteração Email com sucesso!</a>';
     }  
  ?>
@@ -106,6 +105,19 @@
 														. '&Operacao=' . urlencode("Mostrar Contato")?>">Voltar</a>
     	    <input class="Envia" type="submit" name="Operacao" value="<?php if (!$_REQUEST[TP_Email]) echo 'Inserir Email'; else echo 'Alterar Email';?>">
 		</fieldset>
+		<br>
+		  <?php
+ 	  
+      		// Listar Detalhes do Contato
+      		$Query =  'Select * from Contato where SQ_Contato = ' . (int)$_REQUEST[SQ_Contato];
+      
+      		if (!$ListaContatos = mysql_query($Query)){
+      			echo '<a class="MsgErro">Não foi possível efetuar consulta Contato: ' . mysql_error() .'<br></a>';
+      			die();
+      		}
+      		require "ContatoDetalhes.inc.php";
+     		 mysql_close($con);
+	     ?>
     </form>	
   </BODY>
 </HTML>

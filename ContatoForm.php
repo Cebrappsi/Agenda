@@ -11,34 +11,6 @@
     	echo '<a class="MsgErro">Não foi possível efetuar consulta Relacionamento: ' . mysql_error() .'<br></a>';
     	die();
     }
-	/*    //echo mysql_num_rows($SetTipoRelacao);
-    if (!$SetTipoEndereco = mysql_query('SELECT * from Tipo_Endereco order by NM_Tipo_Endereco')){
-    	echo '<a class="MsgErro">Não foi possível efetuar consulta Tipo Endereço: ' . mysql_error() .'<br></a>';
-    	die();
-    }
-    if (!$SetUF = mysql_query('SELECT * from UF order by CD_UF')){
-    	echo '<a class="MsgErro">Não foi possível efetuar consulta UF: ' . mysql_error() .'<br></a>';
-    	die();
-    }
-    // Preparacao para Área para Telefone/tipo uso, Operadora
-    if (!$SetTipoMobilidade = mysql_query('SELECT * from Tipo_Mobilidade order by NM_Tipo_Mobilidade')){
-    	echo '<a class="MsgErro">Não foi possível efetuar consulta Tipo Mobilidade: ' . mysql_error() .'<br></a>';
-    	die();
-    }
-    if (!$SetTipoUso = mysql_query('SELECT * from Tipo_uso order by NM_Tipo_Uso')){
-    	echo '<a class="MsgErro">Não foi possível efetuar consulta Tipo Uso: ' . mysql_error() .'<br></a>';
-    	die();
-    }
-    if (!$SetOperadora = mysql_query('SELECT * from Operadora order by NM_Operadora')){
-    	echo '<a class="MsgErro">Não foi possível efetuar consulta Operadora: ' . mysql_error() .'<br></a>';
-    	die();
-    }
-    // Preparacao para Emails
-    if (!$SetTipoEmail = mysql_query('SELECT * from Tipo_Email order by NM_Tipo_Email')){
-    	echo '<a class="MsgErro">Não foi possível efetuar consulta Tipo Email: ' . mysql_error() .'<br></a>';
-    	die();
-    }
-    */
     
     require "ContatoClasse.php";
     $ObjContato = new Contato();
@@ -139,47 +111,7 @@
 	    }
 	}
     
-    /*
-    
-    if ($_REQUEST[Operacao] == 'Inserir Telefone' && $_SESSION[SQ_Contato] > 0){
-   		echo 'Inserindo Telefone';
-   		require "TelefoneClasse.php";
-   		$ObjTelefone = new Telefone();
-   		$ObjTelefone->SQ_Contato    = $_SESSION[SQ_Contato];
-	    $ObjTelefone->NR_Telefone   = $_REQUEST[NR_Telefone];
-	    $ObjTelefone->TP_Mobilidade = $_REQUEST[TP_Mobilidade];
-	    $ObjTelefone->TP_Uso        = $_REQUEST[TP_Uso];
-	    $ObjTelefone->CD_DDD        = $_REQUEST[CD_DDD];
-	    $ObjTelefone->SQ_Operadora  = $_REQUEST[SQ_Operadora];
-
-	    echo 't' . $ObjTelefone->NR_Telefone;
-	    if (!$ObjTelefone->Insert($MsgErro))
-	        echo '<a class="MsgErro">' . 'Erro na Inserçao do Telefone: ' . $MsgErro .'</a>';
-	    else {
-	       //mysql_query("commit");
-	       echo '<a class="MsgSucesso">Telefone incluido Telefone com sucesso!</a>';
-	    }		
-    		 
-    }
-   */
-    /* 
-    if ($_REQUEST[Operacao] == 'Inserir Email' && $_SESSION[SQ_Contato] > 0){
-    	echo 'Inserindo Email';
-    	require "EmailClasse.php";
-    	$ObjEmail = new Email();
-    	$ObjEmail->SQ_Contato  = $_SESSION[SQ_Contato];
-    	$ObjEmail->TP_Email    = $_REQUEST[TP_Email];
-    	$ObjEmail->Email       = $_REQUEST[Email];
-    	
-    	if (!$ObjEmail->Insert($MsgErro))
-    		echo '<a class="MsgErro">' . 'Erro na Inserção do Email: ' . $MsgErro .'</a>';
-    	else {
-    		//mysql_query("commit");
-    		echo '<a class="MsgSucesso">Email inserido com sucesso!</a>';
-    	}    	 
-    }
-    */
-        
+   
 ?>
 <!DOCTYPE html>
 <HTML>
@@ -250,56 +182,6 @@
     		require "ContatoDetalhes.inc.php";
     		mysql_close($con);
 		?>
-
- 	<!--  
-    	<fieldset>
-    		<legend>Inserindo Telefone</legend>
-    		<label class="labelNormal">Operadora: </label>
-    		<select name="SQ_Operadora">
-    		<?php 
-    			//while ($RegOperadora = mysql_fetch_array($SetOperadora))
-    			//	echo '<option value="' , $RegOperadora[SQ_Operadora] . '">' . $RegOperadora[NM_Operadora] . '</option>';
-    		?>
-    		</select>
-    		
-    		<label>Tipo Mobilidade: </label>
-    		<select name="TP_Mobilidade">
-    		<?php 
-    		//	while ($RegTipoMobilidade = mysql_fetch_array($SetTipoMobilidade))
-    			//	echo '<option value="' , $RegTipoMobilidade[TP_Mobilidade] . '">' . $RegTipoMobilidade[NM_Tipo_Mobilidade] . '</option>';
-    		?>
-    		</select>
-    		<label>Tipo Uso: </label>
-    		<select name="TP_Uso">
-    		<?php
-    			//while ($RegTipoUso = mysql_fetch_array($SetTipoUso))
-    				//echo '<option value="' , $RegTipoUso[TP_Uso] . '">' . $RegTipoUso[NM_Tipo_Uso] . '</option>';
-    		?>
-    		</select><br>
-    		<label class="labelNormal">DDD: </label>
-    		<input class="Entrada" type="text" name="CD_DDD" size="02" autofocus value = "<?php echo $_REQUEST[DDD]?>">
-     		<label>Numero: </label>
-    		<input class="Entrada" type="text" name="NR_Telefone" size="10" value ="<?php echo $_REQUEST[NumeroFone]?>"><br>
-    		<a class="linkVoltar" href="ContatoLista.php">Voltar</a>
-    	    <input class="Envia" type="submit" name="Operacao" value="Inserir Telefone">
-    	</fieldset>
-		<br>  	
-
-		<fieldset>
-    		<legend>Inserindo Email</legend>
-    		<label class="labelNormal">Tipo Email: </label>
-    		<select class="Entrada" name="TP_Email">
-    		<?php
-//    			while ($RegTipoEmail = mysql_fetch_array($SetTipoEmail))
-  //  				echo '<option value="' , $RegTipoEmail[TP_Email] . '">' . $RegTipoEmail[NM_Tipo_Email] . '</option>';
-    		?>
-    		</select>
-    		<label>Email: </label>
-    		<input type="text" name="Email" size="50" autofocus value = "<?php echo $_REQUEST[Email] ?>"><br>
-    		<a class="linkVoltar" href="ContatoLista.php">Voltar</a>
-    	   <input class="Envia" type="submit" name="Operacao" value="Inserir Email">
-    	</fieldset>
-   	-->
     </form>
   </BODY>
 </HTML>

@@ -14,7 +14,7 @@
 		$ObjEmail->TP_Email = $_REQUEST[TP_Email];
 	
     	if (!$ObjEmail->Delete($MsgErro))
-       		//MsgPopup('Erro na Exclus�o do Registro : ' . $ObjContato->MsgErro);
+       		//MsgPopup('Erro na Exclusão do Registro : ' . $ObjContato->MsgErro);
         	echo '<br><a class="MsgErro">Erro na Exclusão do Email : ' . $ObjContato->MsgErro .'</a>';
     	else 
       	// MsgPopup( $ObjContato->MsgErro);

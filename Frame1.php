@@ -1,4 +1,8 @@
+<?php
+   error_reporting(0);
+?>
 <HTML>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <HEAD>
 	   <TITLE> Frame 1 </TITLE>
        <link rel="stylesheet" type="text/css" href="ClinicaStyle.css" />

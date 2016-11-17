@@ -17,7 +17,7 @@
 		$ObjEndereco->TP_Endereco = $_REQUEST[TP_Endereco];
 	
     	if (!$ObjEndereco->Delete($MsgErro))
-       		//MsgPopup('Erro na Exclus�o do Registro : ' . $ObjContato->MsgErro);
+       		//MsgPopup('Erro na Exclusão do Registro : ' . $ObjContato->MsgErro);
         	echo '<br><a class="MsgErro">Erro na Exclusão do Endereço: ' . $MsgErro .'</a>';
     	else 
       		// MsgPopup( $ObjContato->$MsgErro);

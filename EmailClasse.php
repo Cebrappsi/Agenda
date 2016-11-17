@@ -23,7 +23,7 @@ class Email {
 	}
 
 	
-	/* Retorna Falso se deu erro no Banco ou n�o existe
+	/* Retorna Falso se deu erro no Banco ou não existe
 	 * Retorna True se existe
 	 * Testar se deu erro de banco em MsgErro quando receber Falso
 	*/

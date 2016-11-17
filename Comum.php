@@ -1,8 +1,15 @@
 <?php
+error_reporting(0);
+
 function Conecta_BD(&$MsgErro)
 {
+	//
+	// Config do BD
+	//
+	require "Clinica.php";
     //echo '<br/>Conectando BD';
-    $Con = mysql_connect('localhost', 'root', "tav001");
+
+    $Con = mysql_connect($servidor, $usuario, $senha);
     if (!$Con) {
         $MsgErro = 'Não foi possível conectar: ' . mysql_error();
         return false;
@@ -14,8 +21,6 @@ function Conecta_BD(&$MsgErro)
     }
     return $Con;
 }
-//echo '<meta http-equiv="Content-Type" content="text/html; charset="ISO-8859-1" />';
-//echo '<meta http-equiv="Content-Type" content="text/html; charset="utf-8" />';
 
 function MsgPopup($MsgErro)
 {
