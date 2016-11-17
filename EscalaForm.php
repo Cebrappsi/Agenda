@@ -36,7 +36,8 @@
     			die();
     	}
     	$_REQUEST[DT_Fim_Escala] = implode('/',array_reverse(explode('-',mysql_result($ObjEscala->Regs,0,Dt_Fim_Escala))));
-    	$_REQUEST[Intervalo_Atendimento] = mysql_result($ObjEscala->Regs,0,Intervalo_Atendimento);
+    	$_REQUEST[Intervalo]     = mysql_result($ObjEscala->Regs,0,Intervalo);
+    	$_REQUEST[Duracao]       = mysql_result($ObjEscala->Regs,0,Duracao);
     	$_REQUEST[HR_Ini_Turno1] = date('H:i',strtotime(mysql_result($ObjEscala->Regs,0,HR_Ini_Turno1)));
     	$_REQUEST[HR_Fim_Turno1] = date('H:i',strtotime(mysql_result($ObjEscala->Regs,0,HR_Fim_Turno1)));
     	$_REQUEST[HR_Ini_Turno2] = date('H:i',strtotime(mysql_result($ObjEscala->Regs,0,HR_Ini_Turno2)));
@@ -47,13 +48,14 @@
     	$ObjEscala->SQ_Profissional = $REQ_SQ_Profissional;
     	$ObjEscala->DT_Ini_Escala = $_REQUEST[DT_Ini_Escala];
     	$ObjEscala->DT_Fim_Escala = $_REQUEST[Dt_Fim_Escala];
-    	$ObjEscala->Intervalo_Atendimento = $_REQUEST[Intervalo_Atendimento];
+    	$ObjEscala->Intervalo     = $_REQUEST[Intervalo];
     	$ObjEscala->Dia_Semana    = $_REQUEST[Dia_Semana];
+    	$ObjEscala->Duracao       = $_REQUEST[Duracao];
     	$ObjEscala->HR_Ini_Turno1 = $_REQUEST[HR_Ini_Turno1];
     	$ObjEscala->HR_Fim_Turno1 = $_REQUEST[HR_Fim_Turno1];
     	$ObjEscala->HR_Ini_Turno2 = $_REQUEST[HR_Ini_Turno2];
     	$ObjEscala->HR_Fim_Turno2 = $_REQUEST[HR_Fim_Turno2];
-    	print_r($ObjEscala); 
+    	//print_r($ObjEscala); 
     	if (!$ObjEscala->insert($MsgErro))
     		echo '<a class="MsgErro">Erro na inserção da Escala: ' . $MsgErro .'<br></a>';
     	else {
@@ -67,7 +69,8 @@
         $ObjEscala->SQ_Profissional = $REQ_SQ_Profissional;
 		$ObjEscala->DT_Ini_Escala = $_REQUEST[DT_Ini_Escala];
 		$ObjEscala->DT_Fim_Escala = $_REQUEST[DT_Fim_Escala];
-		$ObjEscala->Intervalo_Atendimento = $_REQUEST[Intervalo_Atendimento];
+		$ObjEscala->Intervalo     = $_REQUEST[Intervalo];
+		$ObjEscala->Duracao       = $_REQUEST[Duracao];
 		$ObjEscala->Dia_Semana    = $_REQUEST[Dia_Semana];
 		$ObjEscala->HR_Ini_Turno1 = $_REQUEST[HR_Ini_Turno1];
 	    $ObjEscala->HR_Fim_Turno1 = $_REQUEST[HR_Fim_Turno1];
@@ -126,7 +129,9 @@
     		<label class="labelNormal">Dia Semana(1-7 Dom-Sab):</label>
     		<input class="Entrada" type="number" name="Dia_Semana" size="1" min="1" max="7" value =<?php echo $_REQUEST[Dia_Semana]?>><br>
      		<label class="labelNormal">Interv Atend(5,10,15,20): </label>
-    		<input class="Entrada" type="number" name="Intervalo_Atendimento" min="0" max="15" step="5" size="2" value =<?php echo $_REQUEST[Intervalo_Atendimento]?>><br>
+    		<input class="Entrada" type="number" name="Intervalo" min="0" max="15" step="5" size="2" value =<?php echo $_REQUEST[Intervalo]?>><br>
+     		<label class="labelNormal">Duração: </label>
+    		<input class="Entrada" type="number" name="Duracao" size="3" value =<?php echo $_REQUEST[Duracao]?>><br>
      		<label class="labelNormal">Hora Ini Turno1:</label>
      		<input class="Entrada" type="time" name="HR_Ini_Turno1" size="5" value="<?php echo $_REQUEST[HR_Ini_Turno1]?>"><br>
      		<label class="labelNormal">Hora Fim Turno1:</label>

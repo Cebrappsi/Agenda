@@ -18,7 +18,7 @@
         echo '<a class="Submenu" " target=dados href="AgendaAtendimento.php">Agenda Atendimento <br></a>';
         echo '<a class="Submenu" target=dados href="AgendaConsulta.php">Consulta Agenda<br></a>';
         echo '<a class="Submenu" target=dados href="AgendaDesmarca.php">Desmarca Consulta<br></a>';
-        echo '<a class="Submenu" target=dados href="AgendaAbre.php">Abre Agenda</a>';
+        echo '<a class="Submenu" target=dados href="Agenda.php">Agenda</a>';
         die();
     } elseif ($_REQUEST[Origem] == 'Contatos') {
     	echo '<a class="Submenu" target=dados href="ContatoLista.php?Tipo=Todos">Todos<br></a>';

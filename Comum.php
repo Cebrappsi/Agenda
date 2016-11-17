@@ -1,5 +1,5 @@
 <?php
-error_reporting(0);
+//error_reporting(0);
 
 function Conecta_BD(&$MsgErro)
 {
@@ -19,7 +19,8 @@ function Conecta_BD(&$MsgErro)
         $MsgErro = 'Não foi possível abrir o banco de dados: ' . mysql_error();
         return false;
     }
-    return $Con;
+    mysql_query ('SET NAMES utf8');
+	return $Con;
 }
 
 function MsgPopup($MsgErro)
@@ -38,5 +39,33 @@ function isTime($time,$is24Hours=true,$seconds=false) {
 		return true;
 	}
 	return false;
+}
+function diaSemana($dat){ 
+	//echo gettype($dat); 
+	//print_r($dat); 
+	
+	if (gettype($dat) == 'Integer')
+	   $dat = date_create($dat);
+	if (get_class($dat) == 'DateTime'){
+		switch (date_format($dat,"w")) {
+			case 0: return "Domingo";
+			        break;
+			case 1: return "Segunda";
+					break;
+			case 2: return "Terça";
+					break;
+			case 3: return "Quarta";
+					break;
+			case 4: return "Quinta";
+					break;
+			case 5: return "Sexta";
+					break;
+			case 6: return "Sábado";
+					break;
+			default: return false;
+				break;
+		}
+	}
+	else return false;
 }
 ?>

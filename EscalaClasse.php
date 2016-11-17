@@ -6,7 +6,8 @@ class Escala {
 	public $DT_Ini_Escala;
 	public $DT_Fim_Escala;
 	public $Dia_Semana;
-	public $Intervalo_Atendimento;
+	public $Duracao;
+	public $Intervalo;
 	public $HR_Ini_Turno1;
 	public $HR_Fim_Turno1;
 	public $HR_Ini_Turno2;
@@ -44,9 +45,13 @@ class Escala {
 		    return FALSE;
 		}
 		
-		if (!(is_numeric($this->Intervalo_Atendimento) && (int)$this->Intervalo_Atendimento < 21)){
-			$MsgErro = 'Intervalo Atendimento invalido - nao numerico ou muito grande - deve ser menor que 15 minutos';
+		if (!(is_numeric($this->Intervalo) && (int)$this->Intervalo < 21)){
+			$MsgErro = 'Intervalo Atendimento invalido - nao numerico ou muito grande - deve ser menor que 25 minutos';
 		    return FALSE;
+		}
+		if (!(is_numeric($this->Duracao) && (int)$this->Duracao > 0 && (int)$this->Duracao < 120 )){
+			$MsgErro = 'Duração da Sessão invalida';
+			return FALSE;
 		}
 						
 		//echo $this->HR_Ini_Turno1;
@@ -132,13 +137,14 @@ class Escala {
 		if ($this->DT_Fim_Escala <> '' && $this->DT_Fim_Escala <> '00/00/0000')
 			$this->DT_Fim_Escala = implode('-',  array_reverse(explode('/',$this->DT_Fim_Escala)));
 		
-		$query = 'INSERT INTO escala (SQ_Profissional,DT_Ini_Escala,DT_Fim_Escala,Dia_Semana,Intervalo_Atendimento,' .
-		                             'HR_Ini_Turno1,HR_Fim_Turno1,HR_Ini_Turno2,HR_Fim_Turno2) ' .
+		$query = 'INSERT INTO escala (SQ_Profissional,DT_Ini_Escala,DT_Fim_Escala,Dia_Semana,Intervalo,' .
+		                             'Duracao,HR_Ini_Turno1,HR_Fim_Turno1,HR_Ini_Turno2,HR_Fim_Turno2) ' .
 								' values (' . $this->SQ_Profissional . ' , ' .
 		                                '"' . $this->DT_Ini_Escala . '", ' .
 		                                '"' . $this->DT_Fim_Escala . '", ' . 
 										      $this->Dia_Semana    . ' , ' .
-										     $this->Intervalo_Atendimento . ' , ' .
+										      $this->Intervalo . ' , ' .
+										      $this->Duracao . ' , ' .
 										'"' . $this->HR_Ini_Turno1 . '", ' . 
 										'"' . $this->HR_Fim_Turno1 . '", ' . 
 										'"' . $this->HR_Ini_Turno2 . '" , ' .
@@ -220,7 +226,8 @@ public function GetReg(&$MsgErro){
 			$this->DT_Fim_Escala = implode('-',  array_reverse(explode('/',$this->DT_Fim_Escala)));
 		
 		$query = 'UPDATE escala set DT_Fim_Escala          = ' . '"' . $this->DT_Fim_Escala . '", ' . 
-		                            ' Intervalo_Atendimento = ' .       $this->Intervalo_Atendimento . ' , ' .
+		                            ' Intervalo            = ' .        $this->Intervalo . ' , ' .
+		                            ' Duracao               = ' .       $this->Duracao . ' , ' .
 		                            ' HR_Ini_Turno1         = ' . '"' . $this->HR_Ini_Turno1 . '", ' .
 		                            ' HR_Fim_Turno1         = ' . '"' . $this->HR_Fim_Turno1 . '", ' .
 		                            ' HR_Ini_Turno2         = ' . '"' . $this->HR_Ini_Turno2 . '" , ' .

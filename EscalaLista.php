@@ -42,6 +42,7 @@
 	    echo '<th>Dt Fim</th>';
 	    echo '<th>Dia Semana</th>';
 	    echo '<th>Interv Atend</th>';
+	    echo '<th>Duração</th>';
 	    echo '<th>Hora Ini-1Turno</th>';
 	    echo '<th>Hora Fim-1Turno</th>';
 	    echo '<th>Hora Ini-2Turno</th>';
@@ -56,7 +57,8 @@
       	echo '<td align="center">' . implode('/',array_reverse(explode('-',$RegEscala[DT_Ini_Escala]))) . '</td>';
     	echo '<td align="center">' . implode('/',array_reverse(explode('-',$RegEscala[DT_Fim_Escala])))	. '</td>';
     	echo '<td align="center">' . $RegEscala[Dia_Semana] . '</td>';
-    	echo '<td align="center">' . $RegEscala[Intervalo_Atendimento] . '</td>';
+    	echo '<td align="center">' . $RegEscala[Intervalo] . '</td>';
+    	echo '<td align="center">' . $RegEscala[Duracao] . '</td>';
     	echo '<td align="center">' . date('H:i',strtotime($RegEscala[HR_Ini_Turno1])) . '</td>';
     	echo '<td align="center">' . date('H:i',strtotime($RegEscala[HR_Fim_Turno1])) . '</td>';
     	echo '<td align="center">' . date('H:i',strtotime($RegEscala[HR_Ini_Turno2])) . '</td>';
